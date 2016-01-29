@@ -7,7 +7,16 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.zhexian.souschef10.MainActivity"
     android:background="#000000">
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg11"
+            android:scaleType="centerCrop"
+            />
+    </FrameLayout>
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
