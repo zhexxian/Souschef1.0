@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 /**
  * Created by zhexian on 1/29/2016.
@@ -13,6 +14,10 @@ public class IngredientAmountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredient_amount_main);
+        String title = "";
+        title = getIntent().getExtras().getString("Title");
+        Button b = (Button) findViewById(R.id.button15);
+        b.setText(title);
     }
 
     @Override
