@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonText14 = (Button)findViewById(R.id.button11);
         buttonText14.setTypeface(myTypeface);
 
+        TextView weightText = (TextView) findViewById(R.id.textView2);
+        weightText.setTypeface(myTypeface);
+
         buttonText.setOnClickListener(this);
         buttonText1.setOnClickListener(this);
         buttonText2.setOnClickListener(this);
@@ -106,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonText11 = (Button)findViewById(R.id.button11);
 
         switch(v.getId())
-        {
+        {   //TODO: add numbering system to transfer to IAA
+
             case R.id.button:
                 Intent intent = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString = buttonText.getText().toString();

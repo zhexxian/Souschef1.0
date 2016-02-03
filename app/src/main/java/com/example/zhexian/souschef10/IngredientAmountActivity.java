@@ -14,8 +14,8 @@ public class IngredientAmountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredient_amount_main);
-        String title = "";
-        title = getIntent().getExtras().getString("Title");
+        //String title = "";
+        String title = getIntent().getExtras().getString("Title");
         Button b = (Button) findViewById(R.id.button15);
         b.setText(title);
     }
