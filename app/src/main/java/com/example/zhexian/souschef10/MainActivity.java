@@ -16,6 +16,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -23,6 +32,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String fileName = "Ingredients.txt";
+
+        ArrayList<String> ingList = getIngredientsList(fileName);
+
+        ingList.toString();
+        if(ingList.size()<1){
+            setIngredientList();
+        }
 
         // Initializing main screen
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
@@ -50,10 +67,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonText10.setTypeface(myTypeface);
         Button buttonText11 = (Button)findViewById(R.id.button11);
         buttonText11.setTypeface(myTypeface);
-        Button buttonText13 = (Button)findViewById(R.id.button11);
+
+
+//        buttonText.setText(ingList.get(0));
+//        buttonText1.setText(ingList.get(1));
+//        buttonText2.setText(ingList.get(2));
+//        buttonText3.setText(ingList.get(3));
+//        buttonText4.setText(ingList.get(4));
+//        buttonText5.setText(ingList.get(5));
+//        buttonText6.setText(ingList.get(6));
+//        buttonText7.setText(ingList.get(7));
+//        buttonText8.setText(ingList.get(8));
+//        buttonText9.setText(ingList.get(9));
+//        buttonText10.setText(ingList.get(10));
+//        buttonText11.setText(ingList.get(11));
+
+        Button buttonText12 = (Button)findViewById(R.id.button12);
+        buttonText12.setTypeface(myTypeface);
+        Button buttonText13 = (Button)findViewById(R.id.button13);
         buttonText13.setTypeface(myTypeface);
-        Button buttonText14 = (Button)findViewById(R.id.button11);
-        buttonText14.setTypeface(myTypeface);
 
         TextView weightText = (TextView) findViewById(R.id.textView2);
         weightText.setTypeface(myTypeface);
@@ -186,4 +218,83 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
     }
+
+    public ArrayList<String> getIngredientsList(String fileName){
+        String line;
+        ArrayList<String> returnList = new ArrayList<String>();
+        try {
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader = new FileReader(fileName);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+                returnList.add(line);
+            }
+
+            // Always close files.
+            bufferedReader.close();
+        }
+        catch(FileNotFoundException ex) {
+            Toast.makeText(MainActivity.this,  "Unable to open file '" +fileName + "'"+"Creating new Ingredient List instead.", Toast.LENGTH_SHORT).show();
+
+        }
+        catch(IOException ex) {
+            Toast.makeText(MainActivity.this,"Error reading file '"+ fileName + "'",Toast.LENGTH_SHORT).show();
+            // Or we could just do this:
+            // ex.printStackTrace();
+        }
+        return returnList;
+    }
+
+    public void setIngredientList(){
+        String fileName = "Ingredients.txt";
+
+        try {
+            // Assume default encoding.
+            FileWriter fileWriter = new FileWriter(fileName);
+
+            // Always wrap FileWriter in BufferedWriter.
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            // Note that write() does not automatically
+            // append a newline character.
+            bufferedWriter.write("Salt");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Pepper");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Light Sauce");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Dark Sauce");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Salt");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Pepper");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Light Sauce");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Dark Sauce");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Salt");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Pepper");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Light Sauce");
+            bufferedWriter.newLine();
+            bufferedWriter.write("Dark Sauce");
+            bufferedWriter.newLine();
+
+
+            // Always close files.
+            bufferedWriter.close();
+        }
+        catch(IOException ex) {
+            Toast.makeText(MainActivity.this, "Error writing to file '" + fileName + "'",Toast.LENGTH_SHORT).show();
+            // Or we could just do this:
+            // ex.printStackTrace();
+        }
+
+    }
+
 }

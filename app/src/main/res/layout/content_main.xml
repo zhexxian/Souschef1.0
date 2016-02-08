@@ -338,8 +338,8 @@
     </TableLayout>
 
     <Button
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:text="Dispense"
         android:textSize="10dp"
         android:id="@+id/button13"
@@ -348,12 +348,12 @@
         android:layout_above="@+id/tableLayout"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="38dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="12dp" />
 
     <Button
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:text="Undo"
         android:textColor="#ffffff"
         android:textSize="10dp"
@@ -362,7 +362,8 @@
         android:layout_above="@+id/button13"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginLeft="12dp" />
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -397,6 +398,8 @@
         android:layout_alignTop="@+id/textView2"
         android:layout_toRightOf="@+id/textView2"
         android:layout_toStartOf="@+id/button13"
+        android:layout_toLeftOf="@+id/button13"
+
         android:layout_alignBottom="@+id/button13"
         android:layout_alignRight="@+id/textView2"
         android:layout_alignEnd="@+id/textView2" />
@@ -405,14 +408,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="999.99g"
-        android:textSize="25dp"
+        android:textSize="55dp"
         android:textAlignment="center"
         android:id="@+id/textView3"
         android:textColor="#ffffff"
-        android:layout_below="@id/view"
-        android:layout_alignRight="@+id/view"
-        android:layout_alignEnd="@+id/view"
+        android:layout_below="@+id/view"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/view"
+        android:layout_alignEnd="@+id/view" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="Undo All"
+        android:textColor="#ffffff"
+        android:textSize="10dp"
+        android:id="@+id/button12"
+        android:background="@drawable/circle3"
+        android:layout_above="@+id/button14"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="10dp" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="Settings"
+        android:textColor="#ffffff"
+        android:textSize="10dp"
+        android:id="@+id/button19"
+        android:background="@drawable/settings"
+        android:layout_above="@+id/button12"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="12dp" />
 
 </RelativeLayout>
