@@ -220,6 +220,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public ArrayList<String> getIngredientsList(String fileName){
+        //TODO: USE FILEOUTPUTSTREAM!
+        //TODO: Set save data location on android
         String line;
         ArrayList<String> returnList = new ArrayList<String>();
         try {
