@@ -1,9 +1,12 @@
 package com.example.zhexian.souschef10;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 /**
@@ -18,6 +21,20 @@ public class IngredientAmountActivity extends AppCompatActivity {
         String title = getIntent().getExtras().getString("Title");
         Button b = (Button) findViewById(R.id.button15);
         b.setText(title);
+
+        b.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editIngredient();
+                return true;
+            }
+        });
+
+
+    }
+
+    private void editIngredient() {
+
     }
 
     @Override
