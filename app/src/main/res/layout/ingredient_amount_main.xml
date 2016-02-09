@@ -97,14 +97,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp" />
 
-    </RelativeLayout>
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-    </android.support.design.widget.AppBarLayout>
+    </RelativeLayout><![CDATA[
 
     />
 
+]]>
 </android.support.design.widget.CoordinatorLayout>
