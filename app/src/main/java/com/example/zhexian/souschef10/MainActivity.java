@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -104,6 +105,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonText9.setOnClickListener(this);
         buttonText10.setOnClickListener(this);
         buttonText11.setOnClickListener(this);
+
+
+//        MyTouchListener touchListener = new MyTouchListener();
+//        buttonText.setOnTouchListener(touchListener);
+//        buttonText1.setOnTouchListener(touchListener);
+//        buttonText2.setOnTouchListener(touchListener);
+//        buttonText3.setOnTouchListener(touchListener);
+//        buttonText4.setOnTouchListener(touchListener);
+//        buttonText5.setOnTouchListener(touchListener);
+//        buttonText6.setOnTouchListener(touchListener);
+//        buttonText7.setOnTouchListener(touchListener);
+//        buttonText8.setOnTouchListener(touchListener);
+//        buttonText9.setOnTouchListener(touchListener);
+//        buttonText10.setOnTouchListener(touchListener);
+//        buttonText11.setOnTouchListener(touchListener);
+
     }
 
     @Override
@@ -127,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     public void onClick(View v){
         Button buttonText = (Button)findViewById(R.id.button);
