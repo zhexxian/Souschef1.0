@@ -1,6 +1,8 @@
 package com.example.zhexian.souschef10;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -8,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * Created by zhexian on 1/29/2016.
@@ -34,6 +37,34 @@ public class IngredientAmountActivity extends AppCompatActivity {
     }
 
     private void editIngredient() {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Edit Ingredient");
+        //alert.setMessage("Message");
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        Button b = (Button) findViewById(R.id.button15);
+        String oldIngredient = b.getText().toString();
+        input.append(oldIngredient);
+        alert.setView(input);
+
+        alert.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String newIngredient = input.getText().toString();
+                Button b = (Button) findViewById(R.id.button15);
+                b.setText(newIngredient);
+                // Do something with value!
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
 
     }
 
