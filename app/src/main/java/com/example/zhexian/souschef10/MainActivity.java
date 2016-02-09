@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -69,18 +71,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonText11.setTypeface(myTypeface);
 
 
-//        buttonText.setText(ingList.get(0));
-//        buttonText1.setText(ingList.get(1));
-//        buttonText2.setText(ingList.get(2));
-//        buttonText3.setText(ingList.get(3));
-//        buttonText4.setText(ingList.get(4));
-//        buttonText5.setText(ingList.get(5));
-//        buttonText6.setText(ingList.get(6));
-//        buttonText7.setText(ingList.get(7));
-//        buttonText8.setText(ingList.get(8));
-//        buttonText9.setText(ingList.get(9));
-//        buttonText10.setText(ingList.get(10));
-//        buttonText11.setText(ingList.get(11));
+        buttonText.setText(ingList.get(0));
+        buttonText1.setText(ingList.get(1));
+        buttonText2.setText(ingList.get(2));
+        buttonText3.setText(ingList.get(3));
+        buttonText4.setText(ingList.get(4));
+        buttonText5.setText(ingList.get(5));
+        buttonText6.setText(ingList.get(6));
+        buttonText7.setText(ingList.get(7));
+        buttonText8.setText(ingList.get(8));
+        buttonText9.setText(ingList.get(9));
+        buttonText10.setText(ingList.get(10));
+        buttonText11.setText(ingList.get(11));
 
         Button buttonText12 = (Button)findViewById(R.id.button12);
         buttonText12.setTypeface(myTypeface);
@@ -225,8 +227,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String line;
         ArrayList<String> returnList = new ArrayList<String>();
         try {
+
+            File sdCard = Environment.getExternalStorageDirectory();
+            File dir = new File (sdCard.getAbsolutePath() + "/dir1/dir2");
+            File file = new File(dir, fileName);
             // FileReader reads text files in the default encoding.
-            FileReader fileReader = new FileReader(fileName);
+            FileReader fileReader = new FileReader(file);
 
             // Always wrap FileReader in BufferedReader.
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -254,8 +260,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String fileName = "Ingredients.txt";
 
         try {
+
+            File sdCard = Environment.getExternalStorageDirectory();
+            File dir = new File (sdCard.getAbsolutePath() + "/SousChef/Data");
+            dir.mkdirs();
+            File file = new File(dir, fileName);
             // Assume default encoding.
-            FileWriter fileWriter = new FileWriter(fileName);
+            FileWriter fileWriter = new FileWriter(file);
 
             // Always wrap FileWriter in BufferedWriter.
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
