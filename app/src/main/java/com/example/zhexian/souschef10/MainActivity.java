@@ -106,21 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonText10.setOnClickListener(this);
         buttonText11.setOnClickListener(this);
 
-
-//        MyTouchListener touchListener = new MyTouchListener();
-//        buttonText.setOnTouchListener(touchListener);
-//        buttonText1.setOnTouchListener(touchListener);
-//        buttonText2.setOnTouchListener(touchListener);
-//        buttonText3.setOnTouchListener(touchListener);
-//        buttonText4.setOnTouchListener(touchListener);
-//        buttonText5.setOnTouchListener(touchListener);
-//        buttonText6.setOnTouchListener(touchListener);
-//        buttonText7.setOnTouchListener(touchListener);
-//        buttonText8.setOnTouchListener(touchListener);
-//        buttonText9.setOnTouchListener(touchListener);
-//        buttonText10.setOnTouchListener(touchListener);
-//        buttonText11.setOnTouchListener(touchListener);
-
     }
 
     @Override
