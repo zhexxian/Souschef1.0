@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
 
             File sdCard = Environment.getExternalStorageDirectory();
-            File dir = new File (sdCard.getAbsolutePath() + "/dir1/dir2");
+            File dir = new File (sdCard.getAbsolutePath() + "/SousChef/Data");
             File file = new File(dir, fileName);
             // FileReader reads text files in the default encoding.
             FileReader fileReader = new FileReader(file);
