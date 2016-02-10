@@ -65,7 +65,8 @@ public class IngredientAmountActivity extends AppCompatActivity {
         });
 
         alert.show();
-
+        //TODO: Create link back to MainActivity
+        //TODO: Send data back as an intent to MainActivity, including any changes to name of ingredient, and quantity
     }
 
     @Override

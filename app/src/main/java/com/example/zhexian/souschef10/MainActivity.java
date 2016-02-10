@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String fileName = "Ingredients.txt";
 
         ArrayList<String> ingList = getIngredientsList(fileName);
-
+        //TODO: enable a change in ingredients
+        //TODO: implement icons arraylist to be sent to arduino
         ingList.toString();
         if(ingList.size()<1){
             setIngredientList();
@@ -147,77 +148,100 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonText11 = (Button)findViewById(R.id.button11);
 
         switch(v.getId())
-        {   //TODO: add numbering system to transfer to IAA
-
+        {
             case R.id.button:
                 Intent intent = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString = buttonText.getText().toString();
+                int thisIsIndex = 1;
+                intent.putExtra("Index",thisIsIndex);
                 intent.putExtra("Title",thisIsString);
                 this.startActivity(intent);
                 break;
             case R.id.button1:
                 Intent intent1 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString1 = buttonText1.getText().toString();
+                int thisIsIndex1 = 2;
+                intent1.putExtra("Index",thisIsIndex1);
                 intent1.putExtra("Title",thisIsString1);
                 this.startActivity(intent1);
                 break;
             case R.id.button2:
                 Intent intent2 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString2 = buttonText2.getText().toString();
+                int thisIsIndex2 = 3;
+                intent2.putExtra("Index",thisIsIndex2);
                 intent2.putExtra("Title",thisIsString2);
                 this.startActivity(intent2);
                 break;
             case R.id.button3:
                 Intent intent3 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString3 = buttonText3.getText().toString();
+                int thisIsIndex3 = 4;
+                intent3.putExtra("Index",thisIsIndex3);
                 intent3.putExtra("Title",thisIsString3);
                 this.startActivity(intent3);
                 break;
             case R.id.button4:
                 Intent intent4 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString4 = buttonText4.getText().toString();
+                int thisIsIndex4 = 5;
+                intent4.putExtra("Index",thisIsIndex4);
                 intent4.putExtra("Title",thisIsString4);
                 this.startActivity(intent4);
                 break;
             case R.id.button5:
                 Intent intent5 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString5 = buttonText5.getText().toString();
+                int thisIsIndex5 = 6;
+                intent5.putExtra("Index",thisIsIndex5);
                 intent5.putExtra("Title",thisIsString5);
                 this.startActivity(intent5);
                 break;
             case R.id.button6:
                 Intent intent6 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString6 = buttonText6.getText().toString();
+                int thisIsIndex6 = 7;
+                intent6.putExtra("Index",thisIsIndex6);
                 intent6.putExtra("Title",thisIsString6);
                 this.startActivity(intent6);
                 break;
             case R.id.button7:
                 Intent intent7 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString7 = buttonText7.getText().toString();
+                int thisIsIndex7 = 8;
+                intent7.putExtra("Index",thisIsIndex7);
                 intent7.putExtra("Title",thisIsString7);
                 this.startActivity(intent7);
                 break;
             case R.id.button8:
                 Intent intent8 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString8 = buttonText8.getText().toString();
+                int thisIsIndex8 = 9;
+                intent8.putExtra("Index",thisIsIndex8);
                 intent8.putExtra("Title",thisIsString8);
                 this.startActivity(intent8);
                 break;
             case R.id.button9:
                 Intent intent9 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString9 = buttonText9.getText().toString();
+                int thisIsIndex9 = 10;
+                intent9.putExtra("Index",thisIsIndex9);
                 intent9.putExtra("Title",thisIsString9);
                 this.startActivity(intent9);
                 break;
             case R.id.button10:
                 Intent intent10 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString10 = buttonText10.getText().toString();
+                int thisIsIndex10 = 11;
+                intent10.putExtra("Index",thisIsIndex10);
                 intent10.putExtra("Title",thisIsString10);
                 this.startActivity(intent10);
                 break;
             case R.id.button11:
                 Intent intent11 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString11 = buttonText11.getText().toString();
+                int thisIsIndex11 = 12;
+                intent11.putExtra("Index",thisIsIndex11);
                 intent11.putExtra("Title",thisIsString11);
                 this.startActivity(intent11);
                 break;
@@ -226,7 +250,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public ArrayList<String> getIngredientsList(String fileName){
-        //TODO: USE FILEOUTPUTSTREAM!
         //TODO: Set save data location on android
         String line;
         ArrayList<String> returnList = new ArrayList<String>();
