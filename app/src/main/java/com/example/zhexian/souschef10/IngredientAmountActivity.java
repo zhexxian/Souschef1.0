@@ -3,6 +3,8 @@ package com.example.zhexian.souschef10;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -15,13 +17,16 @@ import android.widget.EditText;
 /**
  * Created by zhexian on 1/29/2016.
  */
-public class IngredientAmountActivity extends AppCompatActivity {
+public class IngredientAmountActivity extends AppCompatActivity implements View.OnClickListener{
+    String title;
+    int indexIng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredient_amount_main);
         //String title = "";
-        String title = getIntent().getExtras().getString("Title");
+        title = getIntent().getExtras().getString("Title");
+        indexIng = getIntent().getExtras().getInt("Index");
         Button b = (Button) findViewById(R.id.button15);
         b.setText(title);
 
@@ -32,6 +37,14 @@ public class IngredientAmountActivity extends AppCompatActivity {
                 return true;
             }
         });
+        Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
+        Button acceptButton = (Button)findViewById(R.id.button20);
+        acceptButton.setTypeface(myTypeface);
+        Button cancelButton = (Button)findViewById(R.id.button21);
+        cancelButton.setTypeface(myTypeface);
+        acceptButton.setOnClickListener(this);
+        cancelButton.setOnClickListener(this);
+
 
 
     }
@@ -89,5 +102,27 @@ public class IngredientAmountActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public void onClick(View v){
+        System.out.println("running");
+        Button ingName = (Button) findViewById(R.id.button15);
+        title = ingName.getText().toString();
+        System.out.println(title);
+        switch(v.getId())
+        {
+            case R.id.button20:
+                Intent intent = new Intent(this, MainActivity.class);
+
+                intent.putExtra("Index",indexIng);
+                intent.putExtra("Title",title);
+                this.startActivity(intent);
+                break;
+            case R.id.button21:
+                Intent intent1 = new Intent(this, MainActivity.class);
+                this.startActivity(intent1);
+                break;
+        }
+        finish();
+
     }
 }
