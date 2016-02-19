@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(ingList.size()<1){
             setIngredientList();
         }
-        System.out.println("test1");
         // Initializing main screen
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
         Button buttonText = (Button)findViewById(R.id.button);
