@@ -16,7 +16,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:id="@+id/tableLayout">
+        android:id="@+id/tableLayout"
+        android:layout_below="@+id/button19"
+        android:layout_alignRight="@+id/button13"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_marginTop="-15dp">
 
         <TableRow
             android:layout_width="match_parent"
@@ -32,8 +36,8 @@
                 android:textColor="#ffffff"
                 android:textSize="10dp"
                 android:onClick="onClick"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -48,8 +52,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -65,8 +69,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -82,8 +86,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -163,8 +167,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -180,8 +184,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -197,8 +201,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -214,8 +218,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -273,8 +277,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -290,8 +294,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -307,8 +311,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -324,8 +328,8 @@
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
                 android:textSize="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
                 android:maxLength="10"
@@ -381,8 +385,9 @@
         android:background="@drawable/circle2"
 
         android:layout_alignTop="@+id/textView2"
-        android:layout_alignLeft="@+id/button12"
-        android:layout_alignStart="@+id/button12" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="15dp" />
 
     <Button
         android:layout_width="50dp"
@@ -392,10 +397,10 @@
         android:textSize="10dp"
         android:id="@+id/button14"
         android:background="@drawable/circle3"
-        android:layout_below="@+id/textView3"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="47dp" />
+        android:layout_alignParentEnd="false"
+        android:layout_below="@+id/button13"
+        android:layout_marginBottom="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -410,7 +415,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/view"
-        android:layout_alignEnd="@+id/view" />
+        android:layout_alignEnd="@+id/view"
+        android:layout_alignParentRight="false" />
 
     <View
         android:layout_width="wrap_content"
@@ -418,7 +424,10 @@
         android:background="#ffffff"
         android:id="@+id/view"
         android:layout_below="@+id/textView2"
-        android:layout_toLeftOf="@+id/button14" />
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@+id/button13"
+        android:layout_alignParentRight="false"
+        android:layout_marginRight="15dp" />
 
     <View
         android:layout_width="1dp"
@@ -430,22 +439,29 @@
         android:layout_toRightOf="@+id/textView2"
         android:layout_toStartOf="@+id/button13"
 
-        android:layout_above="@+id/tableLayout"
-        android:layout_toLeftOf="@+id/button13" />
+        android:layout_toLeftOf="@+id/button13"
+        android:layout_marginRight="15dp"
+        android:layout_alignBottom="@+id/button19" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="999.99g"
+        android:text="0.00g"
         android:textSize="55dp"
         android:textAlignment="center"
         android:id="@+id/textView3"
         android:textColor="#ffffff"
-        android:layout_below="@+id/view"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/view"
-        android:layout_alignEnd="@+id/view" />
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentBottom="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignTop="@+id/view"
+        android:layout_alignRight="@+id/view2"
+        android:layout_margin="70dp" />
 
     <Button
         android:layout_width="50dp"
@@ -455,9 +471,10 @@
         android:textSize="10dp"
         android:id="@+id/button12"
         android:background="@drawable/circle3"
-        android:layout_below="@+id/button13"
+        android:layout_below="@+id/button14"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="15dp" />
 
     <Button
         android:layout_width="50dp"
@@ -467,8 +484,9 @@
         android:textSize="10dp"
         android:id="@+id/button19"
         android:background="@drawable/settings"
-        android:layout_below="@+id/button14"
+        android:layout_below="@+id/button12"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="15dp" />
 
 </RelativeLayout>
