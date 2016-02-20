@@ -20,11 +20,12 @@
         android:layout_below="@+id/button19"
         android:layout_alignRight="@+id/button13"
         android:layout_alignLeft="@+id/textView2"
-        android:layout_marginTop="-15dp">
+        android:gravity="center_horizontal">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
 
             <Button
                 android:layout_width="72dp"
@@ -34,72 +35,65 @@
                 android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
                 android:onClick="onClick"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
             <Button
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:text="New Button"
                 android:id="@+id/button1"
-                android:layout_column="44"
+                android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
             <Button
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:text="New Button"
                 android:id="@+id/button2"
-                android:layout_column="87"
+                android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center"
+                android:layout_marginBottom="5dp" />
 
             <Button
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:text="New Button"
                 android:id="@+id/button3"
-                android:layout_column="100"
+                android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
             <!--<ImageView-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
@@ -135,7 +129,7 @@
                 android:textColor="#ffffff"
                 android:textAlignment="center"
                 android:id="@+id/quantity2"
-                android:layout_column="44" />
+                android:layout_column="0" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -143,7 +137,7 @@
                 android:textColor="#ffffff"
                 android:textAlignment="center"
                 android:id="@+id/quantity3"
-                android:layout_column="87" />
+                android:layout_column="0" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,12 +145,13 @@
                 android:textColor="#ffffff"
                 android:textAlignment="center"
                 android:id="@+id/quantity4"
-                android:layout_column="100" />
+                android:layout_column="0" />
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
 
             <Button
                 android:layout_width="72dp"
@@ -166,70 +161,63 @@
                 android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
             <Button
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:text="New Button"
                 android:id="@+id/button5"
-                android:layout_column="44"
+                android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
             <Button
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:text="New Button"
                 android:id="@+id/button6"
-                android:layout_column="87"
+                android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
             <Button
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:text="New Button"
                 android:id="@+id/button7"
-                android:layout_column="100"
+                android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
         </TableRow>
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -245,7 +233,7 @@
                 android:textColor="#ffffff"
                 android:textAlignment="center"
                 android:id="@+id/quantity6"
-                android:layout_column="44" />
+                android:layout_column="0" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -253,7 +241,7 @@
                 android:textColor="#ffffff"
                 android:textAlignment="center"
                 android:id="@+id/quantity7"
-                android:layout_column="87" />
+                android:layout_column="0" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -261,12 +249,13 @@
                 android:textColor="#ffffff"
                 android:textAlignment="center"
                 android:id="@+id/quantity8"
-                android:layout_column="100" />
+                android:layout_column="0" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
 
             <Button
                 android:layout_width="72dp"
@@ -276,70 +265,63 @@
                 android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
             <Button
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:text="New Button"
                 android:id="@+id/button9"
-                android:layout_column="44"
+                android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
             <Button
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:text="New Button"
                 android:id="@+id/button10"
-                android:layout_column="87"
+                android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
             <Button
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:text="New Button"
                 android:id="@+id/button11"
-                android:layout_column="100"
+                android:layout_column="0"
                 android:background="@drawable/selector"
                 android:textColor="#ffffff"
-                android:textSize="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLength="10"
 
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textAlignment="center" />
 
         </TableRow>
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -355,7 +337,7 @@
                 android:textColor="#ffffff"
                 android:textAlignment="center"
                 android:id="@+id/quantity10"
-                android:layout_column="44" />
+                android:layout_column="0" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -363,7 +345,7 @@
                 android:textColor="#ffffff"
                 android:textAlignment="center"
                 android:id="@+id/quantity11"
-                android:layout_column="87" />
+                android:layout_column="0" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -371,7 +353,7 @@
                 android:textColor="#ffffff"
                 android:textAlignment="center"
                 android:id="@+id/quantity12"
-                android:layout_column="100" />
+                android:layout_column="0" />
         </TableRow>
     </TableLayout>
 
@@ -379,28 +361,30 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="Dispense"
-        android:textSize="10dp"
         android:id="@+id/button13"
         android:textColor="#ffffff"
-        android:background="@drawable/circle2"
+        android:background="@drawable/circle_green"
 
         android:layout_alignTop="@+id/textView2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="15dp" />
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"
+        android:textSize="9dp" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="Undo"
         android:textColor="#ffffff"
-        android:textSize="10dp"
         android:id="@+id/button14"
-        android:background="@drawable/circle3"
+        android:background="@drawable/circle_red"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="false"
         android:layout_below="@+id/button13"
-        android:layout_marginBottom="15dp" />
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"
+        android:textSize="9dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -444,7 +428,7 @@
         android:layout_alignBottom="@+id/button19" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="0.00g"
         android:textSize="55dp"
@@ -453,40 +437,41 @@
         android:textColor="#ffffff"
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="false"
-        android:layout_marginStart="70dp"
-        android:layout_marginLeft="70dp"
         android:layout_alignParentTop="false"
         android:layout_alignParentRight="false"
         android:layout_alignParentBottom="false"
         android:layout_alignWithParentIfMissing="false"
         android:layout_alignTop="@+id/view"
         android:layout_alignRight="@+id/view2"
-        android:layout_margin="70dp" />
+        android:layout_above="@+id/tableLayout"
+        android:gravity="center_vertical" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="Undo All"
         android:textColor="#ffffff"
-        android:textSize="10dp"
         android:id="@+id/button12"
-        android:background="@drawable/circle3"
+        android:background="@drawable/circle_red"
         android:layout_below="@+id/button14"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="15dp" />
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"
+        android:textSize="9dp" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="Recipes"
         android:textColor="#ffffff"
-        android:textSize="10dp"
         android:id="@+id/button19"
         android:background="@drawable/settings"
         android:layout_below="@+id/button12"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="15dp" />
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"
+        android:textSize="9dp" />
 
 </RelativeLayout>
