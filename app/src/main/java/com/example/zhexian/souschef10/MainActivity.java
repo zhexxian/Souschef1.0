@@ -20,8 +20,37 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    boolean firstpass = true;
     ArrayList<String> ingList;
+    ArrayList<Integer> ingSelected = new ArrayList<Integer>();
+    public Button buttonText = (Button)findViewById(R.id.button);
+    public Button buttonText1 = (Button)findViewById(R.id.button1);
+    public Button buttonText2 = (Button)findViewById(R.id.button2);
+    public Button buttonText3 = (Button)findViewById(R.id.button3);
+    public Button buttonText4 = (Button)findViewById(R.id.button4);
+    public Button buttonText5 = (Button)findViewById(R.id.button5);
+    public Button buttonText6 = (Button)findViewById(R.id.button6);
+    public Button buttonText7 = (Button)findViewById(R.id.button7);
+    public Button buttonText8 = (Button)findViewById(R.id.button8);
+    public Button buttonText9 = (Button)findViewById(R.id.button9);
+    public Button buttonText10 = (Button)findViewById(R.id.button10);
+    public Button buttonText11 = (Button)findViewById(R.id.button11);
+
+    public TextView quantity1 = (TextView)findViewById(R.id.quantity1);
+    public TextView quantity2 = (TextView)findViewById(R.id.quantity2);
+    public TextView quantity3 = (TextView)findViewById(R.id.quantity3);
+    public TextView quantity4 = (TextView)findViewById(R.id.quantity4);
+    public TextView quantity5 = (TextView)findViewById(R.id.quantity5);
+    public TextView quantity6 = (TextView)findViewById(R.id.quantity6);
+    public TextView quantity7 = (TextView)findViewById(R.id.quantity7);
+    public TextView quantity8 = (TextView)findViewById(R.id.quantity8);
+    public TextView quantity9 = (TextView)findViewById(R.id.quantity9);
+    public TextView quantity10 = (TextView)findViewById(R.id.quantity10);
+    public TextView quantity11 = (TextView)findViewById(R.id.quantity11);
+    public TextView quantity12 = (TextView)findViewById(R.id.quantity12);
+    public Button undoAllButton = (Button)findViewById(R.id.button12);
+    public Button undoButton = (Button) findViewById(R.id.button14);
+    public Button dispenseButton = (Button)findViewById(R.id.button13);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Initializing main screen
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
 
-        Button buttonText = (Button)findViewById(R.id.button);
-        Button buttonText1 = (Button)findViewById(R.id.button1);
+
+/*        Button buttonText1 = (Button)findViewById(R.id.button1);
         Button buttonText2 = (Button)findViewById(R.id.button2);
         Button buttonText3 = (Button)findViewById(R.id.button3);
         Button buttonText4 = (Button)findViewById(R.id.button4);
@@ -53,11 +82,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonText8 = (Button)findViewById(R.id.button8);
         Button buttonText9 = (Button)findViewById(R.id.button9);
         Button buttonText10 = (Button)findViewById(R.id.button10);
-        Button buttonText11 = (Button)findViewById(R.id.button11);
+        Button buttonText11 = (Button)findViewById(R.id.button11);*/
 
-        Button undoAllButton = (Button)findViewById(R.id.button12);
+/*        Button undoAllButton = (Button)findViewById(R.id.button12);
+        Button undoButton = (Button) findViewById(R.id.button14);*/
 
-        TextView quantity1 = (TextView)findViewById(R.id.quantity1);
+/*        TextView quantity1 = (TextView)findViewById(R.id.quantity1);
         TextView quantity2 = (TextView)findViewById(R.id.quantity2);
         TextView quantity3 = (TextView)findViewById(R.id.quantity3);
         TextView quantity4 = (TextView)findViewById(R.id.quantity4);
@@ -68,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView quantity9 = (TextView)findViewById(R.id.quantity9);
         TextView quantity10 = (TextView)findViewById(R.id.quantity10);
         TextView quantity11 = (TextView)findViewById(R.id.quantity11);
-        TextView quantity12 = (TextView)findViewById(R.id.quantity12);
+        TextView quantity12 = (TextView)findViewById(R.id.quantity12);*/
 
         quantity1.setVisibility(View.INVISIBLE);
         quantity2.setVisibility(View.INVISIBLE);
@@ -96,6 +126,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonText10.setTypeface(myTypeface);
         buttonText11.setTypeface(myTypeface);
 
+        undoButton.setTypeface(myTypeface);
+        undoAllButton.setTypeface(myTypeface);
+
+        dispenseButton.setTypeface(myTypeface);
 
         buttonText.setText(ingList.get(0));
         buttonText1.setText(ingList.get(1));
@@ -110,10 +144,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonText10.setText(ingList.get(10));
         buttonText11.setText(ingList.get(11));
 
-        Button buttonText12 = (Button)findViewById(R.id.button12);
+/*        Button buttonText12 = (Button)findViewById(R.id.button12);
         buttonText12.setTypeface(myTypeface);
         Button buttonText13 = (Button)findViewById(R.id.button13);
-        buttonText13.setTypeface(myTypeface);
+        buttonText13.setTypeface(myTypeface);*/
 
         TextView weightText = (TextView) findViewById(R.id.textView2);
         weightText.setTypeface(myTypeface);
@@ -132,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonText11.setOnClickListener(this);
 
         undoAllButton.setOnClickListener(this);
+        undoButton.setOnClickListener(this);
 
     }
 
@@ -145,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("entered act res");
-        Button buttonText = (Button)findViewById(R.id.button);
+/*        Button buttonText = (Button)findViewById(R.id.button);
         Button buttonText1 = (Button)findViewById(R.id.button1);
         Button buttonText2 = (Button)findViewById(R.id.button2);
         Button buttonText3 = (Button)findViewById(R.id.button3);
@@ -169,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView quantity9 = (TextView)findViewById(R.id.quantity9);
         TextView quantity10 = (TextView)findViewById(R.id.quantity10);
         TextView quantity11 = (TextView)findViewById(R.id.quantity11);
-        TextView quantity12 = (TextView)findViewById(R.id.quantity12);
+        TextView quantity12 = (TextView)findViewById(R.id.quantity12);*/
 
         System.out.println(requestCode);
         if(resultCode==RESULT_OK) {
@@ -178,8 +213,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity1.setVisibility(View.VISIBLE);
-                        quantity1.setText(data.getStringExtra("Quantity"));
+                        quantity1.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(1);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(0)))){
                         ingList.set(0, data.getStringExtra("Title"));
@@ -190,8 +226,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText1.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity2.setVisibility(View.VISIBLE);
-                        quantity2.setText(data.getStringExtra("Quantity"));
+                        quantity2.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText1.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(2);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(1)))){
                         ingList.set(1, data.getStringExtra("Title"));
@@ -202,8 +239,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText2.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity3.setVisibility(View.VISIBLE);
-                        quantity3.setText(data.getStringExtra("Quantity"));
+                        quantity3.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText2.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(3);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(2)))){
                         ingList.set(2, data.getStringExtra("Title"));
@@ -214,8 +252,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText3.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity4.setVisibility(View.VISIBLE);
-                        quantity4.setText(data.getStringExtra("Quantity"));
+                        quantity4.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText3.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(4);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(3)))){
                         ingList.set(3, data.getStringExtra("Title"));
@@ -226,8 +265,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText4.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity5.setVisibility(View.VISIBLE);
-                        quantity5.setText(data.getStringExtra("Quantity"));
+                        quantity5.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText4.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(5);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(4)))){
                         ingList.set(4, data.getStringExtra("Title"));
@@ -238,8 +278,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText5.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity6.setVisibility(View.VISIBLE);
-                        quantity6.setText(data.getStringExtra("Quantity"));
+                        quantity6.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText5.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(6);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(5)))){
                         ingList.set(5, data.getStringExtra("Title"));
@@ -250,8 +291,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText6.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity7.setVisibility(View.VISIBLE);
-                        quantity7.setText(data.getStringExtra("Quantity"));
+                        quantity7.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText6.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(7);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(6)))){
                         ingList.set(6, data.getStringExtra("Title"));
@@ -262,8 +304,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText7.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity8.setVisibility(View.VISIBLE);
-                        quantity8.setText(data.getStringExtra("Quantity"));
+                        quantity8.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText7.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(8);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(7)))){
                         ingList.set(7, data.getStringExtra("Title"));
@@ -274,8 +317,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText8.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity9.setVisibility(View.VISIBLE);
-                        quantity9.setText(data.getStringExtra("Quantity"));
+                        quantity9.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText8.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(9);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(8)))){
                         ingList.set(8, data.getStringExtra("Title"));
@@ -286,8 +330,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText9.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity10.setVisibility(View.VISIBLE);
-                        quantity10.setText(data.getStringExtra("Quantity"));
+                        quantity10.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText9.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(10);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(9)))){
                         ingList.set(9, data.getStringExtra("Title"));
@@ -298,8 +343,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText10.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity11.setVisibility(View.VISIBLE);
-                        quantity11.setText(data.getStringExtra("Quantity"));
+                        quantity11.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText10.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(11);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(10)))){
                         ingList.set(10, data.getStringExtra("Title"));
@@ -310,8 +356,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonText11.setText(data.getStringExtra("Title"));
                     if(!(data.getStringExtra("Quantity")==null)){
                         quantity12.setVisibility(View.VISIBLE);
-                        quantity12.setText(data.getStringExtra("Quantity"));
+                        quantity12.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText11.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(12);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(11)))){
                         ingList.set(11, data.getStringExtra("Title"));
@@ -367,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     public void onClick(View v){
-        Button buttonText = (Button)findViewById(R.id.button);
+/*        Button buttonText = (Button)findViewById(R.id.button);
         Button buttonText1 = (Button)findViewById(R.id.button1);
         Button buttonText2 = (Button)findViewById(R.id.button2);
         Button buttonText3 = (Button)findViewById(R.id.button3);
@@ -378,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonText8 = (Button)findViewById(R.id.button8);
         Button buttonText9 = (Button)findViewById(R.id.button9);
         Button buttonText10 = (Button)findViewById(R.id.button10);
-        Button buttonText11 = (Button)findViewById(R.id.button11);
+        Button buttonText11 = (Button)findViewById(R.id.button11);*/
 
         switch(v.getId()) {
             case R.id.button:
@@ -480,12 +527,123 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.button12:
-                clearAll();
+                System.out.println(ingSelected.size());
+                if(ingSelected.size()>0){
+                    undoAll();
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"There is nothing to undo!",Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+
+            case R.id.button14:
+
+                if(ingSelected.size()>0){
+                    undo(ingSelected.get(ingSelected.size()-1));
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"There is nothing to undo!",Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
         //finish();
     }
 
+    public void undo(int caseNumber){
+
+/*        TextView quantity1 = (TextView)findViewById(R.id.quantity1);
+        TextView quantity2 = (TextView)findViewById(R.id.quantity2);
+        TextView quantity3 = (TextView)findViewById(R.id.quantity3);
+        TextView quantity4 = (TextView)findViewById(R.id.quantity4);
+        TextView quantity5 = (TextView)findViewById(R.id.quantity5);
+        TextView quantity6 = (TextView)findViewById(R.id.quantity6);
+        TextView quantity7 = (TextView)findViewById(R.id.quantity7);
+        TextView quantity8 = (TextView)findViewById(R.id.quantity8);
+        TextView quantity9 = (TextView)findViewById(R.id.quantity9);
+        TextView quantity10 = (TextView)findViewById(R.id.quantity10);
+        TextView quantity11 = (TextView)findViewById(R.id.quantity11);
+        TextView quantity12 = (TextView)findViewById(R.id.quantity12);
+
+        Button buttonText = (Button)findViewById(R.id.button);
+        Button buttonText1 = (Button)findViewById(R.id.button1);
+        Button buttonText2 = (Button)findViewById(R.id.button2);
+        Button buttonText3 = (Button)findViewById(R.id.button3);
+        Button buttonText4 = (Button)findViewById(R.id.button4);
+        Button buttonText5 = (Button)findViewById(R.id.button5);
+        Button buttonText6 = (Button)findViewById(R.id.button6);
+        Button buttonText7 = (Button)findViewById(R.id.button7);
+        Button buttonText8 = (Button)findViewById(R.id.button8);
+        Button buttonText9 = (Button)findViewById(R.id.button9);
+        Button buttonText10 = (Button)findViewById(R.id.button10);
+        Button buttonText11 = (Button)findViewById(R.id.button11);*/
+
+        switch(caseNumber){
+            case 1:
+                quantity1.setVisibility(View.INVISIBLE);
+                buttonText.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size()-1);
+                break;
+            case 2:
+                quantity2.setVisibility(View.INVISIBLE);
+                buttonText1.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 3:
+                quantity3.setVisibility(View.INVISIBLE);
+                buttonText2.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 4:
+                quantity4.setVisibility(View.INVISIBLE);
+                buttonText3.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 5:
+                quantity5.setVisibility(View.INVISIBLE);
+                buttonText4.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 6:
+                quantity6.setVisibility(View.INVISIBLE);
+                buttonText5.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 7:
+                quantity7.setVisibility(View.INVISIBLE);
+                buttonText6.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 8:
+                quantity8.setVisibility(View.INVISIBLE);
+                buttonText7.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 9:
+                quantity9.setVisibility(View.INVISIBLE);
+                buttonText8.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 10:
+                quantity10.setVisibility(View.INVISIBLE);
+                buttonText9.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 11:
+                quantity11.setVisibility(View.INVISIBLE);
+                buttonText10.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+            case 12:
+                quantity12.setVisibility(View.INVISIBLE);
+                buttonText11.setBackgroundResource(R.drawable.circle);
+                ingSelected.remove(ingSelected.size() - 1);
+                break;
+
+
+
+        }
+    }
     public ArrayList<String> getIngredientsList(String fileName){
         //TODO: Set save data location on android
         String line;
@@ -510,7 +668,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         catch(FileNotFoundException ex) {
-            Toast.makeText(MainActivity.this,  "Unable to open file '" +fileName + "'"+"Creating new Ingredient List instead.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,  "Welcome first time user!", Toast.LENGTH_SHORT).show();
 
         }
         catch(Exception ex) {
@@ -520,64 +678,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return returnList;
     }
-    public void clearAll(){
-        TextView quantity1 = (TextView)findViewById(R.id.quantity1);
-        TextView quantity2 = (TextView)findViewById(R.id.quantity2);
-        TextView quantity3 = (TextView)findViewById(R.id.quantity3);
-        TextView quantity4 = (TextView)findViewById(R.id.quantity4);
-        TextView quantity5 = (TextView)findViewById(R.id.quantity5);
-        TextView quantity6 = (TextView)findViewById(R.id.quantity6);
-        TextView quantity7 = (TextView)findViewById(R.id.quantity7);
-        TextView quantity8 = (TextView)findViewById(R.id.quantity8);
-        TextView quantity9 = (TextView)findViewById(R.id.quantity9);
-        TextView quantity10 = (TextView)findViewById(R.id.quantity10);
-        TextView quantity11 = (TextView)findViewById(R.id.quantity11);
-        TextView quantity12 = (TextView)findViewById(R.id.quantity12);
-
-        quantity1.setVisibility(View.INVISIBLE);
-        quantity2.setVisibility(View.INVISIBLE);
-        quantity3.setVisibility(View.INVISIBLE);
-        quantity4.setVisibility(View.INVISIBLE);
-        quantity5.setVisibility(View.INVISIBLE);
-        quantity6.setVisibility(View.INVISIBLE);
-        quantity7.setVisibility(View.INVISIBLE);
-        quantity8.setVisibility(View.INVISIBLE);
-        quantity9.setVisibility(View.INVISIBLE);
-        quantity10.setVisibility(View.INVISIBLE);
-        quantity11.setVisibility(View.INVISIBLE);
-        quantity12.setVisibility(View.INVISIBLE);
-
-        Button buttonText = (Button)findViewById(R.id.button);
-        Button buttonText1 = (Button)findViewById(R.id.button1);
-        Button buttonText2 = (Button)findViewById(R.id.button2);
-        Button buttonText3 = (Button)findViewById(R.id.button3);
-        Button buttonText4 = (Button)findViewById(R.id.button4);
-        Button buttonText5 = (Button)findViewById(R.id.button5);
-        Button buttonText6 = (Button)findViewById(R.id.button6);
-        Button buttonText7 = (Button)findViewById(R.id.button7);
-        Button buttonText8 = (Button)findViewById(R.id.button8);
-        Button buttonText9 = (Button)findViewById(R.id.button9);
-        Button buttonText10 = (Button)findViewById(R.id.button10);
-        Button buttonText11 = (Button)findViewById(R.id.button11);
-
-        buttonText.setBackgroundResource(R.drawable.circle);
-        buttonText1.setBackgroundResource(R.drawable.circle);
-        buttonText2.setBackgroundResource(R.drawable.circle);
-        buttonText3.setBackgroundResource(R.drawable.circle);
-        buttonText4.setBackgroundResource(R.drawable.circle);
-        buttonText5.setBackgroundResource(R.drawable.circle);
-        buttonText6.setBackgroundResource(R.drawable.circle);
-        buttonText7.setBackgroundResource(R.drawable.circle);
-        buttonText8.setBackgroundResource(R.drawable.circle);
-        buttonText9.setBackgroundResource(R.drawable.circle);
-        buttonText10.setBackgroundResource(R.drawable.circle);
-        buttonText11.setBackgroundResource(R.drawable.circle);
-
-
+    public void undoAll(){
+        while(ingSelected.size()>0){
+            undo(ingSelected.get(ingSelected.size() - 1));
+        }
     }
     public void setIngredientList(){
         String fileName = "Ingredients.txt";
-
         try {
 
             File sdCard = getFilesDir();
@@ -589,7 +696,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // Always wrap FileWriter in BufferedWriter.
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
             // Note that write() does not automatically
             // append a newline character.
             bufferedWriter.write("Salt");
@@ -621,8 +727,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         catch(Exception ex) {
             Toast.makeText(MainActivity.this, "Error writing to file '" + fileName + "'",Toast.LENGTH_SHORT).show();
-            // Or we could just do this:
-            // ex.printStackTrace();
         }
 
     }

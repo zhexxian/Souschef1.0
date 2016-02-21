@@ -21,7 +21,8 @@ import android.widget.EditText;
 public class IngredientAmountActivity extends AppCompatActivity implements View.OnClickListener{
     String title;
     int indexIng;
-    String quantity;
+    String quantity = "";
+    String measurement = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,14 +44,22 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         Button acceptButton = (Button)findViewById(R.id.button20);
         Button cancelButton = (Button)findViewById(R.id.button21);
         Button teaSpoon = (Button) findViewById(R.id.button16);
+        Button halfTableSpoon = (Button) findViewById(R.id.button17);
+        Button tableSpoon = (Button) findViewById(R.id.button18);
+
 
         acceptButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
         teaSpoon.setOnClickListener(this);
+        halfTableSpoon.setOnClickListener(this);
+        tableSpoon.setOnClickListener(this);
+
 
         acceptButton.setTypeface(myTypeface);
         cancelButton.setTypeface(myTypeface);
         teaSpoon.setTypeface(myTypeface);
+        halfTableSpoon.setTypeface(myTypeface);
+        tableSpoon.setTypeface(myTypeface);
 
 
     }
@@ -128,6 +137,12 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                 title = ingName.getText().toString();
                 Intent intent = new Intent();
                 intent.putExtra("Title", title);
+                System.out.println(quantity);
+                if(quantity.equals("") || quantity.equals("0")){
+                    quantity = null;
+
+                }
+                intent.putExtra("Measurement", measurement);
                 intent.putExtra("Quantity", quantity);
                 setResult(IngredientAmountActivity.RESULT_OK, intent);
                 finish();
@@ -145,8 +160,9 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String newQuantity = input.getText().toString();
                         Button teaSpoon = (Button) findViewById(R.id.button16);
-                        quantity = newQuantity + " teaspoon";
-                        teaSpoon.setText(newQuantity + "xteaspoon");
+                        quantity = newQuantity;
+                        measurement = " teaspoon";
+                        teaSpoon.setText(quantity + "xteaspoon");
                     }
                 });
 
@@ -165,8 +181,9 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String newQuantity = input.getText().toString();
                         Button teaSpoon = (Button) findViewById(R.id.button17);
-                        quantity = newQuantity + "x1/2 tbspoon";
-                        teaSpoon.setText(newQuantity + "x1/2 tbspoon");
+                        quantity = newQuantity;
+                        measurement = "x1/2 tbspoon";
+                        teaSpoon.setText(quantity + "x1/2 tbspoon");
                     }
                 });
 
@@ -184,8 +201,9 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String newQuantity = input.getText().toString();
                         Button teaSpoon = (Button) findViewById(R.id.button18);
-                        quantity = newQuantity + "xTbspoon";
-                        teaSpoon.setText(newQuantity + "xTbspoon");
+                        quantity = newQuantity;
+                        measurement = "xTbspoon";
+                        teaSpoon.setText(quantity + "xTbspoon");
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
