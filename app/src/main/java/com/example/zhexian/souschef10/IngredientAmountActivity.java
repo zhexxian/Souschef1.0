@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.DigitsKeyListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 public class IngredientAmountActivity extends AppCompatActivity implements View.OnClickListener{
     String title;
     int indexIng;
+    String quantity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +41,16 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         });
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
         Button acceptButton = (Button)findViewById(R.id.button20);
-        acceptButton.setTypeface(myTypeface);
         Button cancelButton = (Button)findViewById(R.id.button21);
-        cancelButton.setTypeface(myTypeface);
+        Button teaSpoon = (Button) findViewById(R.id.button16);
+
         acceptButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
+        teaSpoon.setOnClickListener(this);
 
+        acceptButton.setTypeface(myTypeface);
+        cancelButton.setTypeface(myTypeface);
+        teaSpoon.setTypeface(myTypeface);
 
 
     }
@@ -103,26 +109,93 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
 
         return super.onOptionsItemSelected(item);
     }
+    @Override
     public void onClick(View v){
         System.out.println("running");
         Button ingName = (Button) findViewById(R.id.button15);
         title = ingName.getText().toString();
         System.out.println(title);
+
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Quantity Selection");
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        input.setKeyListener(DigitsKeyListener.getInstance());
         switch(v.getId())
         {
-            case R.id.button20:
-                Intent intent = new Intent(this, MainActivity.class);
-
-                intent.putExtra("Index",indexIng);
-                intent.putExtra("Title",title);
-                this.startActivity(intent);
-                break;
             case R.id.button21:
-                Intent intent1 = new Intent(this, MainActivity.class);
-                this.startActivity(intent1);
+               // Intent intent = new Intent(this, MainActivity.class);
+                title = ingName.getText().toString();
+                Intent intent = new Intent();
+                intent.putExtra("Title", title);
+                intent.putExtra("Quantity", quantity);
+                setResult(IngredientAmountActivity.RESULT_OK, intent);
+                finish();
+                break;
+            case R.id.button20:
+                Intent intent1 = new Intent();
+                setResult(IngredientAmountActivity.RESULT_CANCELED,intent1);
+                finish();
+                break;
+            case R.id.button16:
+                input.append("0");
+                alert.setView(input);
+
+                alert.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String newQuantity = input.getText().toString();
+                        Button teaSpoon = (Button) findViewById(R.id.button16);
+                        quantity = newQuantity + " teaspoon";
+                        teaSpoon.setText(newQuantity + "xteaspoon");
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+                alert.show();
+                break;
+
+            case R.id.button17:
+                input.append("0");
+                alert.setView(input);
+
+                alert.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String newQuantity = input.getText().toString();
+                        Button teaSpoon = (Button) findViewById(R.id.button17);
+                        quantity = newQuantity + "x1/2 tbspoon";
+                        teaSpoon.setText(newQuantity + "x1/2 tbspoon");
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+                alert.show();
+                break;
+
+            case R.id.button18:
+                input.append("0");
+                alert.setView(input);
+                alert.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String newQuantity = input.getText().toString();
+                        Button teaSpoon = (Button) findViewById(R.id.button18);
+                        quantity = newQuantity + "xTbspoon";
+                        teaSpoon.setText(newQuantity + "xTbspoon");
+                    }
+                });
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+                alert.show();
                 break;
         }
-        finish();
+
 
     }
 }
