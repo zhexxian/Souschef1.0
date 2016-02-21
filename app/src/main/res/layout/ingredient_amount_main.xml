@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/bg112"
-            android:scaleType="centerCrop"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:src="@drawable/bg112"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true" />-->
 
         <TableLayout
             android:layout_width="match_parent"
@@ -30,11 +30,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <Button
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="350dp"
+                    android:layout_height="350dp"
                     android:text="New Button"
                     android:id="@+id/button15"
                     android:background="@drawable/circle"
@@ -57,59 +57,66 @@
             android:gravity="center_horizontal"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/tableLayout2" />
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/tableLayout2"
+            android:textSize="35dp" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="1/2 tea spoon"
 
             android:id="@+id/button16"
             android:textColor="#ffffff"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_grey"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_below="@+id/textView"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:textStyle="bold"
+            android:textSize="25dp" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="1/2 table spoon"
             android:id="@+id/button17"
             android:textColor="#ffffff"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_grey"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_below="@+id/button16"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:textStyle="bold"
+            android:textSize="25dp" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="1 table spoon"
             android:id="@+id/button18"
             android:textColor="#ffffff"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_grey"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_below="@+id/button17"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:textStyle="bold"
+            android:textSize="25dp" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_below="@+id/button18"
             android:layout_alignLeft="@+id/button18"
             android:layout_alignRight="@+id/button18">
@@ -117,7 +124,7 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:text="Cancel"
                 android:id="@+id/button20"
                 android:layout_alignParentBottom="false"
@@ -129,12 +136,14 @@
                 android:layout_alignParentTop="false"
                 android:layout_below="@+id/button18"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="40dp"
+                android:textStyle="bold"
+                android:textSize="25dp" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:text="Accept"
                 android:id="@+id/button21"
                 android:layout_alignParentBottom="false"
@@ -143,11 +152,13 @@
                 android:textColor="#ffffff"
                 android:background="@drawable/rectangle_green"
                 android:layout_below="@+id/button18"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="40dp"
                 android:layout_alignParentEnd="false"
                 android:layout_toRightOf="@+id/button20"
                 android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textSize="25dp" />
         </LinearLayout>
 
     </RelativeLayout>
