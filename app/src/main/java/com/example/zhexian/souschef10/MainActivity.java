@@ -1,5 +1,6 @@
 package com.example.zhexian.souschef10;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -19,37 +20,45 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
+//TODO: implement icons arraylist to be sent to arduino
+//TODO: use the ingredients list instead to update names
+//TODO: add quantity left for each ingredient
+//TODO: android to arduino data transfer
+//TODO: change ingSelected to int[][] (allows integration of ingredient and quantity)
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ArrayList<String> ingList;
     ArrayList<Integer> ingSelected = new ArrayList<Integer>();
-    public Button buttonText = (Button)findViewById(R.id.button);
-    public Button buttonText1 = (Button)findViewById(R.id.button1);
-    public Button buttonText2 = (Button)findViewById(R.id.button2);
-    public Button buttonText3 = (Button)findViewById(R.id.button3);
-    public Button buttonText4 = (Button)findViewById(R.id.button4);
-    public Button buttonText5 = (Button)findViewById(R.id.button5);
-    public Button buttonText6 = (Button)findViewById(R.id.button6);
-    public Button buttonText7 = (Button)findViewById(R.id.button7);
-    public Button buttonText8 = (Button)findViewById(R.id.button8);
-    public Button buttonText9 = (Button)findViewById(R.id.button9);
-    public Button buttonText10 = (Button)findViewById(R.id.button10);
-    public Button buttonText11 = (Button)findViewById(R.id.button11);
+    int[][] dataToArduino = new int[12][3];
+    int[][][] recipeList = new int[2][12][4];
+    public Button buttonText;
+    public Button buttonText1;
+    public Button buttonText2;
+    public Button buttonText3;
+    public Button buttonText4;
+    public Button buttonText5;
+    public Button buttonText6;
+    public Button buttonText7;
+    public Button buttonText8;
+    public Button buttonText9;
+    public Button buttonText10;
+    public Button buttonText11;
 
-    public TextView quantity1 = (TextView)findViewById(R.id.quantity1);
-    public TextView quantity2 = (TextView)findViewById(R.id.quantity2);
-    public TextView quantity3 = (TextView)findViewById(R.id.quantity3);
-    public TextView quantity4 = (TextView)findViewById(R.id.quantity4);
-    public TextView quantity5 = (TextView)findViewById(R.id.quantity5);
-    public TextView quantity6 = (TextView)findViewById(R.id.quantity6);
-    public TextView quantity7 = (TextView)findViewById(R.id.quantity7);
-    public TextView quantity8 = (TextView)findViewById(R.id.quantity8);
-    public TextView quantity9 = (TextView)findViewById(R.id.quantity9);
-    public TextView quantity10 = (TextView)findViewById(R.id.quantity10);
-    public TextView quantity11 = (TextView)findViewById(R.id.quantity11);
-    public TextView quantity12 = (TextView)findViewById(R.id.quantity12);
-    public Button undoAllButton = (Button)findViewById(R.id.button12);
-    public Button undoButton = (Button) findViewById(R.id.button14);
-    public Button dispenseButton = (Button)findViewById(R.id.button13);
+    public TextView quantity1;
+    public TextView quantity2;
+    public TextView quantity3;
+    public TextView quantity4;
+    public TextView quantity5;
+    public TextView quantity6;
+    public TextView quantity7;
+    public TextView quantity8;
+    public TextView quantity9;
+    public TextView quantity10;
+    public TextView quantity11;
+    public TextView quantity12;
+    public Button undoAllButton;
+    public Button undoButton;
+    public Button dispenseButton;
+    public TextView weightText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ingList = getIngredientsList(fileName);
 
-        //TODO: enable a change in ingredients
-        //TODO: implement icons arraylist to be sent to arduino
-        //TODO: use the ingredients list instead to update names
+
         //ingList.toString();
         if(ingList.size()<1){
             setIngredientList();
@@ -71,34 +78,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Initializing main screen
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
 
+        buttonText = (Button)findViewById(R.id.button);
+        buttonText1 = (Button)findViewById(R.id.button1);
+        buttonText2 = (Button)findViewById(R.id.button2);
+        buttonText3 = (Button)findViewById(R.id.button3);
+        buttonText4 = (Button)findViewById(R.id.button4);
+        buttonText5 = (Button)findViewById(R.id.button5);
+        buttonText6 = (Button)findViewById(R.id.button6);
+        buttonText7 = (Button)findViewById(R.id.button7);
+        buttonText8 = (Button)findViewById(R.id.button8);
+        buttonText9 = (Button)findViewById(R.id.button9);
+        buttonText10 = (Button)findViewById(R.id.button10);
+        buttonText11 = (Button)findViewById(R.id.button11);
 
-/*        Button buttonText1 = (Button)findViewById(R.id.button1);
-        Button buttonText2 = (Button)findViewById(R.id.button2);
-        Button buttonText3 = (Button)findViewById(R.id.button3);
-        Button buttonText4 = (Button)findViewById(R.id.button4);
-        Button buttonText5 = (Button)findViewById(R.id.button5);
-        Button buttonText6 = (Button)findViewById(R.id.button6);
-        Button buttonText7 = (Button)findViewById(R.id.button7);
-        Button buttonText8 = (Button)findViewById(R.id.button8);
-        Button buttonText9 = (Button)findViewById(R.id.button9);
-        Button buttonText10 = (Button)findViewById(R.id.button10);
-        Button buttonText11 = (Button)findViewById(R.id.button11);*/
+        undoAllButton = (Button)findViewById(R.id.button12);
+        undoButton = (Button) findViewById(R.id.button14);
+        dispenseButton = (Button) findViewById(R.id.button13);
 
-/*        Button undoAllButton = (Button)findViewById(R.id.button12);
-        Button undoButton = (Button) findViewById(R.id.button14);*/
-
-/*        TextView quantity1 = (TextView)findViewById(R.id.quantity1);
-        TextView quantity2 = (TextView)findViewById(R.id.quantity2);
-        TextView quantity3 = (TextView)findViewById(R.id.quantity3);
-        TextView quantity4 = (TextView)findViewById(R.id.quantity4);
-        TextView quantity5 = (TextView)findViewById(R.id.quantity5);
-        TextView quantity6 = (TextView)findViewById(R.id.quantity6);
-        TextView quantity7 = (TextView)findViewById(R.id.quantity7);
-        TextView quantity8 = (TextView)findViewById(R.id.quantity8);
-        TextView quantity9 = (TextView)findViewById(R.id.quantity9);
-        TextView quantity10 = (TextView)findViewById(R.id.quantity10);
-        TextView quantity11 = (TextView)findViewById(R.id.quantity11);
-        TextView quantity12 = (TextView)findViewById(R.id.quantity12);*/
+         quantity1 = (TextView)findViewById(R.id.quantity1);
+         quantity2 = (TextView)findViewById(R.id.quantity2);
+         quantity3 = (TextView)findViewById(R.id.quantity3);
+         quantity4 = (TextView)findViewById(R.id.quantity4);
+         quantity5 = (TextView)findViewById(R.id.quantity5);
+         quantity6 = (TextView)findViewById(R.id.quantity6);
+         quantity7 = (TextView)findViewById(R.id.quantity7);
+         quantity8 = (TextView)findViewById(R.id.quantity8);
+         quantity9 = (TextView)findViewById(R.id.quantity9);
+         quantity10 = (TextView)findViewById(R.id.quantity10);
+         quantity11 = (TextView)findViewById(R.id.quantity11);
+         quantity12 = (TextView)findViewById(R.id.quantity12);
 
         quantity1.setVisibility(View.INVISIBLE);
         quantity2.setVisibility(View.INVISIBLE);
@@ -144,12 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonText10.setText(ingList.get(10));
         buttonText11.setText(ingList.get(11));
 
-/*        Button buttonText12 = (Button)findViewById(R.id.button12);
-        buttonText12.setTypeface(myTypeface);
-        Button buttonText13 = (Button)findViewById(R.id.button13);
-        buttonText13.setTypeface(myTypeface);*/
-
-        TextView weightText = (TextView) findViewById(R.id.textView2);
+        weightText = (TextView) findViewById(R.id.textView2);
         weightText.setTypeface(myTypeface);
 
         buttonText.setOnClickListener(this);
@@ -180,42 +183,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("entered act res");
-/*        Button buttonText = (Button)findViewById(R.id.button);
-        Button buttonText1 = (Button)findViewById(R.id.button1);
-        Button buttonText2 = (Button)findViewById(R.id.button2);
-        Button buttonText3 = (Button)findViewById(R.id.button3);
-        Button buttonText4 = (Button)findViewById(R.id.button4);
-        Button buttonText5 = (Button)findViewById(R.id.button5);
-        Button buttonText6 = (Button)findViewById(R.id.button6);
-        Button buttonText7 = (Button)findViewById(R.id.button7);
-        Button buttonText8 = (Button)findViewById(R.id.button8);
-        Button buttonText9 = (Button)findViewById(R.id.button9);
-        Button buttonText10 = (Button)findViewById(R.id.button10);
-        Button buttonText11 = (Button)findViewById(R.id.button11);
-
-        TextView quantity1 = (TextView)findViewById(R.id.quantity1);
-        TextView quantity2 = (TextView)findViewById(R.id.quantity2);
-        TextView quantity3 = (TextView)findViewById(R.id.quantity3);
-        TextView quantity4 = (TextView)findViewById(R.id.quantity4);
-        TextView quantity5 = (TextView)findViewById(R.id.quantity5);
-        TextView quantity6 = (TextView)findViewById(R.id.quantity6);
-        TextView quantity7 = (TextView)findViewById(R.id.quantity7);
-        TextView quantity8 = (TextView)findViewById(R.id.quantity8);
-        TextView quantity9 = (TextView)findViewById(R.id.quantity9);
-        TextView quantity10 = (TextView)findViewById(R.id.quantity10);
-        TextView quantity11 = (TextView)findViewById(R.id.quantity11);
-        TextView quantity12 = (TextView)findViewById(R.id.quantity12);*/
-
+        String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
         System.out.println(requestCode);
-        if(resultCode==RESULT_OK) {
+        if (resultCode==RESULT_OK) {
             switch (requestCode) {
                 case 1:
                     buttonText.setText(data.getStringExtra("Title"));
-                    if(!(data.getStringExtra("Quantity")==null)){
+                    if (!(data.getStringExtra("Quantity")==null)){
                         quantity1.setVisibility(View.VISIBLE);
                         quantity1.setText(data.getStringExtra("Quantity")+data.getStringExtra("Measurement"));
                         buttonText.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(1);
+                        dataToArduino[0][0]=1;
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(0)))){
                         ingList.set(0, data.getStringExtra("Title"));
@@ -414,18 +393,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     public void onClick(View v){
-/*        Button buttonText = (Button)findViewById(R.id.button);
-        Button buttonText1 = (Button)findViewById(R.id.button1);
-        Button buttonText2 = (Button)findViewById(R.id.button2);
-        Button buttonText3 = (Button)findViewById(R.id.button3);
-        Button buttonText4 = (Button)findViewById(R.id.button4);
-        Button buttonText5 = (Button)findViewById(R.id.button5);
-        Button buttonText6 = (Button)findViewById(R.id.button6);
-        Button buttonText7 = (Button)findViewById(R.id.button7);
-        Button buttonText8 = (Button)findViewById(R.id.button8);
-        Button buttonText9 = (Button)findViewById(R.id.button9);
-        Button buttonText10 = (Button)findViewById(R.id.button10);
-        Button buttonText11 = (Button)findViewById(R.id.button11);*/
 
         switch(v.getId()) {
             case R.id.button:
@@ -551,32 +518,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void undo(int caseNumber){
-
-/*        TextView quantity1 = (TextView)findViewById(R.id.quantity1);
-        TextView quantity2 = (TextView)findViewById(R.id.quantity2);
-        TextView quantity3 = (TextView)findViewById(R.id.quantity3);
-        TextView quantity4 = (TextView)findViewById(R.id.quantity4);
-        TextView quantity5 = (TextView)findViewById(R.id.quantity5);
-        TextView quantity6 = (TextView)findViewById(R.id.quantity6);
-        TextView quantity7 = (TextView)findViewById(R.id.quantity7);
-        TextView quantity8 = (TextView)findViewById(R.id.quantity8);
-        TextView quantity9 = (TextView)findViewById(R.id.quantity9);
-        TextView quantity10 = (TextView)findViewById(R.id.quantity10);
-        TextView quantity11 = (TextView)findViewById(R.id.quantity11);
-        TextView quantity12 = (TextView)findViewById(R.id.quantity12);
-
-        Button buttonText = (Button)findViewById(R.id.button);
-        Button buttonText1 = (Button)findViewById(R.id.button1);
-        Button buttonText2 = (Button)findViewById(R.id.button2);
-        Button buttonText3 = (Button)findViewById(R.id.button3);
-        Button buttonText4 = (Button)findViewById(R.id.button4);
-        Button buttonText5 = (Button)findViewById(R.id.button5);
-        Button buttonText6 = (Button)findViewById(R.id.button6);
-        Button buttonText7 = (Button)findViewById(R.id.button7);
-        Button buttonText8 = (Button)findViewById(R.id.button8);
-        Button buttonText9 = (Button)findViewById(R.id.button9);
-        Button buttonText10 = (Button)findViewById(R.id.button10);
-        Button buttonText11 = (Button)findViewById(R.id.button11);*/
 
         switch(caseNumber){
             case 1:
@@ -730,5 +671,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+/*    private void CheckBt() {
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (!mBluetoothAdapter.isEnabled()) {
+            Toast.makeText(getApplicationContext(), "Bluetooth Disabled !",
+                    Toast.LENGTH_SHORT).show();
+                   *//* It tests if the bluetooth is enabled or not, if not the app will show a message. *//*
+        }
+
+        if (mBluetoothAdapter == null) {
+            Toast.makeText(getApplicationContext(),
+                    "Bluetooth null !", Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }*/
 
 }

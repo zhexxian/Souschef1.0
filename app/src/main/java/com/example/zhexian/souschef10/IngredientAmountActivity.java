@@ -161,7 +161,7 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                         String newQuantity = input.getText().toString();
                         Button teaSpoon = (Button) findViewById(R.id.button16);
                         quantity = newQuantity;
-                        measurement = " teaspoon";
+                        measurement = "tsp";
                         teaSpoon.setText(quantity + "xteaspoon");
                     }
                 });
@@ -182,7 +182,7 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                         String newQuantity = input.getText().toString();
                         Button teaSpoon = (Button) findViewById(R.id.button17);
                         quantity = newQuantity;
-                        measurement = "x1/2 tbspoon";
+                        measurement = "1/2tbsp";
                         teaSpoon.setText(quantity + "x1/2 tbspoon");
                     }
                 });
@@ -202,7 +202,7 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                         String newQuantity = input.getText().toString();
                         Button teaSpoon = (Button) findViewById(R.id.button18);
                         quantity = newQuantity;
-                        measurement = "xTbspoon";
+                        measurement = "tbsp";
                         teaSpoon.setText(quantity + "xTbspoon");
                     }
                 });
