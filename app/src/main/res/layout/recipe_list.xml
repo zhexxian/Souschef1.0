@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/chicken_curry"
+            android:id="@+id/imageView"
+            android:background="#ffffff"
+            android:layout_marginBottom="10dp" />
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/imageView2"
+            android:src="@drawable/coming_soon"
+            android:background="#ffffff"
+            android:layout_marginBottom="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout3"
+        android:layout_marginBottom="50dp">
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Ingredients"
+            android:id="@+id/textView9"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="40dp" />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Coming Soon"
+            android:id="@+id/textView5"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="40dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout4">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/imageView3"
+            android:src="@drawable/coming_soon"
+            android:background="#ffffff"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="10dp" />
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/imageView4"
+            android:src="@drawable/coming_soon"
+            android:background="#ffffff"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="10dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Coming Soon"
+            android:id="@+id/textView6"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="40dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Coming Soon"
+            android:id="@+id/textView7"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="40dp" />
+    </LinearLayout>
+
+</RelativeLayout>
