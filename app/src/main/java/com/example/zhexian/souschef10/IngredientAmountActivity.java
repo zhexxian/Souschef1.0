@@ -21,14 +21,12 @@ import android.widget.EditText;
 public class IngredientAmountActivity extends AppCompatActivity implements View.OnClickListener{
     String title;
     int indexIng;
-    String quantity = "";
     String measurement = "";
-    int[] quant = new int[3];
+    int[] quant=new int[3];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredient_amount_main);
-        //String title = "";
         title = getIntent().getExtras().getString("Title");
         indexIng = getIntent().getExtras().getInt("Index");
         Button b = (Button) findViewById(R.id.button15);
@@ -134,18 +132,11 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         switch(v.getId())
         {
             case R.id.button21:
-               // Intent intent = new Intent(this, MainActivity.class);
                 title = ingName.getText().toString();
                 Intent intent = new Intent();
                 intent.putExtra("Title", title);
-                System.out.println(quantity);
-/*                if(quantity.equals("") || quantity.equals("0")){
-                    quantity = null;
-
-                }*/
                 intent.putExtra("Measurement", measurement);
                 intent.putExtra("Quant",quant);
-                intent.putExtra("Quantity", quantity);
                 setResult(IngredientAmountActivity.RESULT_OK, intent);
                 finish();
                 break;
@@ -164,10 +155,9 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String newQuantity = input.getText().toString();
                         Button teaSpoon = (Button) findViewById(R.id.button16);
-                        quantity = newQuantity;
                         quant[0] = Integer.parseInt(newQuantity);
                         measurement = "Xtsp";
-                        teaSpoon.setText(quantity + "xteaspoon");
+                        teaSpoon.setText(quant[0] + "xteaspoon");
                     }
                 });
 
@@ -186,9 +176,9 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String newQuantity = input.getText().toString();
                         Button teaSpoon = (Button) findViewById(R.id.button17);
-                        quantity = newQuantity;
+                        quant[1] = Integer.parseInt(newQuantity);
                         measurement = "X1/2tbsp";
-                        teaSpoon.setText(quantity + "x1/2 tbspoon");
+                        teaSpoon.setText(quant[1] + "x1/2 tbspoon");
                     }
                 });
 
@@ -206,9 +196,9 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String newQuantity = input.getText().toString();
                         Button teaSpoon = (Button) findViewById(R.id.button18);
-                        quantity = newQuantity;
+                        quant[2] = Integer.parseInt(newQuantity);
                         measurement = "Xtbsp";
-                        teaSpoon.setText(quantity + "xTbspoon");
+                        teaSpoon.setText(quant[2] + "xTbspoon");
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

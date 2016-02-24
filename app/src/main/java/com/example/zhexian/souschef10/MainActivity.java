@@ -21,11 +21,9 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//TODO: implement icons arraylist to be sent to arduino
-//TODO: use the ingredients list instead to update names
+//TODO: implement dispense to arduino
 //TODO: add quantity left for each ingredient
-//TODO: android to arduino data transfer
-//TODO: change ingSelected to int[][] (allows integration of ingredient and quantity)
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ArrayList<String> ingList;
     ArrayList<Integer> ingSelected = new ArrayList<Integer>();
@@ -59,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button undoAllButton;
     public Button undoButton;
     public Button dispenseButton;
+    public Button recipeButton;
     public TextView weightText;
 
     @Override
@@ -95,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         undoAllButton = (Button)findViewById(R.id.button12);
         undoButton = (Button) findViewById(R.id.button14);
         dispenseButton = (Button) findViewById(R.id.button13);
+        recipeButton = (Button) findViewById(R.id.button19);
 
          quantity1 = (TextView)findViewById(R.id.quantity1);
          quantity2 = (TextView)findViewById(R.id.quantity2);
@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         undoAllButton.setOnClickListener(this);
         undoButton.setOnClickListener(this);
+        recipeButton.setOnClickListener(this);
 
     }
 
@@ -547,71 +548,86 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void undo(int caseNumber){
-
+        int[] zeroes = {0,0,0,0};
         switch(caseNumber){
             case 1:
                 quantity1.setVisibility(View.INVISIBLE);
                 buttonText.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size()-1);
+                ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[0]=zeroes;
                 break;
             case 2:
                 quantity2.setVisibility(View.INVISIBLE);
                 buttonText1.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[1]=zeroes;
                 break;
             case 3:
                 quantity3.setVisibility(View.INVISIBLE);
                 buttonText2.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[2]=zeroes;
                 break;
             case 4:
                 quantity4.setVisibility(View.INVISIBLE);
                 buttonText3.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[3]=zeroes;
                 break;
             case 5:
                 quantity5.setVisibility(View.INVISIBLE);
                 buttonText4.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[4]=zeroes;
                 break;
             case 6:
                 quantity6.setVisibility(View.INVISIBLE);
                 buttonText5.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[5]=zeroes;
                 break;
             case 7:
                 quantity7.setVisibility(View.INVISIBLE);
                 buttonText6.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[6]=zeroes;
                 break;
             case 8:
                 quantity8.setVisibility(View.INVISIBLE);
                 buttonText7.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[7]=zeroes;
                 break;
             case 9:
                 quantity9.setVisibility(View.INVISIBLE);
                 buttonText8.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[8]=zeroes;
                 break;
             case 10:
                 quantity10.setVisibility(View.INVISIBLE);
                 buttonText9.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[9]=zeroes;
                 break;
             case 11:
                 quantity11.setVisibility(View.INVISIBLE);
                 buttonText10.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[10]=zeroes;
                 break;
             case 12:
                 quantity12.setVisibility(View.INVISIBLE);
                 buttonText11.setBackgroundResource(R.drawable.circle);
                 ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[11]=zeroes;
                 break;
+        }
+    }
 
-
-
+    public void undoAll(){
+        while(ingSelected.size()>0){
+            undo(ingSelected.get(ingSelected.size() - 1));
         }
     }
     public ArrayList<String> getIngredientsList(String fileName){
@@ -648,11 +664,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return returnList;
     }
-    public void undoAll(){
-        while(ingSelected.size()>0){
-            undo(ingSelected.get(ingSelected.size() - 1));
-        }
-    }
+
     public void setIngredientList(){
         String fileName = "Ingredients.txt";
         try {
