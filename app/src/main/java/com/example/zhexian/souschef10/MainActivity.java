@@ -513,6 +513,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(MainActivity.this,"There is nothing to undo!",Toast.LENGTH_SHORT).show();
                 }
                 break;
+
+            case R.id.button19:
+                Intent intent19 = new Intent(this, RecipeListActivity.class);
+                this.startActivity(intent19);
+                break;
         }
         //finish();
     }
