@@ -1,19 +1,25 @@
 package com.example.zhexian.souschef10;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 /**
  * Created by zhexian on 2/24/2016.
  */
 public class RecipeListActivity extends AppCompatActivity implements View.OnClickListener {
+    public ImageView curryChicken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_list);
+        curryChicken = (ImageView) findViewById(R.id.imageView);
+
+        curryChicken.setOnClickListener(this);
     }
 
     @Override
@@ -40,6 +46,14 @@ public class RecipeListActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v){
-
+        switch (v.getId()){
+            case R.id.imageView:
+                String curryRecipe = "0 0 0 0:1 4 0 0:0 0 0 0:0 0 0 0:1 0 3 0:0 0 0 0:1 0 0 4:0 0 0 0:0 0 0 0:0 0 0 0:0 0 0 0:0 0 0 0";
+                Intent intent = new Intent();
+                intent.putExtra("Recipe", curryRecipe);
+                setResult(RecipeListActivity.RESULT_OK,intent);
+                finish();
+                break;
+        }
     }
 }

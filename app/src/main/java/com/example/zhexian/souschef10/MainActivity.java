@@ -357,6 +357,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         changeIngredientList(ingList);
                     }
                     break;
+
+                case 19:
+                    undoAll();
+                    String receive = data.getStringExtra("Recipe");
+                    //TODO: continue recipe
             }
             System.out.println(Arrays.deepToString(dataToArduino));
         }
@@ -541,7 +546,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.button19:
                 Intent intent19 = new Intent(this, RecipeListActivity.class);
-                this.startActivity(intent19);
+                this.startActivityForResult(intent19,19);
                 break;
         }
         //finish();
