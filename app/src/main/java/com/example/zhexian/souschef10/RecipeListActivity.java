@@ -48,7 +48,7 @@ public class RecipeListActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v){
         switch (v.getId()){
             case R.id.imageView:
-                String curryRecipe = "0 0 0 0:1 4 0 0:0 0 0 0:0 0 0 0:1 0 3 0:0 0 0 0:1 0 0 4:0 0 0 0:0 0 0 0:0 0 0 0:0 0 0 0:0 0 0 0";
+                String curryRecipe = "0 0 0:1 4 0:0 0 0:0 0 0:1 0 3:0 0 0:1 0 4:0 0 0:0 0 0:0 0 0:0 0 0:0 0 0";
                 Intent intent = new Intent();
                 intent.putExtra("Recipe", curryRecipe);
                 setResult(RecipeListActivity.RESULT_OK,intent);

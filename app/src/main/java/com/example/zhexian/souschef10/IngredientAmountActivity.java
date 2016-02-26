@@ -26,11 +26,12 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
     String title;
     int indexIng;
     String measurement = "";
-    int[] quant=new int[3];
-    int[] oldQuant = new int[4];
+    int[] quant=new int[2];
+    int[] oldQuant = new int[3];
     public TextView teaspoonQuant;
-    public TextView halfTablespoonQuant;
     public TextView tablespoonQuant;
+    public SeekBar teaspoon;
+    public SeekBar tablespoon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,47 +51,26 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         });
 
         teaspoonQuant = (TextView) findViewById(R.id.teaspoonQuant);
-        halfTablespoonQuant = (TextView) findViewById(R.id.halfTablespoonQuant);
         tablespoonQuant = (TextView) findViewById(R.id.tablespoonQuant);
 
 
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
         Button acceptButton = (Button)findViewById(R.id.button20);
         Button cancelButton = (Button)findViewById(R.id.button21);
-        //Button teaSpoon = (Button) findViewById(R.id.button16);
-        SeekBar teaspoon = (SeekBar) findViewById(R.id.tspSeek);
-       // Button halfTableSpoon = (Button) findViewById(R.id.button17);
-        //Button tableSpoon = (Button) findViewById(R.id.button18);
-        SeekBar halfTablespoon = (SeekBar) findViewById(R.id.htbspSeek);
-        SeekBar tablespoon = (SeekBar) findViewById(R.id.tbspSeek);
+        teaspoon = (SeekBar) findViewById(R.id.tspSeek);
+        tablespoon = (SeekBar) findViewById(R.id.tbspSeek);
 
-
+        teaspoon.setProgress(oldQuant[1]);
+        tablespoon.setProgress(oldQuant[2]);
         acceptButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
-/*        teaSpoon.setOnClickListener(this);
-        halfTablespoon.setOnClickListener(this);
-        tablespoon.setOnClickListener(this);*/
-
         teaspoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                teaspoonQuant.setText(""+progress);
-            }
+                double myProg = 0.5*progress;
+                teaspoonQuant.setText(""+myProg);
+                tablespoon.setProgress(0);
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        halfTablespoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                halfTablespoonQuant.setText(""+progress);
             }
 
             @Override
@@ -106,7 +86,9 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         tablespoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tablespoonQuant.setText(""+progress);
+                tablespoonQuant.setText("" + progress);
+                teaspoon.setProgress(0);
+
             }
 
             @Override
@@ -122,11 +104,6 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
 
         acceptButton.setTypeface(myTypeface);
         cancelButton.setTypeface(myTypeface);
-        //teaSpoon.setTypeface(myTypeface);
-        //halfTableSpoon.setTypeface(myTypeface);
-        //tableSpoon.setTypeface(myTypeface);
-
-
     }
 
     private void editIngredient() {
@@ -201,6 +178,23 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                 title = ingName.getText().toString();
                 Intent intent = new Intent();
                 intent.putExtra("Title", title);
+                double teaspoonValue = teaspoon.getProgress();
+                double tablespoonValue = tablespoon.getProgress();
+                if(teaspoonValue/6.0>tablespoonValue){
+                    quant[0]= teaspoon.getProgress();
+                    quant[1] = 0;
+                    measurement="Xtsp";
+                }
+                else if(teaspoonValue/6.0<tablespoonValue){
+                    quant[0]= teaspoon.getProgress();
+                    quant[1] = 0;
+                    measurement="Xtsp";
+                }
+                else{
+                    quant[0]=0;
+                    quant[1]=tablespoon.getProgress();
+                    measurement="Xtbsp";
+                }
                 intent.putExtra("Measurement", measurement);
                 intent.putExtra("Quant",quant);
                 setResult(IngredientAmountActivity.RESULT_OK, intent);
@@ -211,70 +205,6 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                 setResult(IngredientAmountActivity.RESULT_CANCELED, intent1);
                 finish();
                 break;
-
-/*
-            case R.id.button16:
-                input.append("0");
-                alert.setView(input);
-
-                alert.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String newQuantity = input.getText().toString();
-                        Button teaSpoon = (Button) findViewById(R.id.button16);
-                        quant[0] = Integer.parseInt(newQuantity);
-                        measurement = "Xtsp";
-                        teaSpoon.setText(quant[0] + "xteaspoon");
-                    }
-                });
-
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                });
-                alert.show();
-                break;*/
-
-/*            case R.id.button17:
-                input.append("0");
-                alert.setView(input);
-
-                alert.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String newQuantity = input.getText().toString();
-                        Button teaSpoon = (Button) findViewById(R.id.button17);
-                        quant[1] = Integer.parseInt(newQuantity);
-                        measurement = "X1/2tbsp";
-                        teaSpoon.setText(quant[1] + "x1/2 tbspoon");
-                    }
-                });
-
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                });
-                alert.show();
-                break;
-
-            case R.id.button18:
-                input.append("0");
-                alert.setView(input);
-                alert.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String newQuantity = input.getText().toString();
-                        Button teaSpoon = (Button) findViewById(R.id.button18);
-                        quant[2] = Integer.parseInt(newQuantity);
-                        measurement = "Xtbsp";
-                        teaSpoon.setText(quant[2] + "xTbspoon");
-                    }
-                });
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                });
-                alert.show();
-                break;*/
         }
-
-
     }
 }

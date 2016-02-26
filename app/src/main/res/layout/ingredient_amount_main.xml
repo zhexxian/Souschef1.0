@@ -64,7 +64,7 @@
             android:id="@+id/tspSeek"
             android:paddingLeft="8dip"
             android:paddingRight="8dip"
-            android:max="5"
+            android:max="10"
             android:layout_width="375dip"
             android:layout_height="wrap_content"
             android:thumb="@drawable/seekbar_thumb_selector"
@@ -80,10 +80,10 @@
 
 
         <SeekBar
-            android:id="@+id/htbspSeek"
+            android:id="@+id/tbspSeek"
             android:paddingLeft="8dip"
             android:paddingRight="8dip"
-            android:max="5"
+            android:max="3"
             android:layout_width="375dip"
             android:layout_height="wrap_content"
             android:thumb="@drawable/seekbar_thumb_selector"
@@ -98,40 +98,7 @@
             />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="HALF TABLESPOON"
-            android:id="@+id/textView4"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:textColor="#ffffff"
-            android:layout_alignBottom="@+id/htbspSeek"
-            android:layout_toLeftOf="@+id/htbspSeek"
-            android:layout_alignLeft="@+id/teaspoonText"
-            android:layout_alignStart="@+id/teaspoonText"
-            android:layout_alignTop="@+id/htbspSeek" />
-
-        <SeekBar
-            android:id="@+id/tbspSeek"
-            android:paddingLeft="8dip"
-            android:paddingRight="8dip"
-            android:max="5"
-            android:layout_width="375dip"
-            android:layout_height="wrap_content"
-            android:thumb="@drawable/seekbar_thumb_selector"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:minHeight="11dip"
-            android:maxHeight="11dip"
-            android:layout_below="@+id/htbspSeek"
-            android:layout_alignRight="@+id/htbspSeek"
-            android:layout_alignEnd="@+id/htbspSeek"
-            android:layout_marginTop="40dp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="TABLESPOON"
@@ -140,10 +107,10 @@
             android:gravity="center"
             android:textColor="#ffffff"
             android:layout_alignBottom="@+id/tbspSeek"
+            android:layout_alignTop="@+id/tbspSeek"
             android:layout_toLeftOf="@+id/tbspSeek"
-            android:layout_alignLeft="@+id/textView4"
-            android:layout_alignStart="@+id/textView4"
-            android:layout_alignTop="@+id/tbspSeek" />
+            android:layout_alignLeft="@+id/teaspoonQuant"
+            android:layout_alignStart="@+id/teaspoonQuant" />
 
 
         <TextView
@@ -211,30 +178,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="0"
+            android:text="0.0"
             android:id="@+id/teaspoonQuant"
             android:layout_below="@+id/teaspoonText"
             android:layout_toLeftOf="@+id/tspSeek"
             android:layout_alignLeft="@+id/teaspoonText"
             android:layout_alignStart="@+id/teaspoonText"
-            android:layout_above="@+id/textView4"
+            android:layout_above="@+id/textView3"
             android:textAlignment="center"
             android:textColor="#ffffff"
             />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="0"
-            android:id="@+id/halfTablespoonQuant"
-            android:textAlignment="center"
-            android:textColor="#ffffff"
-            android:layout_below="@+id/textView4"
-            android:layout_toLeftOf="@+id/htbspSeek"
-            android:layout_alignLeft="@+id/textView4"
-            android:layout_alignStart="@+id/textView4"
-            android:layout_above="@+id/textView5" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -245,10 +198,11 @@
             android:textAlignment="center"
             android:textColor="#ffffff"
             android:layout_below="@+id/textView5"
-            android:layout_toLeftOf="@+id/htbspSeek"
-            android:layout_alignLeft="@+id/textView4"
-            android:layout_alignStart="@+id/textView4"
-            />
+            android:layout_alignRight="@+id/textView5"
+            android:layout_alignEnd="@+id/textView5"
+            android:layout_toLeftOf="@+id/tbspSeek"
+            android:layout_alignLeft="@+id/textView5"
+            android:layout_alignStart="@+id/textView5" />
 
 
     </RelativeLayout>
