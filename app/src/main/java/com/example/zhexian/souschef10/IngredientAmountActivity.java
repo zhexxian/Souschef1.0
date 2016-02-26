@@ -15,6 +15,9 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by zhexian on 1/29/2016.
@@ -25,6 +28,9 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
     String measurement = "";
     int[] quant=new int[3];
     int[] oldQuant = new int[4];
+    public TextView teaspoonQuant;
+    public TextView halfTablespoonQuant;
+    public TextView tablespoonQuant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,12 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                 return true;
             }
         });
+
+        teaspoonQuant = (TextView) findViewById(R.id.teaspoonQuant);
+        halfTablespoonQuant = (TextView) findViewById(R.id.halfTablespoonQuant);
+        tablespoonQuant = (TextView) findViewById(R.id.tablespoonQuant);
+
+
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
         Button acceptButton = (Button)findViewById(R.id.button20);
         Button cancelButton = (Button)findViewById(R.id.button21);
@@ -62,7 +74,7 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         teaspoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                teaspoonQuant.setText(""+progress);
             }
 
             @Override
@@ -75,8 +87,38 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
 
             }
         });
-        halfTablespoon.setOnClickListener(this);
-        tablespoon.setOnClickListener(this);
+        halfTablespoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                halfTablespoonQuant.setText(""+progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        tablespoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tablespoonQuant.setText(""+progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         acceptButton.setTypeface(myTypeface);
         cancelButton.setTypeface(myTypeface);
