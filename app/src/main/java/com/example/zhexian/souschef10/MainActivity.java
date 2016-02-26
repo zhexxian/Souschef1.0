@@ -3,6 +3,7 @@ package com.example.zhexian.souschef10;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -68,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ingList = getIngredientsList(fileName);
 
-
         //ingList.toString();
         if(ingList.size()<1){
             setIngredientList();
@@ -76,86 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         System.out.println(ingList.toString());
         // Initializing main screen
-        Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
-
-        buttonText = (Button)findViewById(R.id.button);
-        buttonText1 = (Button)findViewById(R.id.button1);
-        buttonText2 = (Button)findViewById(R.id.button2);
-        buttonText3 = (Button)findViewById(R.id.button3);
-        buttonText4 = (Button)findViewById(R.id.button4);
-        buttonText5 = (Button)findViewById(R.id.button5);
-        buttonText6 = (Button)findViewById(R.id.button6);
-        buttonText7 = (Button)findViewById(R.id.button7);
-        buttonText8 = (Button)findViewById(R.id.button8);
-        buttonText9 = (Button)findViewById(R.id.button9);
-        buttonText10 = (Button)findViewById(R.id.button10);
-        buttonText11 = (Button)findViewById(R.id.button11);
-
-        undoAllButton = (Button)findViewById(R.id.button12);
-        undoButton = (Button) findViewById(R.id.button14);
-        dispenseButton = (Button) findViewById(R.id.button13);
-        recipeButton = (Button) findViewById(R.id.button19);
-
-        quantity1 = (TextView)findViewById(R.id.quantity1);
-        quantity2 = (TextView)findViewById(R.id.quantity2);
-        quantity3 = (TextView)findViewById(R.id.quantity3);
-        quantity4 = (TextView)findViewById(R.id.quantity4);
-        quantity5 = (TextView)findViewById(R.id.quantity5);
-        quantity6 = (TextView)findViewById(R.id.quantity6);
-        quantity7 = (TextView)findViewById(R.id.quantity7);
-        quantity8 = (TextView)findViewById(R.id.quantity8);
-        quantity9 = (TextView)findViewById(R.id.quantity9);
-        quantity10 = (TextView)findViewById(R.id.quantity10);
-        quantity11 = (TextView)findViewById(R.id.quantity11);
-        quantity12 = (TextView)findViewById(R.id.quantity12);
-
-        quantity1.setVisibility(View.INVISIBLE);
-        quantity2.setVisibility(View.INVISIBLE);
-        quantity3.setVisibility(View.INVISIBLE);
-        quantity4.setVisibility(View.INVISIBLE);
-        quantity5.setVisibility(View.INVISIBLE);
-        quantity6.setVisibility(View.INVISIBLE);
-        quantity7.setVisibility(View.INVISIBLE);
-        quantity8.setVisibility(View.INVISIBLE);
-        quantity9.setVisibility(View.INVISIBLE);
-        quantity10.setVisibility(View.INVISIBLE);
-        quantity11.setVisibility(View.INVISIBLE);
-        quantity12.setVisibility(View.INVISIBLE);
-
-        buttonText.setTypeface(myTypeface);
-        buttonText1.setTypeface(myTypeface);
-        buttonText2.setTypeface(myTypeface);
-        buttonText3.setTypeface(myTypeface);
-        buttonText4.setTypeface(myTypeface);
-        buttonText5.setTypeface(myTypeface);
-        buttonText6.setTypeface(myTypeface);
-        buttonText7.setTypeface(myTypeface);
-        buttonText8.setTypeface(myTypeface);
-        buttonText9.setTypeface(myTypeface);
-        buttonText10.setTypeface(myTypeface);
-        buttonText11.setTypeface(myTypeface);
-
-        undoButton.setTypeface(myTypeface);
-        undoAllButton.setTypeface(myTypeface);
-
-        dispenseButton.setTypeface(myTypeface);
-
-        buttonText.setText(ingList.get(0));
-        buttonText1.setText(ingList.get(1));
-        buttonText2.setText(ingList.get(2));
-        buttonText3.setText(ingList.get(3));
-        buttonText4.setText(ingList.get(4));
-        buttonText5.setText(ingList.get(5));
-        buttonText6.setText(ingList.get(6));
-        buttonText7.setText(ingList.get(7));
-        buttonText8.setText(ingList.get(8));
-        buttonText9.setText(ingList.get(9));
-        buttonText10.setText(ingList.get(10));
-        buttonText11.setText(ingList.get(11));
-
-        weightText = (TextView) findViewById(R.id.textView2);
-        weightText.setTypeface(myTypeface);
-
+        runOnUiThread(buttonInitialization);
         buttonText.setOnClickListener(this);
         buttonText1.setOnClickListener(this);
         buttonText2.setOnClickListener(this);
@@ -181,6 +102,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    /******************************** onActivityResult ***********************************
+     *  this method receives data from IAA after this activity has called IAA via the startActivityForResult() method
+     *
+     * @param requestCode - is the integer value which is sent to IAA as reference (the integer corresponds to the ingredient slot number)
+     * @param resultCode - checks if the result from IAA is need or not. RESULT_OK means needed, else not needed
+     * @param data - the intent object that is received from IAA, containing measurement, quanityt and name of the ingredient
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -359,10 +301,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
 
                 case 19:
-                    undoAll();
+                    runOnUiThread(undoAll);
                     String receive = data.getStringExtra("Recipe");
                     recipeConverter(receive);
-                    recipeResult();
+                    runOnUiThread(recipeResult);
                     break;
                     //TODO: continue recipe
             }
@@ -370,109 +312,250 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /*************************** RUNNABLES *******************************
+     * buttonInitialization - initializes the buttons by finding in layout  and assigning to Button
+     */
+    private Runnable buttonInitialization = new Runnable() {
+        @Override
+        public void run() {
+            Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
 
-    public void recipeResult(){
-        String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
-        String meas = "";
-        int amount = 0;
-        for(int i=0;i<12;i++){
-            if(dataToArduino[i][0]==0){
-                continue;
-            }
-            for(int j=1;j<4;j++){
-                if(dataToArduino[i][j]!=0){
-                    meas= measurementIndex[j-1];
-                    amount = dataToArduino[i][j];
+            buttonText = (Button)findViewById(R.id.button);
+            buttonText1 = (Button)findViewById(R.id.button1);
+            buttonText2 = (Button)findViewById(R.id.button2);
+            buttonText3 = (Button)findViewById(R.id.button3);
+            buttonText4 = (Button)findViewById(R.id.button4);
+            buttonText5 = (Button)findViewById(R.id.button5);
+            buttonText6 = (Button)findViewById(R.id.button6);
+            buttonText7 = (Button)findViewById(R.id.button7);
+            buttonText8 = (Button)findViewById(R.id.button8);
+            buttonText9 = (Button)findViewById(R.id.button9);
+            buttonText10 = (Button)findViewById(R.id.button10);
+            buttonText11 = (Button)findViewById(R.id.button11);
+
+            undoAllButton = (Button)findViewById(R.id.button12);
+            undoButton = (Button) findViewById(R.id.button14);
+            dispenseButton = (Button) findViewById(R.id.button13);
+            recipeButton = (Button) findViewById(R.id.button19);
+
+            quantity1 = (TextView)findViewById(R.id.quantity1);
+            quantity2 = (TextView)findViewById(R.id.quantity2);
+            quantity3 = (TextView)findViewById(R.id.quantity3);
+            quantity4 = (TextView)findViewById(R.id.quantity4);
+            quantity5 = (TextView)findViewById(R.id.quantity5);
+            quantity6 = (TextView)findViewById(R.id.quantity6);
+            quantity7 = (TextView)findViewById(R.id.quantity7);
+            quantity8 = (TextView)findViewById(R.id.quantity8);
+            quantity9 = (TextView)findViewById(R.id.quantity9);
+            quantity10 = (TextView)findViewById(R.id.quantity10);
+            quantity11 = (TextView)findViewById(R.id.quantity11);
+            quantity12 = (TextView)findViewById(R.id.quantity12);
+
+            quantity1.setVisibility(View.INVISIBLE);
+            quantity2.setVisibility(View.INVISIBLE);
+            quantity3.setVisibility(View.INVISIBLE);
+            quantity4.setVisibility(View.INVISIBLE);
+            quantity5.setVisibility(View.INVISIBLE);
+            quantity6.setVisibility(View.INVISIBLE);
+            quantity7.setVisibility(View.INVISIBLE);
+            quantity8.setVisibility(View.INVISIBLE);
+            quantity9.setVisibility(View.INVISIBLE);
+            quantity10.setVisibility(View.INVISIBLE);
+            quantity11.setVisibility(View.INVISIBLE);
+            quantity12.setVisibility(View.INVISIBLE);
+
+            buttonText.setTypeface(myTypeface);
+            buttonText1.setTypeface(myTypeface);
+            buttonText2.setTypeface(myTypeface);
+            buttonText3.setTypeface(myTypeface);
+            buttonText4.setTypeface(myTypeface);
+            buttonText5.setTypeface(myTypeface);
+            buttonText6.setTypeface(myTypeface);
+            buttonText7.setTypeface(myTypeface);
+            buttonText8.setTypeface(myTypeface);
+            buttonText9.setTypeface(myTypeface);
+            buttonText10.setTypeface(myTypeface);
+            buttonText11.setTypeface(myTypeface);
+
+            undoButton.setTypeface(myTypeface);
+            undoAllButton.setTypeface(myTypeface);
+
+            dispenseButton.setTypeface(myTypeface);
+
+            buttonText.setText(ingList.get(0));
+            buttonText1.setText(ingList.get(1));
+            buttonText2.setText(ingList.get(2));
+            buttonText3.setText(ingList.get(3));
+            buttonText4.setText(ingList.get(4));
+            buttonText5.setText(ingList.get(5));
+            buttonText6.setText(ingList.get(6));
+            buttonText7.setText(ingList.get(7));
+            buttonText8.setText(ingList.get(8));
+            buttonText9.setText(ingList.get(9));
+            buttonText10.setText(ingList.get(10));
+            buttonText11.setText(ingList.get(11));
+
+            weightText = (TextView) findViewById(R.id.textView2);
+            weightText.setTypeface(myTypeface);
+        }
+    };
+    /***
+     * undoAll - returns the layout to original state (no shaded or quantity shown)
+     */
+    private Runnable undoAll = new Runnable() {
+        @Override
+        public void run() {
+            quantity1.setVisibility(View.INVISIBLE);
+            quantity2.setVisibility(View.INVISIBLE);
+            quantity3.setVisibility(View.INVISIBLE);
+            quantity4.setVisibility(View.INVISIBLE);
+            quantity5.setVisibility(View.INVISIBLE);
+            quantity6.setVisibility(View.INVISIBLE);
+            quantity7.setVisibility(View.INVISIBLE);
+            quantity8.setVisibility(View.INVISIBLE);
+            quantity9.setVisibility(View.INVISIBLE);
+            quantity10.setVisibility(View.INVISIBLE);
+            quantity11.setVisibility(View.INVISIBLE);
+            quantity12.setVisibility(View.INVISIBLE);
+
+            buttonText.setBackgroundResource(R.drawable.circle);
+            buttonText1.setBackgroundResource(R.drawable.circle);
+            buttonText2.setBackgroundResource(R.drawable.circle);
+            buttonText3.setBackgroundResource(R.drawable.circle);
+            buttonText4.setBackgroundResource(R.drawable.circle);
+            buttonText5.setBackgroundResource(R.drawable.circle);
+            buttonText6.setBackgroundResource(R.drawable.circle);
+            buttonText7.setBackgroundResource(R.drawable.circle);
+            buttonText8.setBackgroundResource(R.drawable.circle);
+            buttonText9.setBackgroundResource(R.drawable.circle);
+            buttonText10.setBackgroundResource(R.drawable.circle);
+            buttonText11.setBackgroundResource(R.drawable.circle);
+        }
+    };
+    /***
+     * recipeResult - gets the dataToArduino array and converts it to visible form ie show in the
+     * layout ie shows what is selected and which quantity is choses
+     */
+    public Runnable recipeResult = new Runnable() {
+        @Override
+        public void run() {
+            String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
+            String meas = "";
+            int amount = 0;
+            for(int i=0;i<12;i++){
+                if(dataToArduino[i][0]==0){
+                    continue;
+                }
+                System.out.println(i);
+                for(int j=1;j<4;j++){
+                    if(dataToArduino[i][j]!=0){
+                        meas= measurementIndex[j-1];
+                        amount = dataToArduino[i][j];
+                    }
+                }
+                switch (i) {
+                    case 0:
+                        quantity1.setVisibility(View.VISIBLE);
+                        quantity1.setText(amount + meas);
+                        buttonText.setBackgroundResource(R.drawable.circle_selected);
+                        break;
+                    case 1:
+                        quantity2.setVisibility(View.VISIBLE);
+                        quantity2.setText(amount + meas);
+                        buttonText1.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(2);
+
+                        break;
+                    case 2:
+                        quantity3.setVisibility(View.VISIBLE);
+                        quantity3.setText(amount + meas);
+                        buttonText2.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(3);
+                        break;
+                    case 3:
+                        quantity4.setVisibility(View.VISIBLE);
+                        quantity4.setText(amount + meas);
+                        buttonText3.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(4);
+                        break;
+                    case 4:
+                        quantity5.setVisibility(View.VISIBLE);
+                        quantity5.setText(amount + meas);
+                        buttonText4.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(5);
+                        break;
+                    case 5:
+                        quantity6.setVisibility(View.VISIBLE);
+                        quantity6.setText(amount + meas);
+                        buttonText5.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(6);
+                        break;
+                    case 6:
+                        quantity7.setVisibility(View.VISIBLE);
+                        quantity7.setText(amount + meas);
+                        buttonText6.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(7);
+                        break;
+                    case 7:
+                        quantity8.setVisibility(View.VISIBLE);
+                        quantity8.setText(amount + meas);
+                        buttonText7.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(8);
+                        break;
+                    case 8:
+                        quantity9.setVisibility(View.VISIBLE);
+                        quantity9.setText(amount + meas);
+                        buttonText8.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(9);
+                        break;
+                    case 9:
+                        quantity10.setVisibility(View.VISIBLE);
+                        quantity10.setText(amount + meas);
+                        buttonText9.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(10);
+                        break;
+                    case 10:
+                        quantity11.setVisibility(View.VISIBLE);
+                        quantity11.setText(amount + meas);
+                        buttonText10.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(11);
+                        break;
+                    case 11:
+                        quantity12.setVisibility(View.VISIBLE);
+                        quantity12.setText(amount + meas);
+                        buttonText11.setBackgroundResource(R.drawable.circle_selected);
+                        ingSelected.add(12);
+                        break;
                 }
             }
-            switch (i) {
-                case 1:
-                    quantity1.setVisibility(View.VISIBLE);
-                    quantity1.setText(amount + meas);
-                    buttonText.setBackgroundResource(R.drawable.circle_selected);
-                    break;
-                case 2:
-                    quantity2.setVisibility(View.VISIBLE);
-                    quantity2.setText(amount + meas);
-                    buttonText1.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(2);
-
-                    break;
-                case 3:
-                    quantity3.setVisibility(View.VISIBLE);
-                    quantity3.setText(amount + meas);
-                    buttonText2.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(3);
-                    break;
-                case 4:
-                    quantity4.setVisibility(View.VISIBLE);
-                    quantity4.setText(amount + meas);
-                    buttonText3.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(4);
-                    break;
-                case 5:
-                    quantity5.setVisibility(View.VISIBLE);
-                    quantity5.setText(amount + meas);
-                    buttonText4.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(5);
-                    break;
-                case 6:
-                    quantity6.setVisibility(View.VISIBLE);
-                    quantity6.setText(amount + meas);
-                    buttonText5.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(6);
-                    break;
-                case 7:
-                    quantity7.setVisibility(View.VISIBLE);
-                    quantity7.setText(amount + meas);
-                    buttonText6.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(7);
-                    break;
-                case 8:
-                    quantity8.setVisibility(View.VISIBLE);
-                    quantity8.setText(amount + meas);
-                    buttonText7.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(8);
-                    break;
-                case 9:
-                    quantity9.setVisibility(View.VISIBLE);
-                    quantity9.setText(amount + meas);
-                    buttonText8.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(9);
-                    break;
-                case 10:
-                    quantity10.setVisibility(View.VISIBLE);
-                    quantity10.setText(amount + meas);
-                    buttonText9.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(10);
-                    break;
-                case 11:
-                    quantity11.setVisibility(View.VISIBLE);
-                    quantity11.setText(amount + meas);
-                    buttonText10.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(11);
-                    break;
-                case 12:
-                    quantity12.setVisibility(View.VISIBLE);
-                    quantity12.setText(amount + meas);
-                    buttonText11.setBackgroundResource(R.drawable.circle_selected);
-                    ingSelected.add(12);
-                    break;
-            }
+            ingSelected.add(99);
         }
-        ingSelected.add(99);
+    };
 
-    }
+    /**************************** METHODS ****************************
+     * recipeConverter - receives a string containing data to be translated into an array from the recipeList activity
+     *                 - this is done by splitting the string into 12 at the ":" and then splitting the 12 strings further into four at " "
+     * @param receive - String receive is a string containing data to be translated into an array from the recipeList activity
+     */
     public void recipeConverter(String receive){
         String[] receiveSplit = receive.split(":");
         for(int i=0;i<12;i++){
             String[] receiveSplitSplit = receiveSplit[i].split(" ");
+            if(Integer.parseInt(receiveSplitSplit[0])==0){
+                continue;
+            }
             for(int j=0;j<4;j++){
                 dataToArduino[i][j]=Integer.parseInt(receiveSplitSplit[j]);
             }
         }
     }
 
+    /***
+     * forArduino - this method is used to change the subarray from dataToArduino such that it contains the quantity to be displayed in the layout
+     * @param getIntArray - this array contains just quantity values. for example [1,0,0] means 1 times teaspoon
+     * @param ingNumber - this integer value is the ingredient slot number
+     * @return - returns an integer value for the caller to receive
+     */
     public int forArduino(int[] getIntArray, int ingNumber){
         int qty=0;
         dataToArduino[ingNumber][0]=1;
@@ -484,20 +567,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return qty;
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+    /***
+     * changeIngredientList - this method changes existing txt file to contain the latest change of the names of the ingredients
+     * @param ingList - this array contains the all the current names of the ingredients
+     */
     public void changeIngredientList(ArrayList<String> ingList){
         String fileName = "Ingredients.txt";
         try {
@@ -527,6 +601,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // ex.printStackTrace();
         }
     }
+
+    /***
+     * onClick - this method  allows the user to click. this in turn call the IAA while passing data to the IAA such as ingredient and the ingredient slot number
+     * @param v - the layout view
+     */
     public void onClick(View v){
 
         switch(v.getId()) {
@@ -631,7 +710,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button12:
                 System.out.println(ingSelected.size());
                 if(ingSelected.size()>0){
-                    undoAll();
+                    runOnUiThread(undoAll);
                 }
                 else{
                     Toast.makeText(MainActivity.this,"There is nothing to undo!",Toast.LENGTH_SHORT).show();
@@ -652,9 +731,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.startActivityForResult(intent19,19);
                 break;
         }
-        //finish();
     }
 
+    /***
+     * undo - undo the latest change (excluding name change) that is read from the ingSelected.
+     * @param caseNumber - this integer value is the ingredient slot number
+     */
     public void undo(int caseNumber){
         int[] zeroes = {0,0,0,0};
         switch(caseNumber){
@@ -731,42 +813,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dataToArduino[11]=zeroes;
                 break;
             case 99:
-                quantity1.setVisibility(View.INVISIBLE);
-                quantity2.setVisibility(View.INVISIBLE);
-                quantity3.setVisibility(View.INVISIBLE);
-                quantity4.setVisibility(View.INVISIBLE);
-                quantity5.setVisibility(View.INVISIBLE);
-                quantity6.setVisibility(View.INVISIBLE);
-                quantity7.setVisibility(View.INVISIBLE);
-                quantity8.setVisibility(View.INVISIBLE);
-                quantity9.setVisibility(View.INVISIBLE);
-                quantity10.setVisibility(View.INVISIBLE);
-                quantity11.setVisibility(View.INVISIBLE);
-                quantity12.setVisibility(View.INVISIBLE);
-
-                buttonText.setBackgroundResource(R.drawable.circle);
-                buttonText1.setBackgroundResource(R.drawable.circle);
-                buttonText2.setBackgroundResource(R.drawable.circle);
-                buttonText3.setBackgroundResource(R.drawable.circle);
-                buttonText4.setBackgroundResource(R.drawable.circle);
-                buttonText5.setBackgroundResource(R.drawable.circle);
-                buttonText6.setBackgroundResource(R.drawable.circle);
-                buttonText7.setBackgroundResource(R.drawable.circle);
-                buttonText8.setBackgroundResource(R.drawable.circle);
-                buttonText9.setBackgroundResource(R.drawable.circle);
-                buttonText10.setBackgroundResource(R.drawable.circle);
-                buttonText11.setBackgroundResource(R.drawable.circle);
+                runOnUiThread(undoAll);
                 break;
         }
     }
 
-    public void undoAll(){
-        while(ingSelected.size()>0){
-            undo(ingSelected.get(ingSelected.size() - 1));
-        }
-    }
+    /***
+     * getIngredientList - this method searches the file directory for the txt file containing all the ingredient names
+     * @param fileName - the file name
+     * @return - returns an arraylist containing all the ingredients from the txt file
+     */
     public ArrayList<String> getIngredientsList(String fileName){
-        //TODO: Set save data location on android
         String line;
         ArrayList<String> returnList = new ArrayList<String>();
         try {
@@ -795,6 +852,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return returnList;
     }
 
+    /***
+     * setIngredientList - this method is for first time users. initializes a txt file in the file directory containing random ingredient names
+     */
     public void setIngredientList(){
         String fileName = "Ingredients.txt";
         try {
