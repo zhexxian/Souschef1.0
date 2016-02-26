@@ -60,66 +60,114 @@
             android:layout_marginTop="50dp"
             android:layout_below="@+id/tableLayout2"
             android:textSize="35dp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="1/2 tea spoon"
-
-            android:id="@+id/button16"
-            android:textColor="#ffffff"
-            android:background="@drawable/rectangle_grey"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+        <SeekBar
+            android:id="@+id/tspSeek"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip"
+            android:max="5"
+            android:layout_width="375dip"
+            android:layout_height="wrap_content"
+            android:thumb="@drawable/seekbar_thumb_selector"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:minHeight="11dip"
+            android:maxHeight="11dip"
             android:layout_below="@+id/textView"
-            android:layout_centerHorizontal="true"
+            android:layout_alignRight="@+id/textView"
+            android:layout_alignEnd="@+id/textView"
             android:layout_marginTop="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textStyle="bold"
-            android:textSize="25dp" />
+            android:indeterminate="false" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="1/2 table spoon"
-            android:id="@+id/button17"
-            android:textColor="#ffffff"
-            android:background="@drawable/rectangle_grey"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_below="@+id/button16"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textStyle="bold"
-            android:textSize="25dp" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="1 table spoon"
-            android:id="@+id/button18"
-            android:textColor="#ffffff"
-            android:background="@drawable/rectangle_grey"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_below="@+id/button17"
-            android:layout_centerHorizontal="true"
+        <SeekBar
+            android:id="@+id/htbspSeek"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip"
+            android:max="5"
+            android:layout_width="375dip"
+            android:layout_height="wrap_content"
+            android:thumb="@drawable/seekbar_thumb_selector"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:minHeight="11dip"
+            android:maxHeight="11dip"
+            android:layout_below="@+id/tspSeek"
+            android:layout_alignRight="@+id/tspSeek"
+            android:layout_alignEnd="@+id/tspSeek"
             android:layout_marginTop="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textStyle="bold"
-            android:textSize="25dp" />
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="HALF TABLESPOON"
+            android:id="@+id/textView4"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:layout_alignBottom="@+id/htbspSeek"
+            android:layout_toLeftOf="@+id/htbspSeek"
+            android:layout_alignLeft="@+id/teaspoonText"
+            android:layout_alignStart="@+id/teaspoonText"
+            android:layout_alignTop="@+id/htbspSeek" />
+
+        <SeekBar
+            android:id="@+id/tbspSeek"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip"
+            android:max="5"
+            android:layout_width="375dip"
+            android:layout_height="wrap_content"
+            android:thumb="@drawable/seekbar_thumb_selector"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:minHeight="11dip"
+            android:maxHeight="11dip"
+            android:layout_below="@+id/htbspSeek"
+            android:layout_alignRight="@+id/htbspSeek"
+            android:layout_alignEnd="@+id/htbspSeek"
+            android:layout_marginTop="40dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="TABLESPOON"
+            android:id="@+id/textView5"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:layout_alignBottom="@+id/tbspSeek"
+            android:layout_toLeftOf="@+id/tbspSeek"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_alignStart="@+id/textView4"
+            android:layout_alignTop="@+id/tbspSeek" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="TEASPOON"
+            android:id="@+id/teaspoonText"
+            android:textSize="20dp"
+            android:layout_alignTop="@+id/tspSeek"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_alignStart="@+id/textView"
+            android:layout_toStartOf="@+id/tspSeek"
+            android:gravity="center"
+            android:layout_alignBottom="@+id/tspSeek"
+            android:textColor="#ffffff"
+            />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/button18"
-            android:layout_alignLeft="@+id/button18"
-            android:layout_alignRight="@+id/button18">
+            android:layout_below="@+id/tbspSeek"
+            android:layout_centerHorizontal="true">
 
             <Button
                 android:layout_width="0dp"
@@ -127,14 +175,10 @@
                 android:layout_height="60dp"
                 android:text="Cancel"
                 android:id="@+id/button20"
-                android:layout_alignParentBottom="false"
-                android:layout_alignLeft="@+id/button18"
-                android:layout_alignStart="@+id/button18"
+                android:layout_alignParentBottom="true"
                 android:background="@drawable/rectangle_red"
                 android:textColor="#ffffff"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentTop="false"
-                android:layout_below="@+id/button18"
+                android:layout_alignParentLeft="true"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="40dp"
                 android:textStyle="bold"
@@ -147,11 +191,11 @@
                 android:text="Accept"
                 android:id="@+id/button21"
                 android:layout_alignParentBottom="false"
-                android:layout_alignRight="@+id/button18"
-                android:layout_alignEnd="@+id/button18"
+                android:layout_alignRight="@+id/tbspSeek"
+                android:layout_alignEnd="@+id/tbspSeek"
                 android:textColor="#ffffff"
                 android:background="@drawable/rectangle_green"
-                android:layout_below="@+id/button18"
+                android:layout_below="@+id/tbspSeek"
                 android:layout_marginTop="40dp"
                 android:layout_alignParentEnd="false"
                 android:layout_toRightOf="@+id/button20"
@@ -160,6 +204,22 @@
                 android:textStyle="bold"
                 android:textSize="25dp" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0"
+            android:id="@+id/textView11"
+            android:layout_below="@+id/teaspoonText"
+            android:layout_toLeftOf="@+id/tspSeek"
+            android:layout_alignLeft="@+id/teaspoonText"
+            android:layout_alignStart="@+id/teaspoonText"
+            android:layout_above="@+id/textView4"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            />
+
 
     </RelativeLayout>
 

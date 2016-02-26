@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 
 /**
  * Created by zhexian on 1/29/2016.
@@ -44,23 +45,44 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
         Button acceptButton = (Button)findViewById(R.id.button20);
         Button cancelButton = (Button)findViewById(R.id.button21);
-        Button teaSpoon = (Button) findViewById(R.id.button16);
-        Button halfTableSpoon = (Button) findViewById(R.id.button17);
-        Button tableSpoon = (Button) findViewById(R.id.button18);
+        //Button teaSpoon = (Button) findViewById(R.id.button16);
+        SeekBar teaspoon = (SeekBar) findViewById(R.id.tspSeek);
+       // Button halfTableSpoon = (Button) findViewById(R.id.button17);
+        //Button tableSpoon = (Button) findViewById(R.id.button18);
+        SeekBar halfTablespoon = (SeekBar) findViewById(R.id.htbspSeek);
+        SeekBar tablespoon = (SeekBar) findViewById(R.id.tbspSeek);
 
 
         acceptButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
-        teaSpoon.setOnClickListener(this);
-        halfTableSpoon.setOnClickListener(this);
-        tableSpoon.setOnClickListener(this);
+/*        teaSpoon.setOnClickListener(this);
+        halfTablespoon.setOnClickListener(this);
+        tablespoon.setOnClickListener(this);*/
 
+        teaspoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        halfTablespoon.setOnClickListener(this);
+        tablespoon.setOnClickListener(this);
 
         acceptButton.setTypeface(myTypeface);
         cancelButton.setTypeface(myTypeface);
-        teaSpoon.setTypeface(myTypeface);
-        halfTableSpoon.setTypeface(myTypeface);
-        tableSpoon.setTypeface(myTypeface);
+        //teaSpoon.setTypeface(myTypeface);
+        //halfTableSpoon.setTypeface(myTypeface);
+        //tableSpoon.setTypeface(myTypeface);
 
 
     }
@@ -144,11 +166,11 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                 break;
             case R.id.button20:
                 Intent intent1 = new Intent();
-                setResult(IngredientAmountActivity.RESULT_CANCELED,intent1);
+                setResult(IngredientAmountActivity.RESULT_CANCELED, intent1);
                 finish();
                 break;
 
-
+/*
             case R.id.button16:
                 input.append("0");
                 alert.setView(input);
@@ -168,9 +190,9 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                     }
                 });
                 alert.show();
-                break;
+                break;*/
 
-            case R.id.button17:
+/*            case R.id.button17:
                 input.append("0");
                 alert.setView(input);
 
@@ -208,7 +230,7 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                     }
                 });
                 alert.show();
-                break;
+                break;*/
         }
 
 
