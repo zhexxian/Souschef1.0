@@ -96,18 +96,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dispenseButton = (Button) findViewById(R.id.button13);
         recipeButton = (Button) findViewById(R.id.button19);
 
-         quantity1 = (TextView)findViewById(R.id.quantity1);
-         quantity2 = (TextView)findViewById(R.id.quantity2);
-         quantity3 = (TextView)findViewById(R.id.quantity3);
-         quantity4 = (TextView)findViewById(R.id.quantity4);
-         quantity5 = (TextView)findViewById(R.id.quantity5);
-         quantity6 = (TextView)findViewById(R.id.quantity6);
-         quantity7 = (TextView)findViewById(R.id.quantity7);
-         quantity8 = (TextView)findViewById(R.id.quantity8);
-         quantity9 = (TextView)findViewById(R.id.quantity9);
-         quantity10 = (TextView)findViewById(R.id.quantity10);
-         quantity11 = (TextView)findViewById(R.id.quantity11);
-         quantity12 = (TextView)findViewById(R.id.quantity12);
+        quantity1 = (TextView)findViewById(R.id.quantity1);
+        quantity2 = (TextView)findViewById(R.id.quantity2);
+        quantity3 = (TextView)findViewById(R.id.quantity3);
+        quantity4 = (TextView)findViewById(R.id.quantity4);
+        quantity5 = (TextView)findViewById(R.id.quantity5);
+        quantity6 = (TextView)findViewById(R.id.quantity6);
+        quantity7 = (TextView)findViewById(R.id.quantity7);
+        quantity8 = (TextView)findViewById(R.id.quantity8);
+        quantity9 = (TextView)findViewById(R.id.quantity9);
+        quantity10 = (TextView)findViewById(R.id.quantity10);
+        quantity11 = (TextView)findViewById(R.id.quantity11);
+        quantity12 = (TextView)findViewById(R.id.quantity12);
 
         quantity1.setVisibility(View.INVISIBLE);
         quantity2.setVisibility(View.INVISIBLE);
@@ -184,9 +184,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("entered act res");
-        String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
-        System.out.println(requestCode);
+        //System.out.println("entered act res");
+        //String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
+        //System.out.println(requestCode);
         if (resultCode==RESULT_OK) {
             switch (requestCode) {
                 case 1:
@@ -361,12 +361,117 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case 19:
                     undoAll();
                     String receive = data.getStringExtra("Recipe");
+                    recipeConverter(receive);
+                    recipeResult();
+                    break;
                     //TODO: continue recipe
             }
             System.out.println(Arrays.deepToString(dataToArduino));
         }
     }
 
+
+    public void recipeResult(){
+        String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
+        String meas = "";
+        int amount = 0;
+        for(int i=0;i<12;i++){
+            if(dataToArduino[i][0]==0){
+                continue;
+            }
+            for(int j=1;j<4;j++){
+                if(dataToArduino[i][j]!=0){
+                    meas= measurementIndex[j-1];
+                    amount = dataToArduino[i][j];
+                }
+            }
+            switch (i) {
+                case 1:
+                    quantity1.setVisibility(View.VISIBLE);
+                    quantity1.setText(amount + meas);
+                    buttonText.setBackgroundResource(R.drawable.circle_selected);
+                    break;
+                case 2:
+                    quantity2.setVisibility(View.VISIBLE);
+                    quantity2.setText(amount + meas);
+                    buttonText1.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(2);
+
+                    break;
+                case 3:
+                    quantity3.setVisibility(View.VISIBLE);
+                    quantity3.setText(amount + meas);
+                    buttonText2.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(3);
+                    break;
+                case 4:
+                    quantity4.setVisibility(View.VISIBLE);
+                    quantity4.setText(amount + meas);
+                    buttonText3.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(4);
+                    break;
+                case 5:
+                    quantity5.setVisibility(View.VISIBLE);
+                    quantity5.setText(amount + meas);
+                    buttonText4.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(5);
+                    break;
+                case 6:
+                    quantity6.setVisibility(View.VISIBLE);
+                    quantity6.setText(amount + meas);
+                    buttonText5.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(6);
+                    break;
+                case 7:
+                    quantity7.setVisibility(View.VISIBLE);
+                    quantity7.setText(amount + meas);
+                    buttonText6.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(7);
+                    break;
+                case 8:
+                    quantity8.setVisibility(View.VISIBLE);
+                    quantity8.setText(amount + meas);
+                    buttonText7.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(8);
+                    break;
+                case 9:
+                    quantity9.setVisibility(View.VISIBLE);
+                    quantity9.setText(amount + meas);
+                    buttonText8.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(9);
+                    break;
+                case 10:
+                    quantity10.setVisibility(View.VISIBLE);
+                    quantity10.setText(amount + meas);
+                    buttonText9.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(10);
+                    break;
+                case 11:
+                    quantity11.setVisibility(View.VISIBLE);
+                    quantity11.setText(amount + meas);
+                    buttonText10.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(11);
+                    break;
+                case 12:
+                    quantity12.setVisibility(View.VISIBLE);
+                    quantity12.setText(amount + meas);
+                    buttonText11.setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(12);
+                    break;
+            }
+        }
+        ingSelected.add(99);
+
+    }
+    public void recipeConverter(String receive){
+        String[] receiveSplit = receive.split(":");
+        for(int i=0;i<12;i++){
+            String[] receiveSplitSplit = receiveSplit[i].split(" ");
+            for(int j=0;j<4;j++){
+                dataToArduino[i][j]=Integer.parseInt(receiveSplitSplit[j]);
+            }
+        }
+    }
 
     public int forArduino(int[] getIntArray, int ingNumber){
         int qty=0;
@@ -531,11 +636,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else{
                     Toast.makeText(MainActivity.this,"There is nothing to undo!",Toast.LENGTH_SHORT).show();
                 }
-
                 break;
 
             case R.id.button14:
-
                 if(ingSelected.size()>0){
                     undo(ingSelected.get(ingSelected.size()-1));
                 }
@@ -627,6 +730,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ingSelected.remove(ingSelected.size() - 1);
                 dataToArduino[11]=zeroes;
                 break;
+            case 99:
+                quantity1.setVisibility(View.INVISIBLE);
+                quantity2.setVisibility(View.INVISIBLE);
+                quantity3.setVisibility(View.INVISIBLE);
+                quantity4.setVisibility(View.INVISIBLE);
+                quantity5.setVisibility(View.INVISIBLE);
+                quantity6.setVisibility(View.INVISIBLE);
+                quantity7.setVisibility(View.INVISIBLE);
+                quantity8.setVisibility(View.INVISIBLE);
+                quantity9.setVisibility(View.INVISIBLE);
+                quantity10.setVisibility(View.INVISIBLE);
+                quantity11.setVisibility(View.INVISIBLE);
+                quantity12.setVisibility(View.INVISIBLE);
+
+                buttonText.setBackgroundResource(R.drawable.circle);
+                buttonText1.setBackgroundResource(R.drawable.circle);
+                buttonText2.setBackgroundResource(R.drawable.circle);
+                buttonText3.setBackgroundResource(R.drawable.circle);
+                buttonText4.setBackgroundResource(R.drawable.circle);
+                buttonText5.setBackgroundResource(R.drawable.circle);
+                buttonText6.setBackgroundResource(R.drawable.circle);
+                buttonText7.setBackgroundResource(R.drawable.circle);
+                buttonText8.setBackgroundResource(R.drawable.circle);
+                buttonText9.setBackgroundResource(R.drawable.circle);
+                buttonText10.setBackgroundResource(R.drawable.circle);
+                buttonText11.setBackgroundResource(R.drawable.circle);
+                break;
         }
     }
 
@@ -640,23 +770,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String line;
         ArrayList<String> returnList = new ArrayList<String>();
         try {
-
             File sdCard = getFilesDir();
             File dir = new File (sdCard + "/SousChef/Data");
             File file = new File(dir, fileName);
             // FileReader reads text files in the default encoding.
             FileReader fileReader = new FileReader(file);
-
             // Always wrap FileReader in BufferedReader.
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-
             while((line = bufferedReader.readLine()) != null) {
                 returnList.add(line);
             }
-
             // Always close files.
             bufferedReader.close();
-
         }
         catch(FileNotFoundException ex) {
             Toast.makeText(MainActivity.this,  "Welcome first time user!", Toast.LENGTH_SHORT).show();
@@ -673,7 +798,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setIngredientList(){
         String fileName = "Ingredients.txt";
         try {
-
             File sdCard = getFilesDir();
             File dir = new File (sdCard + "/SousChef/Data");
             dir.mkdirs();
@@ -711,6 +835,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bufferedWriter.newLine();
             // Always close files.
             bufferedWriter.close();
+            fileWriter.close();
         }
         catch(Exception ex) {
             Toast.makeText(MainActivity.this, "Error writing to file '" + fileName + "'",Toast.LENGTH_SHORT).show();
