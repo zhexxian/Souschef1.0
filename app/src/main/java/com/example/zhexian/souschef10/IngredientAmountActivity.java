@@ -23,12 +23,14 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
     int indexIng;
     String measurement = "";
     int[] quant=new int[3];
+    int[] oldQuant = new int[4];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredient_amount_main);
         title = getIntent().getExtras().getString("Title");
         indexIng = getIntent().getExtras().getInt("Index");
+        oldQuant = getIntent().getIntArrayExtra("Integers");
         Button b = (Button) findViewById(R.id.button15);
         b.setText(title);
 

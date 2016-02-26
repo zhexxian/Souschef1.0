@@ -24,6 +24,9 @@ import java.util.Arrays;
 
 //TODO: implement dispense to arduino
 //TODO: add quantity left for each ingredient
+//TODO: weight variable constant updating
+//TODO: current quantity
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ArrayList<String> ingList;
@@ -541,13 +544,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String[] receiveSplit = receive.split(":");
         for(int i=0;i<12;i++){
             String[] receiveSplitSplit = receiveSplit[i].split(" ");
-            if(Integer.parseInt(receiveSplitSplit[0])==0){
+/*            if(Integer.parseInt(receiveSplitSplit[0])==0){
                 continue;
-            }
+            }*/
             for(int j=0;j<4;j++){
                 dataToArduino[i][j]=Integer.parseInt(receiveSplitSplit[j]);
             }
         }
+        System.out.println(Arrays.deepToString(dataToArduino));
     }
 
     /***
@@ -615,95 +619,117 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int thisIsIndex = 1;
                 intent.putExtra("Index", thisIsIndex);
                 intent.putExtra("Title", thisIsString);
+                intent.putExtra("Integers",dataToArduino[0]);
                 this.startActivityForResult(intent, 1);
-
                 break;
+
             case R.id.button1:
                 Intent intent1 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString1 = buttonText1.getText().toString();
                 int thisIsIndex1 = 2;
                 intent1.putExtra("Index", thisIsIndex1);
                 intent1.putExtra("Title", thisIsString1);
+                intent1.putExtra("Integers",dataToArduino[1]);
                 this.startActivityForResult(intent1,2);
                 break;
+
             case R.id.button2:
                 Intent intent2 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString2 = buttonText2.getText().toString();
                 int thisIsIndex2 = 3;
                 intent2.putExtra("Index", thisIsIndex2);
                 intent2.putExtra("Title", thisIsString2);
+                intent2.putExtra("Integers",dataToArduino[2]);
                 this.startActivityForResult(intent2,3);
                 break;
+
             case R.id.button3:
                 Intent intent3 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString3 = buttonText3.getText().toString();
                 int thisIsIndex3 = 4;
                 intent3.putExtra("Index", thisIsIndex3);
                 intent3.putExtra("Title", thisIsString3);
+                intent3.putExtra("Integers",dataToArduino[3]);
                 this.startActivityForResult(intent3,4);
                 break;
+
             case R.id.button4:
                 Intent intent4 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString4 = buttonText4.getText().toString();
                 int thisIsIndex4 = 5;
                 intent4.putExtra("Index", thisIsIndex4);
                 intent4.putExtra("Title", thisIsString4);
+                intent4.putExtra("Integers",dataToArduino[4]);
                 this.startActivityForResult(intent4,5);
                 break;
+
             case R.id.button5:
                 Intent intent5 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString5 = buttonText5.getText().toString();
                 int thisIsIndex5 = 6;
                 intent5.putExtra("Index", thisIsIndex5);
                 intent5.putExtra("Title", thisIsString5);
+                intent5.putExtra("Integers",dataToArduino[5]);
                 this.startActivityForResult(intent5,6);
                 break;
+
             case R.id.button6:
                 Intent intent6 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString6 = buttonText6.getText().toString();
                 int thisIsIndex6 = 7;
                 intent6.putExtra("Index", thisIsIndex6);
                 intent6.putExtra("Title", thisIsString6);
+                intent6.putExtra("Integers",dataToArduino[6]);
                 this.startActivityForResult(intent6,7);
                 break;
+
             case R.id.button7:
                 Intent intent7 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString7 = buttonText7.getText().toString();
                 int thisIsIndex7 = 8;
                 intent7.putExtra("Index", thisIsIndex7);
                 intent7.putExtra("Title", thisIsString7);
+                intent7.putExtra("Integers",dataToArduino[7]);
                 this.startActivityForResult(intent7,8);
                 break;
+
             case R.id.button8:
                 Intent intent8 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString8 = buttonText8.getText().toString();
                 int thisIsIndex8 = 9;
                 intent8.putExtra("Index", thisIsIndex8);
                 intent8.putExtra("Title", thisIsString8);
+                intent8.putExtra("Integers",dataToArduino[8]);
                 this.startActivityForResult(intent8,9);
                 break;
+
             case R.id.button9:
                 Intent intent9 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString9 = buttonText9.getText().toString();
                 int thisIsIndex9 = 10;
                 intent9.putExtra("Index", thisIsIndex9);
                 intent9.putExtra("Title", thisIsString9);
+                intent9.putExtra("Integers",dataToArduino[9]);
                 this.startActivityForResult(intent9,10);
                 break;
+
             case R.id.button10:
                 Intent intent10 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString10 = buttonText10.getText().toString();
                 int thisIsIndex10 = 11;
                 intent10.putExtra("Index", thisIsIndex10);
                 intent10.putExtra("Title", thisIsString10);
+                intent10.putExtra("Integers",dataToArduino[10]);
                 this.startActivityForResult(intent10,11);
                 break;
+
             case R.id.button11:
                 Intent intent11 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString11 = buttonText11.getText().toString();
                 int thisIsIndex11 = 12;
                 intent11.putExtra("Index", thisIsIndex11);
                 intent11.putExtra("Title", thisIsString11);
+                intent11.putExtra("Integers",dataToArduino[11]);
                 this.startActivityForResult(intent11,12);
                 break;
 
