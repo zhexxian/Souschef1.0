@@ -1,11 +1,15 @@
 package com.example.zhexian.souschef10;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +23,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.UUID;
 
 //TODO: implement dispense to arduino
 //TODO: add quantity left for each ingredient
@@ -61,10 +68,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button recipeButton;
     public TextView weightText;
 
+
+    public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
+    BluetoothAdapter btAdapter;
+    Set<BluetoothDevice> devicesArray;
+    ArrayList<String> pairedDevices;
+
+    public static final int REQUEST_ENABLE_BT = 1;
+    static final int SUCCESS_CONNECT = 2;
+    static final int DISPENSE = 3;
+
+    Handler mmHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case SUCCESS_CONNECT:
+                    Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
+                    break;
+                case DISPENSE:
+                    Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if(btAdapter==null){
+            Toast.makeText(this,"Device doesn't support bluetooth. Closing application", Toast.LENGTH_LONG).show();
+        }
+        if(!btAdapter.isEnabled()){
+            turnOnBT();
+        }
+
+        getPairedDevices();
+
         String fileName = "Ingredients.txt";
 
         ingList = getIngredientsList(fileName);
@@ -95,6 +140,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recipeButton.setOnClickListener(this);
 
     }
+
+    private void turnOnBT(){
+        Intent btIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(btIntent, REQUEST_ENABLE_BT);
+    }
+
+    private void getPairedDevices(){
+        devicesArray = btAdapter.getBondedDevices();
+        BluetoothDevice x = null;
+        if(devicesArray.size()>0){
+            for(BluetoothDevice device: devicesArray){
+                Log.e("GET PAIRED DEVICE", device.getName());
+//                pairedDevices.add(device.getName());
+                x = device;
+
+            }
+        }
+        ConnectThread connect = new ConnectThread(x);
+        connect.start();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -717,6 +784,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
 
+            case R.id.button13:
+                Log.e("Button13", "Button pressed");
+                dispense();
+                break;
             case R.id.button14:
                 if(ingSelected.size()>0){
                     undo(ingSelected.get(ingSelected.size()-1));
@@ -730,9 +801,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent19 = new Intent(this, RecipeListActivity.class);
                 this.startActivityForResult(intent19,19);
                 break;
+
+
         }
     }
 
+
+    public void dispense(){
+        mmHandler.obtainMessage(DISPENSE).sendToTarget();
+        Log.e("Inside Dispense", "Dispense pressed");
+        Toast.makeText(getApplicationContext(),"Dispensed",Toast.LENGTH_LONG).show();
+    }
     /***
      * undo - undo the latest change (excluding name change) that is read from the ingSelected.
      * @param caseNumber - this integer value is the ingredient slot number
@@ -901,6 +980,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(MainActivity.this, "Error writing to file '" + fileName + "'",Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+
+
+    private class ConnectThread extends Thread{
+        private final BluetoothSocket mmSocket;
+        private final BluetoothDevice mmDevice;
+
+        public ConnectThread(BluetoothDevice device){
+            BluetoothSocket tmp = null;
+            mmDevice = device;
+
+            try{
+                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+            mmSocket = tmp;
+
+        }
+
+        public void run(){
+            try{
+                mmSocket.connect();
+            }catch (IOException connectException){
+                connectException.printStackTrace();
+                try{
+                    mmSocket.close();
+                }catch (IOException e){}
+
+            }
+
+            mmHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
+        }
     }
 
 /*    private void CheckBt() {
