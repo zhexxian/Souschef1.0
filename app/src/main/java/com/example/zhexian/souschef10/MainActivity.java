@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         undoAllButton.setOnClickListener(this);
         undoButton.setOnClickListener(this);
         recipeButton.setOnClickListener(this);
-
+        dispenseButton.setOnClickListener(this);
     }
 
     @Override
@@ -759,7 +759,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(MainActivity.this,"There is nothing to undo!",Toast.LENGTH_SHORT).show();
                 }
                 break;
-
+            case R.id.button13:
+                Toast.makeText(MainActivity.this, "Dispensing", Toast.LENGTH_SHORT).show();
+                //TODO: ADD METHOD CALL HERE, PREFERABLY CREATE A METHOD OUTSIDE OF THIS SWITCH/CASE STATEMENT
+                /***
+                 * INCLUDE METHOD CALL HERE
+                 */
+                break;
             case R.id.button14:
                 if(ingSelected.size()>0){
                     undo(ingSelected.get(ingSelected.size()-1));
