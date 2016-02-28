@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,13 +18,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
@@ -31,11 +37,17 @@ import java.util.UUID;
 
 //TODO: implement dispense to arduino
 //TODO: add quantity left for each ingredient
+//TODO: weight variable constant updating
+//TODO: current quantity
+//TODO: @jesse - do icons for MA instead of string quantity
+//TODO: @jesse - increase font size of MA ingredient buttons
+//TODO: @jesse - the IAA, change from 2 seekbars to one seekbars, with a button to change whether it is teaspoon or table spoon measurement
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ArrayList<String> ingList;
     ArrayList<Integer> ingSelected = new ArrayList<Integer>();
-    int[][] dataToArduino = new int[12][4];
+    int[][] dataToArduino = new int[12][3];
     int[][][] recipeList = new int[2][12][4];
     public Button buttonText;
     public Button buttonText1;
@@ -67,32 +79,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button dispenseButton;
     public Button recipeButton;
     public TextView weightText;
+    public TextView weightValue;
 
 
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
+    public static final String TAG = "Main Activity";
     BluetoothAdapter btAdapter;
     Set<BluetoothDevice> devicesArray;
     ArrayList<String> pairedDevices;
+    ConnectThread connect;
+    ConnectedThread connected;
 
     public static final int REQUEST_ENABLE_BT = 1;
     static final int SUCCESS_CONNECT = 2;
     static final int DISPENSE = 3;
+    static final int MESSAGE_READ = 4;
 
-    Handler mmHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case SUCCESS_CONNECT:
-                    Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
-                    break;
-                case DISPENSE:
-                    Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_LONG).show();
-                    break;
+    Handler mmHandler;
+
+    {
+        mmHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case SUCCESS_CONNECT:
+                        Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
+                        break;
+                    case DISPENSE:
+                        Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_SHORT).show();
+                        String message = dispense();
+                        Log.e(TAG, message);
+                        send_message(connected, message);
+                        Log.e(TAG, "Message sent");
+
+                        break;
+                    case MESSAGE_READ:
+
+                        byte[] readBuf = (byte[]) msg.obj;
+                        int begin = (int)msg.arg1;
+                        int end = (int)msg.arg2;
+
+                        String inpData = new String(readBuf);
+                        inpData.substring(begin,end);
+                        Log.e(TAG, inpData);
+                        weightValue.setText(inpData);
+                        break;
+                }
             }
-        }
-    };
+        };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         undoAllButton.setOnClickListener(this);
         undoButton.setOnClickListener(this);
         recipeButton.setOnClickListener(this);
-
+        dispenseButton.setOnClickListener(this);
     }
 
     private void turnOnBT(){
@@ -151,17 +187,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         BluetoothDevice x = null;
         if(devicesArray.size()>0){
             for(BluetoothDevice device: devicesArray){
-                Log.e("GET PAIRED DEVICE", device.getName());
+                Log.e(TAG, device.getName());
 //                pairedDevices.add(device.getName());
                 x = device;
 
             }
         }
-        ConnectThread connect = new ConnectThread(x);
+        connect = new ConnectThread(x);
         connect.start();
     }
 
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if(connect!=null){
+            connect.cancel();
+            connect = null;
+        }
+        if(connected!=null){
+            connected.cancel();
+            connected = null;
+        }
+    }
+
+    private void send_message(ConnectedThread thread, String data){
+        thread.write(data.getBytes());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -200,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (requestCode) {
                 case 1:
                     buttonText.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])){
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity1.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"),0);
                         quantity1.setText(qty + data.getStringExtra("Measurement"));
@@ -214,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 2:
                     buttonText1.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])){
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity2.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 1);
                         quantity2.setText(qty + data.getStringExtra("Measurement"));
@@ -228,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 3:
                     buttonText2.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])){
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity3.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 2);
                         quantity3.setText(qty + data.getStringExtra("Measurement"));
@@ -242,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 4:
                     buttonText3.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])) {
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity4.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 3);
                         quantity4.setText(qty + data.getStringExtra("Measurement"));
@@ -256,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 5:
                     buttonText4.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])) {
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity5.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 4);
                         quantity5.setText(qty + data.getStringExtra("Measurement"));
@@ -270,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 6:
                     buttonText5.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])) {
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity6.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 5);
                         quantity6.setText(qty + data.getStringExtra("Measurement"));
@@ -284,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 7:
                     buttonText6.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])) {
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity7.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 6);
                         quantity7.setText(qty + data.getStringExtra("Measurement"));
@@ -298,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 8:
                     buttonText7.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])) {
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity8.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 7);
                         quantity8.setText(qty + data.getStringExtra("Measurement"));
@@ -312,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 9:
                     buttonText8.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])) {
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity9.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 8);
                         quantity9.setText(qty + data.getStringExtra("Measurement"));
@@ -326,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 10:
                     buttonText9.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])) {
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity10.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 9);
                         quantity10.setText(qty + data.getStringExtra("Measurement"));
@@ -340,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 11:
                     buttonText10.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])) {
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity11.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 10);
                         quantity11.setText(qty + data.getStringExtra("Measurement"));
@@ -354,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 12:
                     buttonText11.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1] && data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[2])) {
+                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity12.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 11);
                         quantity12.setText(qty + data.getStringExtra("Measurement"));
@@ -464,6 +516,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             weightText = (TextView) findViewById(R.id.textView2);
             weightText.setTypeface(myTypeface);
+
+            weightValue = (TextView) findViewById(R.id.textView3);
+            weightValue.setTypeface(myTypeface);
+
         }
     };
     /***
@@ -497,6 +553,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buttonText9.setBackgroundResource(R.drawable.circle);
             buttonText10.setBackgroundResource(R.drawable.circle);
             buttonText11.setBackgroundResource(R.drawable.circle);
+
+            int[][] newdata = new int[12][3];
+            dataToArduino = newdata;
+            while(ingSelected.size()>0){
+                ingSelected.remove(ingSelected.size()-1);
+            }
         }
     };
     /***
@@ -514,7 +576,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     continue;
                 }
                 System.out.println(i);
-                for(int j=1;j<4;j++){
+                for(int j=1;j<3;j++){
                     if(dataToArduino[i][j]!=0){
                         meas= measurementIndex[j-1];
                         amount = dataToArduino[i][j];
@@ -606,15 +668,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public void recipeConverter(String receive){
         String[] receiveSplit = receive.split(":");
+        System.out.println(receive);
+        int[][] newData = new int[12][3];
         for(int i=0;i<12;i++){
             String[] receiveSplitSplit = receiveSplit[i].split(" ");
-            if(Integer.parseInt(receiveSplitSplit[0])==0){
+/*            if(Integer.parseInt(receiveSplitSplit[0])==0){
                 continue;
-            }
-            for(int j=0;j<4;j++){
-                dataToArduino[i][j]=Integer.parseInt(receiveSplitSplit[j]);
+            }*/
+            for(int j=0;j<3;j++){
+                //System.out.println(receiveSplitSplit[j]);
+                int value = Integer.parseInt(receiveSplitSplit[j]);
+                newData[i][j]=value;
             }
         }
+        dataToArduino=newData;
+        System.out.println(Arrays.deepToString(newData));
+        System.out.println("from recipe: "+Arrays.deepToString(dataToArduino));
     }
 
     /***
@@ -626,7 +695,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public int forArduino(int[] getIntArray, int ingNumber){
         int qty=0;
         dataToArduino[ingNumber][0]=1;
-        for(int i=0;i<3;i++){
+        for(int i=0;i<2;i++){
             dataToArduino[ingNumber][i+1]=getIntArray[i];
             if(getIntArray[i]!=0){
                 qty=getIntArray[i];
@@ -682,95 +751,117 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int thisIsIndex = 1;
                 intent.putExtra("Index", thisIsIndex);
                 intent.putExtra("Title", thisIsString);
+                intent.putExtra("Integers",dataToArduino[0]);
                 this.startActivityForResult(intent, 1);
-
                 break;
+
             case R.id.button1:
                 Intent intent1 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString1 = buttonText1.getText().toString();
                 int thisIsIndex1 = 2;
                 intent1.putExtra("Index", thisIsIndex1);
                 intent1.putExtra("Title", thisIsString1);
+                intent1.putExtra("Integers",dataToArduino[1]);
                 this.startActivityForResult(intent1,2);
                 break;
+
             case R.id.button2:
                 Intent intent2 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString2 = buttonText2.getText().toString();
                 int thisIsIndex2 = 3;
                 intent2.putExtra("Index", thisIsIndex2);
                 intent2.putExtra("Title", thisIsString2);
+                intent2.putExtra("Integers",dataToArduino[2]);
                 this.startActivityForResult(intent2,3);
                 break;
+
             case R.id.button3:
                 Intent intent3 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString3 = buttonText3.getText().toString();
                 int thisIsIndex3 = 4;
                 intent3.putExtra("Index", thisIsIndex3);
                 intent3.putExtra("Title", thisIsString3);
+                intent3.putExtra("Integers",dataToArduino[3]);
                 this.startActivityForResult(intent3,4);
                 break;
+
             case R.id.button4:
                 Intent intent4 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString4 = buttonText4.getText().toString();
                 int thisIsIndex4 = 5;
                 intent4.putExtra("Index", thisIsIndex4);
                 intent4.putExtra("Title", thisIsString4);
+                intent4.putExtra("Integers",dataToArduino[4]);
                 this.startActivityForResult(intent4,5);
                 break;
+
             case R.id.button5:
                 Intent intent5 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString5 = buttonText5.getText().toString();
                 int thisIsIndex5 = 6;
                 intent5.putExtra("Index", thisIsIndex5);
                 intent5.putExtra("Title", thisIsString5);
+                intent5.putExtra("Integers",dataToArduino[5]);
                 this.startActivityForResult(intent5,6);
                 break;
+
             case R.id.button6:
                 Intent intent6 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString6 = buttonText6.getText().toString();
                 int thisIsIndex6 = 7;
                 intent6.putExtra("Index", thisIsIndex6);
                 intent6.putExtra("Title", thisIsString6);
+                intent6.putExtra("Integers",dataToArduino[6]);
                 this.startActivityForResult(intent6,7);
                 break;
+
             case R.id.button7:
                 Intent intent7 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString7 = buttonText7.getText().toString();
                 int thisIsIndex7 = 8;
                 intent7.putExtra("Index", thisIsIndex7);
                 intent7.putExtra("Title", thisIsString7);
+                intent7.putExtra("Integers",dataToArduino[7]);
                 this.startActivityForResult(intent7,8);
                 break;
+
             case R.id.button8:
                 Intent intent8 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString8 = buttonText8.getText().toString();
                 int thisIsIndex8 = 9;
                 intent8.putExtra("Index", thisIsIndex8);
                 intent8.putExtra("Title", thisIsString8);
+                intent8.putExtra("Integers",dataToArduino[8]);
                 this.startActivityForResult(intent8,9);
                 break;
+
             case R.id.button9:
                 Intent intent9 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString9 = buttonText9.getText().toString();
                 int thisIsIndex9 = 10;
                 intent9.putExtra("Index", thisIsIndex9);
                 intent9.putExtra("Title", thisIsString9);
+                intent9.putExtra("Integers",dataToArduino[9]);
                 this.startActivityForResult(intent9,10);
                 break;
+
             case R.id.button10:
                 Intent intent10 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString10 = buttonText10.getText().toString();
                 int thisIsIndex10 = 11;
                 intent10.putExtra("Index", thisIsIndex10);
                 intent10.putExtra("Title", thisIsString10);
+                intent10.putExtra("Integers",dataToArduino[10]);
                 this.startActivityForResult(intent10,11);
                 break;
+
             case R.id.button11:
                 Intent intent11 = new Intent(this, IngredientAmountActivity.class);
                 String thisIsString11 = buttonText11.getText().toString();
                 int thisIsIndex11 = 12;
                 intent11.putExtra("Index", thisIsIndex11);
                 intent11.putExtra("Title", thisIsString11);
+                intent11.putExtra("Integers",dataToArduino[11]);
                 this.startActivityForResult(intent11,12);
                 break;
 
@@ -778,6 +869,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 System.out.println(ingSelected.size());
                 if(ingSelected.size()>0){
                     runOnUiThread(undoAll);
+
                 }
                 else{
                     Toast.makeText(MainActivity.this,"There is nothing to undo!",Toast.LENGTH_SHORT).show();
@@ -785,7 +877,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.button13:
-                Log.e("Button13", "Button pressed");
+                Toast.makeText(MainActivity.this, "Dispensing", Toast.LENGTH_SHORT).show();
+                //TODO: ADD METHOD CALL HERE, PREFERABLY CREATE A METHOD OUTSIDE OF THIS SWITCH/CASE STATEMENT
+                /***
+                 * INCLUDE METHOD CALL HERE
+                 */
+                mmHandler.obtainMessage(DISPENSE).sendToTarget();
                 dispense();
                 break;
             case R.id.button14:
@@ -807,17 +904,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void dispense(){
-        mmHandler.obtainMessage(DISPENSE).sendToTarget();
-        Log.e("Inside Dispense", "Dispense pressed");
-        Toast.makeText(getApplicationContext(),"Dispensed",Toast.LENGTH_LONG).show();
+    public String dispense(){
+        Log.e(TAG, "Dispense pressed");
+        return "i am dispensing";
+//        Toast.makeText(getApplicationContext(),"Dispensed",Toast.LENGTH_LONG).show();
     }
     /***
      * undo - undo the latest change (excluding name change) that is read from the ingSelected.
      * @param caseNumber - this integer value is the ingredient slot number
      */
     public void undo(int caseNumber){
-        int[] zeroes = {0,0,0,0};
+        int[] zeroes = {0,0,0};
         switch(caseNumber){
             case 1:
                 quantity1.setVisibility(View.INVISIBLE);
@@ -1002,17 +1099,103 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         public void run(){
+
+
             try{
                 mmSocket.connect();
+                connected = new ConnectedThread(mmSocket);
+                connected.start();
+
+                Log.e(TAG, "Connected");
             }catch (IOException connectException){
-                connectException.printStackTrace();
+                Log.e(TAG, "cannot connect");
+                Log.e(TAG, connectException.getMessage());
+
                 try{
                     mmSocket.close();
-                }catch (IOException e){}
+                    Log.e(TAG, "closed the socket");
+                }catch (IOException e){
+                    Log.e(TAG, "can't close the socket");
+
+                }
 
             }
 
             mmHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
+        }
+
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) {
+                Log.e(TAG, "closing connect thread");
+            }
+        }
+    }
+
+    private class ConnectedThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final InputStream mmInStream;
+        private final OutputStream mmOutStream;
+
+        public ConnectedThread(BluetoothSocket socket) {
+            mmSocket = socket;
+            InputStream tmpIn = null;
+            OutputStream tmpOut = null;
+            try {
+                tmpIn = socket.getInputStream();
+                tmpOut = socket.getOutputStream();
+            } catch (IOException e) {
+            }
+            mmInStream = tmpIn;
+            mmOutStream = tmpOut;
+        }
+
+        public void run() {
+            Log.e(TAG, "inside connected run");
+            byte[] buffer = new byte[1024];
+            int begin = 0;
+            int bytes = 0;
+            while (true) {
+                try {
+                    Log.e(TAG, "Attempting to read buffer");
+//                    InputStream input = mmSocket.getInputStream();
+//                    DataInputStream dinput = new DataInputStream(input);
+//                    dinput.readFully(buffer);
+                    bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
+                    Log.e(TAG, "Finished reading buffer");
+//                    Log.e(TAG, dinput.toString());
+
+                    for (int i = begin; i < bytes; i++) {
+                        if (buffer[i] == "#".getBytes()[0]) {
+                            mmHandler.obtainMessage(MESSAGE_READ, begin, i-1, buffer).sendToTarget();
+                            begin = i + 1;
+                            if (i == bytes - 1) {
+                                bytes = 0;
+                                begin = 0;
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, e.getMessage());
+                    Log.e(TAG, "run exception in connected thread");
+                    break;
+                }
+            }
+        }
+
+        public void write(byte[] bytes) {
+            try {
+                mmOutStream.write(bytes);
+            } catch (IOException e) {
+            }
+        }
+
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) {
+            }
         }
     }
 
