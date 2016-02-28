@@ -29,6 +29,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<String> pairedDevices;
     ConnectThread connect;
     ConnectedThread connected;
+    BufferedReader mBufferedReader;
 
     public static final int REQUEST_ENABLE_BT = 1;
     static final int SUCCESS_CONNECT = 2;
@@ -115,14 +117,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         break;
                     case MESSAGE_READ:
+                        String inpData = (String) msg.obj;
 
-                        byte[] readBuf = (byte[]) msg.obj;
-                        int begin = (int)msg.arg1;
-                        int end = (int)msg.arg2;
 
-                        String inpData = new String(readBuf);
-                        inpData.substring(begin,end);
-                        Log.e(TAG, inpData);
+
+//                        byte[] readBuf = (byte[]) msg.obj;
+//                        int begin = (int)msg.arg1;
+//                        int end = (int)msg.arg2;
+//
+//                        String inpData = new String(readBuf);
+//                        inpData.substring(begin,end);
+//                        Log.e(TAG, inpData);
                         weightValue.setText(inpData);
                         break;
                 }
@@ -1142,6 +1147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mmSocket = socket;
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
+            InputStreamReader mInputStreamReader = null;
             try {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
@@ -1149,33 +1155,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
+            mInputStreamReader = new InputStreamReader(mmInStream);
+            mBufferedReader = new BufferedReader(mInputStreamReader);
         }
 
         public void run() {
             Log.e(TAG, "inside connected run");
+
+            String inpdata = null;
+            Message msg = Message.obtain();
             byte[] buffer = new byte[1024];
-            int begin = 0;
-            int bytes = 0;
+            int bytes;
             while (true) {
                 try {
-                    Log.e(TAG, "Attempting to read buffer");
-//                    InputStream input = mmSocket.getInputStream();
-//                    DataInputStream dinput = new DataInputStream(input);
-//                    dinput.readFully(buffer);
-                    bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
-                    Log.e(TAG, "Finished reading buffer");
-//                    Log.e(TAG, dinput.toString());
+                    inpdata = mBufferedReader.readLine();
+//                    msg.obj = inpdata;
+//                    msg.setTarget(mmHandler);
+//                    msg.sendToTarget();
+                    Log.e(TAG, inpdata);
+//                    byte[] b = inpdata.getBytes(StandardCharsets.UTF_8);
+//                    bytes = mmInStream.read(buffer);
+                    mmHandler.obtainMessage(MESSAGE_READ, 1, 1,
+                            inpdata).sendToTarget();
 
-                    for (int i = begin; i < bytes; i++) {
-                        if (buffer[i] == "#".getBytes()[0]) {
-                            mmHandler.obtainMessage(MESSAGE_READ, begin, i-1, buffer).sendToTarget();
-                            begin = i + 1;
-                            if (i == bytes - 1) {
-                                bytes = 0;
-                                begin = 0;
-                            }
-                        }
-                    }
+
+
+
+
+//            byte[] buffer = new byte[1024];
+//            int begin = 0;
+//            int bytes = 0;
+//            while (true) {
+//                try {
+//                    Log.e(TAG, "Attempting to read buffer");
+////                    InputStream input = mmSocket.getInputStream();
+////                    DataInputStream dinput = new DataInputStream(input);
+////                    dinput.readFully(buffer);
+//                    bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
+//                    Log.e(TAG, "Finished reading buffer");
+////                    Log.e(TAG, dinput.toString());
+//
+//                    for (int i = begin; i < bytes; i++) {
+//                        if (buffer[i] == "#".getBytes()[0]) {
+//                            mmHandler.obtainMessage(MESSAGE_READ, begin, i-1, buffer).sendToTarget();
+////                            buffer[bytes]= '\0';
+//                            begin = i + 1;
+//                            if (i == bytes - 1) {
+//                                bytes = 0;
+//                                begin = 0;
+//                            }
+//                        }
+//                    }
                 } catch (IOException e) {
                     Log.e(TAG, e.getMessage());
                     Log.e(TAG, "run exception in connected thread");
