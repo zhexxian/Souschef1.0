@@ -20,7 +20,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="30dp"
-        android:id="@+id/linearLayout5">
+        android:id="@+id/linearLayout5"
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -46,7 +47,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <Button
                 android:layout_width="120dp"
@@ -61,7 +63,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <Button
                 android:layout_width="120dp"
@@ -76,7 +79,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <Button
                 android:layout_width="120dp"
@@ -91,7 +95,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
         </LinearLayout>
 
@@ -166,7 +171,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <Button
                 android:layout_width="120dp"
@@ -181,7 +187,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <Button
                 android:layout_width="120dp"
@@ -196,7 +203,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <Button
                 android:layout_width="120dp"
@@ -211,7 +219,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -285,7 +294,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <Button
                 android:layout_width="120dp"
@@ -300,7 +310,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <Button
                 android:layout_width="120dp"
@@ -315,7 +326,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <Button
                 android:layout_width="120dp"
@@ -330,7 +342,8 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
         </LinearLayout>
 
 
@@ -429,7 +442,8 @@
                 android:textSize="15dp"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="20dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
@@ -472,7 +486,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:layout_marginBottom="20dp">
 
         <Button
             android:layout_width="100dp"
