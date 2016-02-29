@@ -38,10 +38,11 @@ import java.util.Arrays;
  -[UI] ingredient quantity font, e.g. '4(bold) (no X) tsp', '4(bold) 1/2(small) tbsp'
 
  * Ingredient amount page:
- -[Function] slider need to show actual number, not 0.0
+ -[Function] slider need to show actual number, not 0.0 [DONE!]
  -[Function] table spoon selection need to be stored and reflected on main page [DONE!]
- -[Function] when slide to change quantity to 0, need to reflect on main page as unhighlighting the ingredient
+ -[Function] when slide to change quantity to 0, need to reflect on main page as unhighlighting the ingredient [DONE!]
  -[UI] change 'select amount' to 'quantity'
+ -[Function] main page should display appropriate amount in teaspoon, now it is 2 times the amount (need to divide by 2) [DONE!]
 
  * Recipe page:
  - [Function] link recipe list page to recipe detail page (for curry chicken)
@@ -157,7 +158,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity1.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"),0);
-                        quantity1.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity1.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity1.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(1);
                     }
@@ -174,7 +180,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity2.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 1);
-                        quantity2.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity2.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity2.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText1.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(2);
                     }
@@ -191,7 +202,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity3.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 2);
-                        quantity3.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity3.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity3.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText2.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(3);
                     }
@@ -208,7 +224,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity4.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 3);
-                        quantity4.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity4.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity4.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText3.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(4);
                     }
@@ -225,7 +246,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity5.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 4);
-                        quantity5.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity5.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity5.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText4.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(5);
                     }
@@ -242,7 +268,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity6.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 5);
-                        quantity6.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity6.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity6.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText5.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(6);
                     }
@@ -259,7 +290,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity7.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 6);
-                        quantity7.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity7.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity7.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText6.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(7);
                     }
@@ -276,7 +312,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity8.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 7);
-                        quantity8.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity8.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity8.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText7.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(8);
                     }
@@ -293,7 +334,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity9.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 8);
-                        quantity9.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity9.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity9.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText8.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(9);
                     }
@@ -310,7 +356,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity10.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 9);
-                        quantity10.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity10.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity10.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText9.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(10);
                     }
@@ -327,7 +378,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity11.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 10);
-                        quantity11.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity11.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity11.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText10.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(11);
                     }
@@ -344,7 +400,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
                         quantity12.setVisibility(View.VISIBLE);
                         int qty = forArduino(data.getIntArrayExtra("Quant"), 11);
-                        quantity12.setText(qty + data.getStringExtra("Measurement"));
+                        if(data.getStringExtra("Measurement").equals("Xtsp")){
+                            quantity12.setText(qty/2.0 + data.getStringExtra("Measurement"));
+                        }
+                        else{
+                            quantity12.setText(qty + data.getStringExtra("Measurement"));
+                        }
                         buttonText11.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(12);
                     }
@@ -622,18 +683,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /***
      * forArduino - this method is used to change the subarray from dataToArduino such that it contains the quantity to be displayed in the layout
-     * @param getIntArray - this array contains just quantity values. for example [1,0,0] means 1 times teaspoon
+     * @param getIntArray - this array contains just quantity values. for example [1,1,0] means 1 times teaspoon
      * @param ingNumber - this integer value is the ingredient slot number
      * @return - returns an integer value for the caller to receive
      */
     public int forArduino(int[] getIntArray, int ingNumber){
         int qty=0;
         dataToArduino[ingNumber][0]=1;
-        for(int i=0;i<2;i++){
-            dataToArduino[ingNumber][i+1]=getIntArray[i];
-            if(getIntArray[i]!=0){
-                qty=getIntArray[i];
-            }
+        dataToArduino[ingNumber][1]=getIntArray[0];
+        dataToArduino[ingNumber][2]=getIntArray[1];
+        if(getIntArray[0]!=0){
+            qty = getIntArray[0];
+        }
+        else if(getIntArray[1]!=0){
+            qty = getIntArray[1];
         }
         return qty;
     }

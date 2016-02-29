@@ -192,11 +192,6 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                     quant[1] = tablespoon.getProgress();
                     measurement="Xtbsp";
                 }
-/*                else{
-                    quant[0]=0;
-                    quant[1]=tablespoon.getProgress();
-                    measurement="Xtbsp";
-                }*/
                 intent.putExtra("Measurement", measurement);
                 intent.putExtra("Quant",quant);
                 setResult(IngredientAmountActivity.RESULT_OK, intent);
