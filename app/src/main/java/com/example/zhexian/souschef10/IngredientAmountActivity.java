@@ -137,8 +137,6 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         });
 
         alert.show();
-        //TODO: Create link back to MainActivity
-        //TODO: Send data back as an intent to MainActivity, including any changes to name of ingredient, and quantity
     }
 
     @Override
@@ -169,8 +167,6 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         title = ingName.getText().toString();
         System.out.println(title);
 
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Quantity Selection");
         // Set an EditText view to get user input
         final EditText input = new EditText(this);
         input.setKeyListener(DigitsKeyListener.getInstance());
