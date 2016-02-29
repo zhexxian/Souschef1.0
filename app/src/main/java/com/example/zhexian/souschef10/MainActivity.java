@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,11 +17,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -110,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case DISPENSE:
                         Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_SHORT).show();
-                        String message = dispense();
+                        String message = dispense(dataToArduino);
                         Log.e(TAG, message);
                         send_message(connected, message);
                         Log.e(TAG, "Message sent");
