@@ -3,9 +3,11 @@ package com.example.zhexian.souschef10;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.telecom.Call;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 /**
@@ -13,13 +15,16 @@ import android.widget.ImageView;
  * copy pasted from RLA, TODO: will improve on this
  */
 public class RecipeActivity {
-
+    public Button selectButton;
+    public Button cancelButton;
     public class RecipeListActivity extends AppCompatActivity implements View.OnClickListener {
         public ImageView curryChicken;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.recipe_list);
+            setContentView(R.layout.recipe_currychicken);
+            selectButton = (Button)findViewById(R.id.button22);
+            cancelButton = (Button) findViewById(R.id.button23);
             curryChicken = (ImageView) findViewById(R.id.imageView);
 
             curryChicken.setOnClickListener(this);
@@ -38,15 +43,10 @@ public class RecipeActivity {
             // automatically handle clicks on the Home/Up button, so long
             // as you specify a parent activity in AndroidManifest.xml.
             int id = item.getItemId();
-
             //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
-            }
-
+            if (id == R.id.action_settings) {return true;}
             return super.onOptionsItemSelected(item);
         }
-
         @Override
         public void onClick(View v){
             switch (v.getId()){

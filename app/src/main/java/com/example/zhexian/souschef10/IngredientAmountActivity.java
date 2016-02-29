@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.text.method.DigitsKeyListener;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,36 +73,22 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                 double myProg = 0.5*progress;
                 teaspoonQuant.setText(""+myProg);
                 tablespoon.setProgress(0);
-
             }
-
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
+            public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         tablespoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tablespoonQuant.setText("" + progress);
                 teaspoon.setProgress(0);
-
             }
-
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
+            public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
         acceptButton.setTypeface(myTypeface);
@@ -118,6 +105,7 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         final EditText input = new EditText(this);
         Button b = (Button) findViewById(R.id.button15);
         String oldIngredient = b.getText().toString();
+        input.setFilters(new InputFilter[] { new InputFilter.LengthFilter(15) });
         input.append(oldIngredient);
         alert.setView(input);
 
