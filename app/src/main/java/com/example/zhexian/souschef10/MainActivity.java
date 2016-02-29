@@ -909,9 +909,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public String dispense(){
+    public String dispense(int[][] array){
+        String data = "";
+        for (int i =0; i<array.length;i++){
+            if (array[i][0]!=1){
+                continue;
+            }
+            else{
+                if(i<10)
+                    data+=0;
+                data+=i;
+                for (int j=1; j<array[i].length; j++){
+                    data+=array[i][j];
+                }
+                data+='\n';
+            }
+
+        }
+
         Log.e(TAG, "Dispense pressed");
-        return "i am dispensing";
+        return data;
+
+
 //        Toast.makeText(getApplicationContext(),"Dispensed",Toast.LENGTH_LONG).show();
     }
     /***
@@ -1163,49 +1182,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.e(TAG, "inside connected run");
 
             String inpdata = null;
-            Message msg = Message.obtain();
-            byte[] buffer = new byte[1024];
-            int bytes;
             while (true) {
                 try {
                     inpdata = mBufferedReader.readLine();
-//                    msg.obj = inpdata;
-//                    msg.setTarget(mmHandler);
-//                    msg.sendToTarget();
                     Log.e(TAG, inpdata);
-//                    byte[] b = inpdata.getBytes(StandardCharsets.UTF_8);
-//                    bytes = mmInStream.read(buffer);
                     mmHandler.obtainMessage(MESSAGE_READ, 1, 1,
                             inpdata).sendToTarget();
 
 
 
-
-
-//            byte[] buffer = new byte[1024];
-//            int begin = 0;
-//            int bytes = 0;
-//            while (true) {
-//                try {
-//                    Log.e(TAG, "Attempting to read buffer");
-////                    InputStream input = mmSocket.getInputStream();
-////                    DataInputStream dinput = new DataInputStream(input);
-////                    dinput.readFully(buffer);
-//                    bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
-//                    Log.e(TAG, "Finished reading buffer");
-////                    Log.e(TAG, dinput.toString());
-//
-//                    for (int i = begin; i < bytes; i++) {
-//                        if (buffer[i] == "#".getBytes()[0]) {
-//                            mmHandler.obtainMessage(MESSAGE_READ, begin, i-1, buffer).sendToTarget();
-////                            buffer[bytes]= '\0';
-//                            begin = i + 1;
-//                            if (i == bytes - 1) {
-//                                bytes = 0;
-//                                begin = 0;
-//                            }
-//                        }
-//                    }
                 } catch (IOException e) {
                     Log.e(TAG, e.getMessage());
                     Log.e(TAG, "run exception in connected thread");
@@ -1228,21 +1213,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-
-/*    private void CheckBt() {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            Toast.makeText(getApplicationContext(), "Bluetooth Disabled !",
-                    Toast.LENGTH_SHORT).show();
-                   *//* It tests if the bluetooth is enabled or not, if not the app will show a message. *//*
-        }
-
-        if (mBluetoothAdapter == null) {
-            Toast.makeText(getApplicationContext(),
-                    "Bluetooth null !", Toast.LENGTH_SHORT)
-                    .show();
-        }
-    }*/
 
 }
