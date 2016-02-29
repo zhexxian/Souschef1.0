@@ -29,8 +29,23 @@ import java.util.Arrays;
 //TODO: @jesse - do icons for MA instead of string quantity
 //TODO: @jesse - increase font size of MA ingredient buttons
 //TODO: @jesse - the IAA, change from 2 seekbars to one seekbars, with a button to change whether it is teaspoon or table spoon measurement 
+//TODO: use different font sizes for different quantities
+/*************************** TODO LIST **********************************
+ * Main page:
+ -[UI] tare button for weight
+ -[Function] after pressing tare button, weight displayed will be actual weight data received minus the weight of container
+ -[UI] weight and tare button on the left, digital weight display on the right
+ -[UI] ingredient quantity font, e.g. '4(bold) (no X) tsp', '4(bold) 1/2(small) tbsp'
 
+ * Ingredient amount page:
+ -[Function] slider need to show actual number, not 0.0
+ -[Function] table spoon selection need to be stored and reflected on main page [DONE!]
+ -[Function] when slide to change quantity to 0, need to reflect on main page as unhighlighting the ingredient
+ -[UI] change 'select amount' to 'quantity'
 
+ * Recipe page:
+ - [Function] link recipe list page to recipe detail page (for curry chicken)
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ArrayList<String> ingList;
     ArrayList<Integer> ingSelected = new ArrayList<Integer>();
@@ -146,6 +161,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         buttonText.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(1);
                     }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
+                    }
                     if(!(data.getStringExtra("Title").equals(ingList.get(0)))){
                         ingList.set(0, data.getStringExtra("Title"));
                         changeIngredientList(ingList);
@@ -159,6 +177,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         quantity2.setText(qty + data.getStringExtra("Measurement"));
                         buttonText1.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(2);
+                    }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(1)))){
                         ingList.set(1, data.getStringExtra("Title"));
@@ -174,6 +195,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         buttonText2.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(3);
                     }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
+                    }
                     if(!(data.getStringExtra("Title").equals(ingList.get(2)))){
                         ingList.set(2, data.getStringExtra("Title"));
                         changeIngredientList(ingList);
@@ -187,6 +211,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         quantity4.setText(qty + data.getStringExtra("Measurement"));
                         buttonText3.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(4);
+                    }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(3)))){
                         ingList.set(3, data.getStringExtra("Title"));
@@ -202,6 +229,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         buttonText4.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(5);
                     }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
+                    }
                     if(!(data.getStringExtra("Title").equals(ingList.get(4)))){
                         ingList.set(4, data.getStringExtra("Title"));
                         changeIngredientList(ingList);
@@ -215,6 +245,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         quantity6.setText(qty + data.getStringExtra("Measurement"));
                         buttonText5.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(6);
+                    }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(5)))){
                         ingList.set(5, data.getStringExtra("Title"));
@@ -230,6 +263,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         buttonText6.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(7);
                     }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
+                    }
                     if(!(data.getStringExtra("Title").equals(ingList.get(6)))){
                         ingList.set(6, data.getStringExtra("Title"));
                         changeIngredientList(ingList);
@@ -243,6 +279,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         quantity8.setText(qty + data.getStringExtra("Measurement"));
                         buttonText7.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(8);
+                    }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(7)))){
                         ingList.set(7, data.getStringExtra("Title"));
@@ -258,6 +297,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         buttonText8.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(9);
                     }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
+                    }
                     if(!(data.getStringExtra("Title").equals(ingList.get(8)))){
                         ingList.set(8, data.getStringExtra("Title"));
                         changeIngredientList(ingList);
@@ -271,6 +313,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         quantity10.setText(qty + data.getStringExtra("Measurement"));
                         buttonText9.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(10);
+                    }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
                     }
                     if(!(data.getStringExtra("Title").equals(ingList.get(9)))){
                         ingList.set(9, data.getStringExtra("Title"));
@@ -286,6 +331,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         buttonText10.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(11);
                     }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
+                    }
                     if(!(data.getStringExtra("Title").equals(ingList.get(10)))){
                         ingList.set(10, data.getStringExtra("Title"));
                         changeIngredientList(ingList);
@@ -300,6 +348,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         buttonText11.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(12);
                     }
+                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                        undo(requestCode);
+                    }
                     if(!(data.getStringExtra("Title").equals(ingList.get(11)))){
                         ingList.set(11, data.getStringExtra("Title"));
                         changeIngredientList(ingList);
@@ -312,7 +363,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     recipeConverter(receive);
                     runOnUiThread(recipeResult);
                     break;
-                    //TODO: continue recipe
             }
             System.out.println(Arrays.deepToString(dataToArduino));
         }
@@ -769,6 +819,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button14:
                 if(ingSelected.size()>0){
                     undo(ingSelected.get(ingSelected.size()-1));
+                    ingSelected.remove(ingSelected.size() - 1);
                 }
                 else{
                     Toast.makeText(MainActivity.this,"There is nothing to undo!",Toast.LENGTH_SHORT).show();
@@ -787,78 +838,78 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param caseNumber - this integer value is the ingredient slot number
      */
     public void undo(int caseNumber){
-        int[] zeroes = {0,0,0};
+        int[] zeroes = {0, 0, 0};
         switch(caseNumber){
             case 1:
                 quantity1.setVisibility(View.INVISIBLE);
                 buttonText.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[0]=zeroes;
+                //ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[0] = zeroes;
                 break;
             case 2:
                 quantity2.setVisibility(View.INVISIBLE);
                 buttonText1.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[1]=zeroes;
+               // ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[1] = zeroes;
                 break;
             case 3:
                 quantity3.setVisibility(View.INVISIBLE);
                 buttonText2.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[2]=zeroes;
+               // ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[2] = zeroes;
                 break;
             case 4:
                 quantity4.setVisibility(View.INVISIBLE);
                 buttonText3.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[3]=zeroes;
+               // ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[3] = zeroes;
                 break;
             case 5:
                 quantity5.setVisibility(View.INVISIBLE);
                 buttonText4.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[4]=zeroes;
+               // ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[4] = zeroes;
                 break;
             case 6:
                 quantity6.setVisibility(View.INVISIBLE);
                 buttonText5.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[5]=zeroes;
+               // ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[5] = zeroes;
                 break;
             case 7:
                 quantity7.setVisibility(View.INVISIBLE);
                 buttonText6.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[6]=zeroes;
+               // ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[6] = zeroes;
                 break;
             case 8:
                 quantity8.setVisibility(View.INVISIBLE);
                 buttonText7.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[7]=zeroes;
+               // ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[7] = zeroes;
                 break;
             case 9:
                 quantity9.setVisibility(View.INVISIBLE);
                 buttonText8.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[8]=zeroes;
+              //  ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[8] = zeroes;
                 break;
             case 10:
                 quantity10.setVisibility(View.INVISIBLE);
                 buttonText9.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[9]=zeroes;
+              //  ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[9] = zeroes;
                 break;
             case 11:
                 quantity11.setVisibility(View.INVISIBLE);
                 buttonText10.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[10]=zeroes;
+               // ingSelected.remove(ingSelected.size() - 1);
+                dataToArduino[10] = zeroes;
                 break;
             case 12:
                 quantity12.setVisibility(View.INVISIBLE);
                 buttonText11.setBackgroundResource(R.drawable.circle);
-                ingSelected.remove(ingSelected.size() - 1);
+               // ingSelected.remove(ingSelected.size() - 1);
                 dataToArduino[11]=zeroes;
                 break;
             case 99:

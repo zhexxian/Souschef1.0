@@ -62,6 +62,8 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
 
         teaspoon.setProgress(oldQuant[1]);
         tablespoon.setProgress(oldQuant[2]);
+        teaspoonQuant.setText(""+oldQuant[1]/2.0);
+        tablespoonQuant.setText("" + oldQuant[2]);
         acceptButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
         teaspoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -180,21 +182,21 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                 intent.putExtra("Title", title);
                 double teaspoonValue = teaspoon.getProgress();
                 double tablespoonValue = tablespoon.getProgress();
-                if(teaspoonValue/6.0>tablespoonValue){
+                if(teaspoonValue>0 && tablespoonValue==0){
                     quant[0]= teaspoon.getProgress();
                     quant[1] = 0;
                     measurement="Xtsp";
                 }
-                else if(teaspoonValue/6.0<tablespoonValue){
-                    quant[0]= teaspoon.getProgress();
-                    quant[1] = 0;
-                    measurement="Xtsp";
+                else if(teaspoonValue==0 && tablespoonValue>0){
+                    quant[0]= 0;
+                    quant[1] = tablespoon.getProgress();
+                    measurement="Xtbsp";
                 }
-                else{
+/*                else{
                     quant[0]=0;
                     quant[1]=tablespoon.getProgress();
                     measurement="Xtbsp";
-                }
+                }*/
                 intent.putExtra("Measurement", measurement);
                 intent.putExtra("Quant",quant);
                 setResult(IngredientAmountActivity.RESULT_OK, intent);
