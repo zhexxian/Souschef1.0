@@ -45,13 +45,13 @@ import java.util.Arrays;
  -[Function] main page should display appropriate amount in teaspoon, now it is 2 times the amount (need to divide by 2) [DONE!]
 
  * Recipe page:
- - [Function] link recipe list page to recipe detail page (for curry chicken)
+ - [Function] link recipe list page to recipe detail page (for curry chicken) [DONE!]
+ - ^^^^^^^^ now produces an error when click undo on MA after transition from RA
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ArrayList<String> ingList;
     ArrayList<Integer> ingSelected = new ArrayList<Integer>();
     int[][] dataToArduino = new int[12][3];
-    int[][][] recipeList = new int[2][12][4];
     public Button buttonText;
     public Button buttonText1;
     public Button buttonText2;
@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 case 19:
                     runOnUiThread(undoAll);
-                    String receive = data.getStringExtra("Recipe");
+                    String receive = data.getStringExtra("Recipe_Ingredients");
                     recipeConverter(receive);
                     runOnUiThread(recipeResult);
                     break;
@@ -563,7 +563,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Runnable recipeResult = new Runnable() {
         @Override
         public void run() {
-            String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
+            String[] measurementIndex = {"Xtsp","Xtbsp"};
             String meas = "";
             int amount = 0;
             for(int i=0;i<12;i++){
