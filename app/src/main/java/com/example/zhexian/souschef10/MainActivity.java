@@ -565,6 +565,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void run() {
             String[] measurementIndex = {"Xtsp","Xtbsp"};
             String meas = "";
+            String newamount;
             int amount = 0;
             for(int i=0;i<12;i++){
                 if(dataToArduino[i][0]==0){
@@ -577,82 +578,90 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         amount = dataToArduino[i][j];
                     }
                 }
+                if(meas.equals("Xtsp")){
+                    newamount = ""+amount/2.0;
+                }
+                else{
+                    newamount =""+ amount;
+                }
                 switch (i) {
                     case 0:
                         quantity1.setVisibility(View.VISIBLE);
-                        quantity1.setText(amount + meas);
+                        quantity1.setText(newamount + meas);
                         buttonText.setBackgroundResource(R.drawable.circle_selected);
                         break;
                     case 1:
                         quantity2.setVisibility(View.VISIBLE);
-                        quantity2.setText(amount + meas);
+                        quantity2.setText(newamount + meas);
                         buttonText1.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(2);
 
                         break;
                     case 2:
                         quantity3.setVisibility(View.VISIBLE);
-                        quantity3.setText(amount + meas);
+                        quantity3.setText(newamount + meas);
                         buttonText2.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(3);
                         break;
                     case 3:
                         quantity4.setVisibility(View.VISIBLE);
-                        quantity4.setText(amount + meas);
+                        quantity4.setText(newamount + meas);
                         buttonText3.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(4);
                         break;
                     case 4:
                         quantity5.setVisibility(View.VISIBLE);
-                        quantity5.setText(amount + meas);
+                        quantity5.setText(newamount + meas);
                         buttonText4.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(5);
                         break;
                     case 5:
                         quantity6.setVisibility(View.VISIBLE);
-                        quantity6.setText(amount + meas);
+                        quantity6.setText(newamount + meas);
                         buttonText5.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(6);
                         break;
                     case 6:
                         quantity7.setVisibility(View.VISIBLE);
-                        quantity7.setText(amount + meas);
+                        quantity7.setText(newamount + meas);
                         buttonText6.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(7);
                         break;
                     case 7:
                         quantity8.setVisibility(View.VISIBLE);
-                        quantity8.setText(amount + meas);
+                        quantity8.setText(newamount + meas);
                         buttonText7.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(8);
                         break;
                     case 8:
                         quantity9.setVisibility(View.VISIBLE);
-                        quantity9.setText(amount + meas);
+                        quantity9.setText(newamount + meas);
                         buttonText8.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(9);
                         break;
                     case 9:
                         quantity10.setVisibility(View.VISIBLE);
-                        quantity10.setText(amount + meas);
+                        quantity10.setText(newamount + meas);
                         buttonText9.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(10);
                         break;
                     case 10:
                         quantity11.setVisibility(View.VISIBLE);
-                        quantity11.setText(amount + meas);
+                        quantity11.setText(newamount + meas);
                         buttonText10.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(11);
                         break;
                     case 11:
                         quantity12.setVisibility(View.VISIBLE);
-                        quantity12.setText(amount + meas);
+                        quantity12.setText(newamount + meas);
                         buttonText11.setBackgroundResource(R.drawable.circle_selected);
                         ingSelected.add(12);
                         break;
                 }
             }
             ingSelected.add(99);
+            System.out.println(ingSelected.toString());
+
         }
     };
 
@@ -882,7 +891,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button14:
                 if(ingSelected.size()>0){
                     undo(ingSelected.get(ingSelected.size()-1));
-                    ingSelected.remove(ingSelected.size() - 1);
+                    if(ingSelected.size()>0) {
+                        ingSelected.remove(ingSelected.size() - 1);
+                    }
                 }
                 else{
                     Toast.makeText(MainActivity.this,"There is nothing to undo!",Toast.LENGTH_SHORT).show();
@@ -901,6 +912,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param caseNumber - this integer value is the ingredient slot number
      */
     public void undo(int caseNumber){
+        System.out.println(ingSelected.toString());
+        System.out.println(ingSelected.size());
         int[] zeroes = {0, 0, 0};
         switch(caseNumber){
             case 1:
