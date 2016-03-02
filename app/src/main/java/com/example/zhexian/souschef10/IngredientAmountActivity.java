@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.text.method.DigitsKeyListener;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,6 +63,8 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
 
         teaspoon.setProgress(oldQuant[1]);
         tablespoon.setProgress(oldQuant[2]);
+        teaspoonQuant.setText(""+oldQuant[1]/2.0);
+        tablespoonQuant.setText("" + oldQuant[2]);
         acceptButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
         teaspoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -70,36 +73,22 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                 double myProg = 0.5*progress;
                 teaspoonQuant.setText(""+myProg);
                 tablespoon.setProgress(0);
-
             }
-
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
+            public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         tablespoon.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tablespoonQuant.setText("" + progress);
                 teaspoon.setProgress(0);
-
             }
-
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
+            public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
         acceptButton.setTypeface(myTypeface);
@@ -116,6 +105,7 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         final EditText input = new EditText(this);
         Button b = (Button) findViewById(R.id.button15);
         String oldIngredient = b.getText().toString();
+        input.setFilters(new InputFilter[] { new InputFilter.LengthFilter(15) });
         input.append(oldIngredient);
         alert.setView(input);
 
@@ -135,8 +125,6 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         });
 
         alert.show();
-        //TODO: Create link back to MainActivity
-        //TODO: Send data back as an intent to MainActivity, including any changes to name of ingredient, and quantity
     }
 
     @Override
@@ -167,8 +155,6 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         title = ingName.getText().toString();
         System.out.println(title);
 
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Quantity Selection");
         // Set an EditText view to get user input
         final EditText input = new EditText(this);
         input.setKeyListener(DigitsKeyListener.getInstance());
@@ -180,19 +166,14 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
                 intent.putExtra("Title", title);
                 double teaspoonValue = teaspoon.getProgress();
                 double tablespoonValue = tablespoon.getProgress();
-                if(teaspoonValue/6.0>tablespoonValue){
+                if(teaspoonValue>0 && tablespoonValue==0){
                     quant[0]= teaspoon.getProgress();
                     quant[1] = 0;
                     measurement="Xtsp";
                 }
-                else if(teaspoonValue/6.0<tablespoonValue){
-                    quant[0]= teaspoon.getProgress();
-                    quant[1] = 0;
-                    measurement="Xtsp";
-                }
-                else{
-                    quant[0]=0;
-                    quant[1]=tablespoon.getProgress();
+                else if(teaspoonValue==0 && tablespoonValue>0){
+                    quant[0]= 0;
+                    quant[1] = tablespoon.getProgress();
                     measurement="Xtbsp";
                 }
                 intent.putExtra("Measurement", measurement);

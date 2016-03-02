@@ -16,7 +16,6 @@
             android:layout_height="300dp"
             android:src="@drawable/chicken_curry"
             android:id="@+id/imageView"
-            android:background="#ffffff"
             android:layout_marginBottom="10dp" />
 
         <ImageView
