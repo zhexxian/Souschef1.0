@@ -1,11 +1,16 @@
 package com.example.zhexian.souschef10;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +24,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.UUID;
+
 
 //TODO: implement dispense to arduino
 //TODO: add quantity left for each ingredient
@@ -82,7 +94,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button dispenseButton;
     public Button recipeButton;
     public TextView weightText;
+    public TextView weightValue;
+/***
+     * BLUETOOTH PORTION
+     *
+     */
+public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    public static final String TAG = "Main Activity";
+    BluetoothAdapter btAdapter;
+    Set<BluetoothDevice> devicesArray;
+    ArrayList<String> pairedDevices;
+    ConnectThread connect;
+    ConnectedThread connected;
+    BufferedReader mBufferedReader;
 
+    public static final int REQUEST_ENABLE_BT = 1;
+    static final int SUCCESS_CONNECT = 2;
+    static final int DISPENSE = 3;
+    static final int MESSAGE_READ = 4;
+
+    Handler mmHandler;
+
+    {
+        mmHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case SUCCESS_CONNECT:
+                        Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
+                        send_message(connected, "connected to android");
+                        break;
+                    case DISPENSE:
+                        Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_SHORT).show();
+                        String message = "$";
+                        message += dispense(dataToArduino);
+                        message += "#";
+                        Log.e(TAG, message);
+                        send_message(connected, message);
+                        Log.e(TAG, "Message sent");
+
+                        break;
+                    case MESSAGE_READ:
+                        String inpData = (String) msg.obj;
+
+
+
+//                        byte[] readBuf = (byte[]) msg.obj;
+//                        int begin = (int)msg.arg1;
+//                        int end = (int)msg.arg2;
+//
+//                        String inpData = new String(readBuf);
+//                        inpData.substring(begin,end);
+//                        Log.e(TAG, inpData);
+                        weightValue.setText(inpData);
+                        break;
+                }
+            }
+        };
+    }
+
+    /***
+     * END BLUETOOTH PORTION
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ingList = getIngredientsList(fileName);
 
-        //ingList.toString();
         if(ingList.size()<1){
             setIngredientList();
             ingList = getIngredientsList(fileName);
@@ -116,8 +189,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         undoButton.setOnClickListener(this);
         recipeButton.setOnClickListener(this);
         dispenseButton.setOnClickListener(this);
+
+
+        btAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if(btAdapter==null){
+            Toast.makeText(this,"Device doesn't support bluetooth. Closing application", Toast.LENGTH_LONG).show();
+        }
+        if(!btAdapter.isEnabled()){
+            turnOnBT();
+        }
+
+        getPairedDevices();
+
+    }
+    private void turnOnBT(){
+        Intent btIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(btIntent, REQUEST_ENABLE_BT);
     }
 
+    private void getPairedDevices(){
+        devicesArray = btAdapter.getBondedDevices();
+        BluetoothDevice x = null;
+        if(devicesArray.size()>0){
+            for(BluetoothDevice device: devicesArray){
+                Log.e(TAG, device.getName());
+//                pairedDevices.add(device.getName());
+                x = device;
+
+            }
+        }
+        connect = new ConnectThread(x);
+        connect.start();
+    }
+
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if(connect!=null){
+            connect.cancel();
+            connect = null;
+        }
+        if(connected!=null){
+            connected.cancel();
+            connected = null;
+        }
+    }
+
+    private void send_message(ConnectedThread thread, String data){
+        thread.write(data.getBytes());
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -148,9 +270,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //System.out.println("entered act res");
-        //String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
-        //System.out.println(requestCode);
         if (resultCode==RESULT_OK) {
             switch (requestCode) {
                 case 1:
@@ -514,6 +633,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             weightText = (TextView) findViewById(R.id.textView2);
             weightText.setTypeface(myTypeface);
+
+            weightValue = (TextView) findViewById(R.id.textView3);
+            weightValue.setTypeface(myTypeface);
 
         }
     };
@@ -887,6 +1009,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 /***
                  * INCLUDE METHOD CALL HERE
                  */
+                mmHandler.obtainMessage(DISPENSE).sendToTarget();
+//                dispense();
+
                 break;
             case R.id.button14:
                 if(ingSelected.size()>0){
@@ -906,7 +1031,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+    public String dispense(int[][] array){
+        String data = "";
+        for (int i =0; i<array.length;i++){
+            if (array[i][0]!=1){
+                continue;
+            }
+            else{
+                if(i<10)
+                    data+=0;
+                data+=i;
+                for (int j=1; j<array[i].length; j++){
+                    data+=array[i][j];
+                }
+               // data+='\n';
+            }
+        }
 
+        Log.e(TAG, "Dispense pressed");
+        return data;
+
+    }
     /***
      * undo - undo the latest change (excluding name change) that is read from the ingSelected.
      * @param caseNumber - this integer value is the ingredient slot number
@@ -1085,7 +1230,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!mBluetoothAdapter.isEnabled()) {
             Toast.makeText(getApplicationContext(), "Bluetooth Disabled !",
                     Toast.LENGTH_SHORT).show();
-                   *//* It tests if the bluetooth is enabled or not, if not the app will show a message. *//*
+                   *//**//* It tests if the bluetooth is enabled or not, if not the app will show a message. *//**//*
         }
 
         if (mBluetoothAdapter == null) {
@@ -1094,5 +1239,115 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .show();
         }
     }*/
+
+
+    private class ConnectThread extends Thread{
+        private final BluetoothSocket mmSocket;
+        private final BluetoothDevice mmDevice;
+
+        public ConnectThread(BluetoothDevice device){
+            BluetoothSocket tmp = null;
+            mmDevice = device;
+
+            try{
+                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+            mmSocket = tmp;
+
+        }
+
+        public void run(){
+
+
+            try{
+                mmSocket.connect();
+                connected = new ConnectedThread(mmSocket);
+                connected.start();
+
+                Log.e(TAG, "Connected");
+            }catch (IOException connectException){
+                Log.e(TAG, "cannot connect");
+                Log.e(TAG, connectException.getMessage());
+
+                try{
+                    mmSocket.close();
+                    Log.e(TAG, "closed the socket");
+                }catch (IOException e){
+                    Log.e(TAG, "can't close the socket");
+
+                }
+
+            }
+
+            mmHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
+        }
+
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) {
+                Log.e(TAG, "closing connect thread");
+            }
+        }
+    }
+
+    private class ConnectedThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final InputStream mmInStream;
+        private final OutputStream mmOutStream;
+
+        public ConnectedThread(BluetoothSocket socket) {
+            mmSocket = socket;
+            InputStream tmpIn = null;
+            OutputStream tmpOut = null;
+            InputStreamReader mInputStreamReader = null;
+            try {
+                tmpIn = socket.getInputStream();
+                tmpOut = socket.getOutputStream();
+            } catch (IOException e) {
+            }
+            mmInStream = tmpIn;
+            mmOutStream = tmpOut;
+            mInputStreamReader = new InputStreamReader(mmInStream);
+            mBufferedReader = new BufferedReader(mInputStreamReader);
+        }
+
+        public void run() {
+            Log.e(TAG, "inside connected run");
+
+            String inpdata = null;
+            while (true) {
+                try {
+                    inpdata = mBufferedReader.readLine();
+                    Log.e(TAG, inpdata);
+                    mmHandler.obtainMessage(MESSAGE_READ, 1, 1,
+                            inpdata).sendToTarget();
+
+
+
+                } catch (IOException e) {
+                    Log.e(TAG, e.getMessage());
+                    Log.e(TAG, "run exception in connected thread");
+                    break;
+                }
+            }
+        }
+
+        public void write(byte[] bytes) {
+            try {
+                mmOutStream.write(bytes);
+            } catch (IOException e) {
+            }
+        }
+
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) {
+            }
+        }
+    }
 
 }

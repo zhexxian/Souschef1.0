@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#2c3e50"
     android:weightSum="1">
 
     <LinearLayout
@@ -41,7 +41,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Ingredients"
+            android:text="Curry Chicken"
             android:id="@+id/textView9"
             android:textAlignment="center"
             android:textColor="#ffffff"
