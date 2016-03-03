@@ -126,7 +126,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case DISPENSE:
                         Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_SHORT).show();
-                        String message = dispense(dataToArduino);
+                        String message = "$";
+                        message += dispense(dataToArduino);
+                        message+="#";
+
                         Log.e(TAG, message);
                         send_message(connected, message);
                         Log.e(TAG, "Message sent");
@@ -1047,7 +1050,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (int j=1; j<array[i].length; j++){
                     data+=array[i][j];
                 }
-                data+='\n';
+//                data+='\n';
             }
 
         }
