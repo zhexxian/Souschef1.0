@@ -28,10 +28,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 //TODO: implement dispense to arduino
 //TODO: add quantity left for each ingredient
@@ -236,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void send_message(ConnectedThread thread, String data){
-        thread.write(data.getBytes());
+        thread.write(data);
     }
 
     @Override
@@ -1329,10 +1331,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        public void write(byte[] bytes) {
+        public void write(String data) {
             try {
-                mmOutStream.write(bytes);
-            } catch (IOException e) {
+                PrintStream printStream = new PrintStream(mmOutStream);
+                printStream.print(data);
+            } catch (Exception e) {
             }
         }
 
