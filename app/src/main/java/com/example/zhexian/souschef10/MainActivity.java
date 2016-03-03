@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
@@ -165,6 +166,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
 
         ingList = getIngredientsList(fileName);
 
+        //ingList.toString();
         if(ingList.size()<1){
             setIngredientList();
             ingList = getIngredientsList(fileName);
@@ -238,7 +240,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
     }
 
     private void send_message(ConnectedThread thread, String data){
-        thread.write(data.getBytes());
+        thread.write(data);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -270,6 +272,9 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //System.out.println("entered act res");
+        //String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
+        //System.out.println(requestCode);
         if (resultCode==RESULT_OK) {
             switch (requestCode) {
                 case 1:
@@ -1038,9 +1043,61 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                 continue;
             }
             else{
-                if(i<10)
+/*                if(i<10)
                     data+=0;
-                data+=i;
+                    data+=i;*/
+                switch (i+1){
+                    case 1:
+                        data+=1;
+                        data+=3;
+                        break;
+                    case 2:
+                        data+=2;
+                        data+=3;
+                        break;
+                    case 3:
+                        data+=3;
+                        data+=3;
+                        break;
+                    case 4:
+                        data+=4;
+                        data+=3;
+                        break;
+                    case 5:
+                        data+=1;
+                        data+=2;
+                        break;
+                    case 6:
+                        data+=2;
+                        data+=2;
+                        break;
+                    case 7:
+                        data+=3;
+                        data+=2;
+                        break;
+                    case 8:
+                        data+=4;
+                        data+=2;
+                        break;
+                    case 9:
+                        data+=1;
+                        data+=1;
+                        break;
+                    case 10:
+                        data+=2;
+                        data+=1;
+                        break;
+                    case 11:
+                        data+=3;
+                        data+=1;
+                        break;
+
+                    case 12:
+                        data+=4;
+                        data+=1;
+                        break;
+
+                }
                 for (int j=1; j<array[i].length; j++){
                     data+=array[i][j];
                 }
@@ -1335,10 +1392,11 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             }
         }
 
-        public void write(byte[] bytes) {
+        public void write(String data) {
             try {
-                mmOutStream.write(bytes);
-            } catch (IOException e) {
+                PrintStream printStream = new PrintStream(mmOutStream);
+                printStream.print(data);
+            } catch (Exception e) {
             }
         }
 
