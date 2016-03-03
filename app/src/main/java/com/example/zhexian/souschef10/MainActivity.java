@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (msg.what) {
                     case SUCCESS_CONNECT:
                         Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
+                        send_message(connected, "connected to android");
                         break;
                     case DISPENSE:
                         Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_SHORT).show();
@@ -1009,7 +1010,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                  * INCLUDE METHOD CALL HERE
                  */
                 mmHandler.obtainMessage(DISPENSE).sendToTarget();
-                dispense();
+//                dispense();
                 break;
             case R.id.button14:
                 if(ingSelected.size()>0){
