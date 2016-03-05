@@ -219,6 +219,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
 //                pairedDevices.add(device.getName());
                 x = device;
 
+
             }
         }
         connect = new ConnectThread(x);
@@ -1310,6 +1311,8 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                 tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
             }catch(IOException e){
                 e.printStackTrace();
+                Log.e(TAG, e.getMessage().toString());
+
             }
             mmSocket = tmp;
 
@@ -1324,6 +1327,8 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                 connected.start();
 
                 Log.e(TAG, "Connected");
+                mmHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
+
             }catch (IOException connectException){
                 Log.e(TAG, "cannot connect");
                 Log.e(TAG, connectException.getMessage());
@@ -1338,7 +1343,6 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
 
             }
 
-            mmHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
         }
 
         public void cancel() {
