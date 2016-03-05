@@ -127,13 +127,22 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                         send_message(connected, "connected to android");
                         break;
                     case DISPENSE:
-                        Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_SHORT).show();
-                        String message = "$";
-                        message += dispense(dataToArduino);
-                        message += "#";
-                        Log.e(TAG, message);
-                        send_message(connected, message);
-                        Log.e(TAG, "Message sent");
+                        try {
+                            if(!ingSelected.isEmpty()) {
+                                String message = "$";
+                                message += dispense(dataToArduino);
+                                message += "#";
+                                Log.e(TAG, message);
+                                send_message(connected, message);
+                                Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "Message sent");
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Please select ingredients to dispense", Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (NullPointerException e){
+                            Toast.makeText(getApplicationContext(), "Bluetooth not connected", Toast.LENGTH_SHORT).show();
+
+                        }
 
                         break;
                     case MESSAGE_READ:
@@ -1010,7 +1019,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                 }
                 break;
             case R.id.button13:
-                Toast.makeText(MainActivity.this, "Dispensing", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Dispensing", Toast.LENGTH_SHORT).show();
                 //TODO: ADD METHOD CALL HERE, PREFERABLY CREATE A METHOD OUTSIDE OF THIS SWITCH/CASE STATEMENT
                 /***
                  * INCLUDE METHOD CALL HERE
