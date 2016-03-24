@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.Arrays;
+
 /**
  * Created by zhexian on 2/24/2016.
  */
@@ -43,16 +45,34 @@ public class RecipeListActivity extends AppCompatActivity implements View.OnClic
 
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK) {
+            switch(requestCode){
+                case 100:
+                    Intent intent = new Intent();
+                    intent.putExtra("Recipe_Ingredients", data.getStringExtra("Recipe_Ingredients"));
 
+                    setResult(RecipeListActivity.RESULT_OK, intent);
+                    finish();
+                    break;
+                case 999:
+                    Intent intent1 = new Intent();
+                    setResult(RecipeListActivity.RESULT_CANCELED, intent1);
+                    finish();
+                    break;
+            }
+        }
+    }
     @Override
     public void onClick(View v){
         switch (v.getId()){
             case R.id.imageView:
-                String curryRecipe = "0 0 0:1 4 0:0 0 0:0 0 0:1 0 3:0 0 0:1 0 4:0 0 0:0 0 0:0 0 0:0 0 0:0 0 0";
-                Intent intent = new Intent();
-                intent.putExtra("Recipe", curryRecipe);
-                setResult(RecipeListActivity.RESULT_OK,intent);
-                finish();
+                Intent intent = new Intent(this, RecipeActivity.class);
+                int recipeIndex = 1;
+                intent.putExtra("Recipe_Index",recipeIndex);
+                this.startActivityForResult(intent, 100);
                 break;
         }
     }
