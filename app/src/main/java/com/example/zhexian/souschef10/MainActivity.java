@@ -35,15 +35,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-//TODO: implement dispense to arduino
-//TODO: add quantity left for each ingredient
-//TODO: weight variable constant updating
-//TODO: current quantity
-//TODO: @jesse - do icons for MA instead of string quantity
-//TODO: @jesse - increase font size of MA ingredient buttons
 
-//TODO: @jesse - the IAA, change from 2 seekbars to one seekbars, with a button to change whether it is teaspoon or table spoon measurement 
-//TODO: use different font sizes for different quantities
+//TODO: crashes when dispense when bt not connected
+//TODO: tare function
 /*************************** TODO LIST **********************************
  * Main page:
  -[UI] tare button for weight
