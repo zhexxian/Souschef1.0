@@ -885,7 +885,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                  * INCLUDE METHOD CALL HERE
                  */
                 mmHandler.obtainMessage(DISPENSE).sendToTarget();
-                dispense();
+                dispense(dataToArduino);
                 break;
             case R.id.button14:
                 if(ingSelected.size()>0){
