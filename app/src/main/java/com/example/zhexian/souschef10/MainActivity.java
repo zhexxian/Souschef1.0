@@ -34,26 +34,21 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
-
-//TODO: fix crash on dispense
-//TODO: do tare function
 /*************************** TODO LIST **********************************
  * Main page:
  -[UI] tare button for weight
  -[Function] after pressing tare button, weight displayed will be actual weight data received minus the weight of container
- -[UI] weight and tare button on the left, digital weight display on the right
- -[UI] ingredient quantity font, e.g. '4(bold) (no X) tsp', '4(bold) 1/2(small) tbsp'
+ -[UI] make weight and tare button fixed in position (dont allow the position of tare depend on the weight variable as this will move tare button when weight changes)
 
  * Ingredient amount page:
- -[Function] slider need to show actual number, not 0.0 [DONE!]
- -[Function] table spoon selection need to be stored and reflected on main page [DONE!]
- -[Function] when slide to change quantity to 0, need to reflect on main page as unhighlighting the ingredient [DONE!]
  -[UI] change 'select amount' to 'quantity'
- -[Function] main page should display appropriate amount in teaspoon, now it is 2 times the amount (need to divide by 2) [DONE!]
+ - [Function] autocomplete for ingredient name
 
  * Recipe page:
- - [Function] link recipe list page to recipe detail page (for curry chicken) [DONE!]
- - ^^^^^^^^ now produces an error when click undo on MA after transition from RA
+
+ * RecipeList page:
+ - [UI] add a button to add new recipes
+ - [Function] add function for above button
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ArrayList<String> ingList;
@@ -141,16 +136,6 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                         break;
                     case MESSAGE_READ:
                         String inpData = (String) msg.obj;
-
-
-
-//                        byte[] readBuf = (byte[]) msg.obj;
-//                        int begin = (int)msg.arg1;
-//                        int end = (int)msg.arg2;
-//
-//                        String inpData = new String(readBuf);
-//                        inpData.substring(begin,end);
-//                        Log.e(TAG, inpData);
                         weightValue.setText(inpData);
                         break;
                 }
@@ -276,9 +261,6 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //System.out.println("entered act res");
-        //String[] measurementIndex = {"Xtsp","X1/2tbsp","Xtbsp"};
-        //System.out.println(requestCode);
         if (resultCode==RESULT_OK) {
             switch (requestCode) {
                 case 1:
