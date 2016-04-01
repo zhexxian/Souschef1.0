@@ -36,18 +36,18 @@ import java.util.UUID;
 
 /*************************** TODO LIST **********************************
  * Main page:
- -[UI] tare button for weight
+ - DONE [UI] tare button for weight
  -[Function] after pressing tare button, weight displayed will be actual weight data received minus the weight of container
- -[UI] make weight and tare button fixed in position (dont allow the position of tare depend on the weight variable as this will move tare button when weight changes)
+ - DONE [UI] make weight and tare button fixed in position (dont allow the position of tare depend on the weight variable as this will move tare button when weight changes)
 
  * Ingredient amount page:
- -[UI] change 'select amount' to 'quantity'
+ - DONE [UI] change 'select amount' to 'quantity'
  - [Function] autocomplete for ingredient name
 
  * Recipe page:
 
  * RecipeList page:
- - [UI] add a button to add new recipes
+ - DONE [UI] add a button to add new recipes
  - [Function] add function for above button
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
