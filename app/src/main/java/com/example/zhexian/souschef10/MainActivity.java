@@ -105,44 +105,6 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
 
     Handler mmHandler;
 
-    {
-        mmHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case SUCCESS_CONNECT:
-                        Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
-                        send_message(connected, "connected to android");
-                        break;
-                    case DISPENSE:
-                        try {
-                            if(!ingSelected.isEmpty()) {
-                                String message = "$";
-                                message += dispense(dataToArduino);
-                                message += "#";
-                                Log.e(TAG, message);
-                                send_message(connected, message);
-                                Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_SHORT).show();
-                                Log.e(TAG, "Message sent");
-                            }else{
-                                Toast.makeText(getApplicationContext(),"Please select ingredients to dispense", Toast.LENGTH_SHORT).show();
-                            }
-                        }catch (NullPointerException e){
-                            Toast.makeText(getApplicationContext(), "Bluetooth not connected", Toast.LENGTH_SHORT).show();
-
-                        }
-
-                        break;
-                    case MESSAGE_READ:
-                        String inpData = (String) msg.obj;
-                        weightValue.setText(inpData);
-                        break;
-                }
-            }
-        };
-    }
-
     /***
      * END BLUETOOTH PORTION
      */
@@ -180,11 +142,13 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
         recipeButton.setOnClickListener(this);
         dispenseButton.setOnClickListener(this);
 
-
+        //Get a handle to the default local Bluetooth adapter.
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if(btAdapter==null){
             Toast.makeText(this,"Device doesn't support bluetooth. Closing application", Toast.LENGTH_LONG).show();
+            finish();
+            System.exit(0);
         }
         if(!btAdapter.isEnabled()){
             turnOnBT();
@@ -193,26 +157,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
         getPairedDevices();
 
     }
-    private void turnOnBT(){
-        Intent btIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(btIntent, REQUEST_ENABLE_BT);
-    }
 
-    private void getPairedDevices(){
-        devicesArray = btAdapter.getBondedDevices();
-        BluetoothDevice x = null;
-        if(devicesArray.size()>0){
-            for(BluetoothDevice device: devicesArray){
-                Log.e(TAG, device.getName());
-//                pairedDevices.add(device.getName());
-                x = device;
-
-
-            }
-        }
-        connect = new ConnectThread(x);
-        connect.start();
-    }
 
 
     @Override
@@ -228,9 +173,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
         }
     }
 
-    private void send_message(ConnectedThread thread, String data){
-        thread.write(data);
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -1396,5 +1339,67 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             }
         }
     }
+    private void turnOnBT(){
+        Intent btIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(btIntent, REQUEST_ENABLE_BT);
+    }
 
+    private void getPairedDevices(){
+        devicesArray = btAdapter.getBondedDevices(); //gets the devices paired to local device
+        BluetoothDevice x = null;
+        if(devicesArray.size()>0){
+            for(BluetoothDevice device: devicesArray){
+                Log.e(TAG, device.getName());
+//                pairedDevices.add(device.getName());
+                x = device;
+            }
+        }
+        if(x!=null){
+            connect = new ConnectThread(x);
+            connect.start();
+        }
+        else{
+            Toast.makeText(this,"Unable to connect to Souschef device",Toast.LENGTH_SHORT).show();
+        }
+    }
+    {
+        mmHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case SUCCESS_CONNECT:
+                        Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
+                        send_message(connected, "connected to android");
+                        break;
+                    case DISPENSE:
+                        try {
+                            if(!ingSelected.isEmpty()) {
+                                String message = "$";
+                                message += dispense(dataToArduino);
+                                message += "#";
+                                Log.e(TAG, message);
+                                send_message(connected, message);
+                                Toast.makeText(getApplicationContext(), "dispense clicked", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "Message sent");
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Please select ingredients to dispense", Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (NullPointerException e){
+                            Toast.makeText(getApplicationContext(), "Bluetooth not connected", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        break;
+                    case MESSAGE_READ:
+                        String inpData = (String) msg.obj;
+                        weightValue.setText(inpData);
+                        break;
+                }
+            }
+        };
+    }
+    private void send_message(ConnectedThread thread, String data){
+        thread.write(data);
+    }
 }

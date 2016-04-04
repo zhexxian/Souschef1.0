@@ -32,7 +32,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         cancelButton.setOnClickListener(this);
         switch (recipeIndex){
             case 1:
-                recipeIngredients = "0 0 0:1 2 0:0 0 0:1 2 0:1 1 0:0 0 0:1 1 0:0 0 0:0 0 0:0 0 0:0 0 0:0 0 0";
+                recipeIngredients = "1 2 0:1 1 0:0 0 0:0 0 0:1 2 0:1 2 0:0 0 0:0 0 0:1 1 0:1 3 0:0 0 0:0 0 0";
                 break;
         }
     }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="ingredientArray">
+        <item>Salt</item>
+        <item>Pepper</item>
+        <item>Turmeric Powder</item>
+        <item>Chili Powder</item>
+        <item>Curry Powder</item>
+        <item>Hot Pepper Flakes</item>
+        <item>Roasted Sesame Seeds</item>
+        <item>Ground Black Pepper</item>
+        <item>Rock Salt</item>
+        <item>Sugar</item>
+        <item>Flour</item>
+        <item>Brown Sugar</item>
+        <item>Sesame Seeds</item>
+        <item>Cinnamon</item>
+        <item>Nutmeg</item>
+        <item>Cumin Seeds</item>
+        <item>Kosher Salt</item>
+        <item>Fennel Seeds</item>
+        <item>Poppy Seeds</item>
+        <item>Coriander Powder</item>
+    </array>
+</resources>

@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -102,7 +104,14 @@ public class IngredientAmountActivity extends AppCompatActivity implements View.
         //alert.setMessage("Message");
 
         // Set an EditText view to get user input
-        final EditText input = new EditText(this);
+        final AutoCompleteTextView input = new AutoCompleteTextView(this);
+        String[] ingredientArray = getResources().getStringArray(R.array.ingredientArray);
+        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_dropdown_item_1line, ingredientArray);
+        input.setAdapter(adapter);
+        ////Autocomplete
+
+        input.setThreshold(1);
+
         Button b = (Button) findViewById(R.id.button15);
         String oldIngredient = b.getText().toString();
         input.setFilters(new InputFilter[] { new InputFilter.LengthFilter(15) });
