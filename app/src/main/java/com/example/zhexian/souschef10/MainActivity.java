@@ -1,8 +1,10 @@
 package com.example.zhexian.souschef10;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -29,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
@@ -1180,25 +1183,25 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             bufferedWriter.newLine();
             bufferedWriter.write("Pepper");
             bufferedWriter.newLine();
-            bufferedWriter.write("Light Sauce");
+            bufferedWriter.write("Cumin Seeds");
             bufferedWriter.newLine();
-            bufferedWriter.write("Dark Sauce");
+            bufferedWriter.write("Ground Pepper");
             bufferedWriter.newLine();
-            bufferedWriter.write("Salt");
+            bufferedWriter.write("Kosher Salt");
             bufferedWriter.newLine();
-            bufferedWriter.write("Pepper");
+            bufferedWriter.write("Fennel Seeds");
             bufferedWriter.newLine();
-            bufferedWriter.write("Light Sauce");
+            bufferedWriter.write("Cinnamon");
             bufferedWriter.newLine();
-            bufferedWriter.write("Dark Sauce");
+            bufferedWriter.write("Chili Powder");
             bufferedWriter.newLine();
-            bufferedWriter.write("Salt");
+            bufferedWriter.write("Sugar");
             bufferedWriter.newLine();
-            bufferedWriter.write("Pepper");
+            bufferedWriter.write("Coriander Powder");
             bufferedWriter.newLine();
-            bufferedWriter.write("Light Sauce");
+            bufferedWriter.write("Turmeric Powder");
             bufferedWriter.newLine();
-            bufferedWriter.write("Dark Sauce");
+            bufferedWriter.write("Poppy Seeds");
             bufferedWriter.newLine();
             // Always close files.
             bufferedWriter.close();
@@ -1236,8 +1239,8 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             mmDevice = device;
 
             try{
-                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-            }catch(IOException e){
+                tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
+            }catch(Exception e){
                 e.printStackTrace();
                 Log.e(TAG, e.getMessage().toString());
 
@@ -1253,15 +1256,14 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                 mmSocket.connect();
                 connected = new ConnectedThread(mmSocket);
                 connected.start();
-
                 Log.e(TAG, "Connected");
                 mmHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
 
             }catch (IOException connectException){
                 Log.e(TAG, "cannot connect");
                 Log.e(TAG, connectException.getMessage());
-
                 try{
+                    runOnUiThread(toasterFailed);
                     mmSocket.close();
                     Log.e(TAG, "closed the socket");
                 }catch (IOException e){
@@ -1270,6 +1272,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                 }
 
             }
+
 
         }
 
@@ -1281,7 +1284,29 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             }
         }
     }
+    public Runnable toasterSuccess = new Runnable() {
+        @Override
+        public void run() {
+            Toast.makeText(MainActivity.this, "Successfully connected to Souschef device!", Toast.LENGTH_SHORT).show();
+        }
+    };
 
+    public Runnable toasterFailed = new Runnable() {
+        @Override
+        public void run() {
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Souschef Device Not Found");
+            alertDialog.setMessage("Please ensure that the Souschef device has been turned on. Proceed to restart this application once the Souschef device has been turned on.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+                        }
+                    });
+            alertDialog.show();
+        }
+    };
     private class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
@@ -1305,7 +1330,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
 
         public void run() {
             Log.e(TAG, "inside connected run");
-
+            runOnUiThread(toasterSuccess);
             String inpdata = null;
             while (true) {
                 try {
@@ -1350,8 +1375,9 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
         if(devicesArray.size()>0){
             for(BluetoothDevice device: devicesArray){
                 Log.e(TAG, device.getName());
-//                pairedDevices.add(device.getName());
-                x = device;
+                if(device.getName().equals("HC-05")) {
+                    x = device;
+                }
             }
         }
         if(x!=null){
