@@ -56,32 +56,11 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ArrayList<String> ingList;
     ArrayList<Integer> ingSelected = new ArrayList<Integer>();
-    int[][] dataToArduino = new int[12][3];
-    public Button buttonText;
-    public Button buttonText1;
-    public Button buttonText2;
-    public Button buttonText3;
-    public Button buttonText4;
-    public Button buttonText5;
-    public Button buttonText6;
-    public Button buttonText7;
-    public Button buttonText8;
-    public Button buttonText9;
-    public Button buttonText10;
-    public Button buttonText11;
+    ArrayList<Button> ingredientButtons = new ArrayList<Button>();
+    ArrayList<TextView> quantityText = new ArrayList<TextView>();
 
-    public TextView quantity1;
-    public TextView quantity2;
-    public TextView quantity3;
-    public TextView quantity4;
-    public TextView quantity5;
-    public TextView quantity6;
-    public TextView quantity7;
-    public TextView quantity8;
-    public TextView quantity9;
-    public TextView quantity10;
-    public TextView quantity11;
-    public TextView quantity12;
+    int[][] dataToArduino = new int[12][3];
+
     public Button undoAllButton;
     public Button undoButton;
     public Button dispenseButton;
@@ -127,18 +106,9 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
         System.out.println(ingList.toString());
         // Initializing main screen
         runOnUiThread(buttonInitialization);
-        buttonText.setOnClickListener(this);
-        buttonText1.setOnClickListener(this);
-        buttonText2.setOnClickListener(this);
-        buttonText3.setOnClickListener(this);
-        buttonText4.setOnClickListener(this);
-        buttonText5.setOnClickListener(this);
-        buttonText6.setOnClickListener(this);
-        buttonText7.setOnClickListener(this);
-        buttonText8.setOnClickListener(this);
-        buttonText9.setOnClickListener(this);
-        buttonText10.setOnClickListener(this);
-        buttonText11.setOnClickListener(this);
+        for(Button i : ingredientButtons){
+            i.setOnClickListener(this);
+        }
 
         undoAllButton.setOnClickListener(this);
         undoButton.setOnClickListener(this);
@@ -207,279 +177,35 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("REQUESTCODE " + requestCode);
         if (resultCode==RESULT_OK) {
-            switch (requestCode) {
-                case 1:
-                    buttonText.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity1.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"),0);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity1.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity1.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(1);
+            if(requestCode == 19){
+                runOnUiThread(undoAll);
+                String receive = data.getStringExtra("Recipe_Ingredients");
+                recipeConverter(receive);
+                runOnUiThread(recipeResult);
+            }
+            else{
+                ingredientButtons.get(requestCode-1).setText(data.getStringExtra("Title"));
+                if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                    quantityText.get(requestCode-1).setVisibility(View.VISIBLE);
+                    int qty = forArduino(data.getIntArrayExtra("Quant"), 0);
+                    if(data.getStringExtra("Measurement").equals("Xtsp")){
+                        quantityText.get(requestCode-1).setText(qty/2.0 + data.getStringExtra("Measurement"));
                     }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
+                    else{
+                        quantityText.get(requestCode-1).setText(qty + data.getStringExtra("Measurement"));
                     }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(0)))){
-                        ingList.set(0, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 2:
-                    buttonText1.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity2.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 1);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity2.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity2.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText1.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(2);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(1)))){
-                        ingList.set(1, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 3:
-                    buttonText2.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity3.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 2);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity3.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity3.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText2.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(3);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(2)))){
-                        ingList.set(2, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 4:
-                    buttonText3.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity4.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 3);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity4.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity4.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText3.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(4);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(3)))){
-                        ingList.set(3, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 5:
-                    buttonText4.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity5.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 4);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity5.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity5.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText4.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(5);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(4)))){
-                        ingList.set(4, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 6:
-                    buttonText5.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity6.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 5);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity6.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity6.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText5.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(6);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(5)))){
-                        ingList.set(5, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 7:
-                    buttonText6.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity7.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 6);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity7.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity7.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText6.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(7);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(6)))){
-                        ingList.set(6, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 8:
-                    buttonText7.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity8.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 7);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity8.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity8.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText7.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(8);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(7)))){
-                        ingList.set(7, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 9:
-                    buttonText8.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity9.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 8);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity9.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity9.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText8.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(9);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(8)))){
-                        ingList.set(8, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 10:
-                    buttonText9.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity10.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 9);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity10.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity10.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText9.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(10);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(9)))){
-                        ingList.set(9, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 11:
-                    buttonText10.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity11.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 10);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity11.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity11.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText10.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(11);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(10)))){
-                        ingList.set(10, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-                case 12:
-                    buttonText11.setText(data.getStringExtra("Title"));
-                    if (!(data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        quantity12.setVisibility(View.VISIBLE);
-                        int qty = forArduino(data.getIntArrayExtra("Quant"), 11);
-                        if(data.getStringExtra("Measurement").equals("Xtsp")){
-                            quantity12.setText(qty/2.0 + data.getStringExtra("Measurement"));
-                        }
-                        else{
-                            quantity12.setText(qty + data.getStringExtra("Measurement"));
-                        }
-                        buttonText11.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(12);
-                    }
-                    else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
-                        undo(requestCode);
-                    }
-                    if(!(data.getStringExtra("Title").equals(ingList.get(11)))){
-                        ingList.set(11, data.getStringExtra("Title"));
-                        changeIngredientList(ingList);
-                    }
-                    break;
-
-                case 19:
-                    runOnUiThread(undoAll);
-                    String receive = data.getStringExtra("Recipe_Ingredients");
-                    recipeConverter(receive);
-                    runOnUiThread(recipeResult);
-                    break;
+                    ingredientButtons.get(requestCode-1).setBackgroundResource(R.drawable.circle_selected);
+                    ingSelected.add(1);
+                }
+                else if((data.getIntArrayExtra("Quant")[0] == data.getIntArrayExtra("Quant")[1])){
+                    undo(requestCode);
+                }
+                else if(!(data.getStringExtra("Title").equals(ingList.get(requestCode-1)))){
+                    ingList.set(requestCode-1, data.getStringExtra("Title"));
+                    changeIngredientList(ingList);
+                }
             }
             System.out.println(Arrays.deepToString(dataToArduino));
         }
@@ -492,81 +218,53 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
         @Override
         public void run() {
             Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Spinnaker-Regular.ttf");
-
-            buttonText = (Button)findViewById(R.id.button);
-            buttonText1 = (Button)findViewById(R.id.button1);
-            buttonText2 = (Button)findViewById(R.id.button2);
-            buttonText3 = (Button)findViewById(R.id.button3);
-            buttonText4 = (Button)findViewById(R.id.button4);
-            buttonText5 = (Button)findViewById(R.id.button5);
-            buttonText6 = (Button)findViewById(R.id.button6);
-            buttonText7 = (Button)findViewById(R.id.button7);
-            buttonText8 = (Button)findViewById(R.id.button8);
-            buttonText9 = (Button)findViewById(R.id.button9);
-            buttonText10 = (Button)findViewById(R.id.button10);
-            buttonText11 = (Button)findViewById(R.id.button11);
+            ingredientButtons.add((Button)findViewById(R.id.button));
+            ingredientButtons.add((Button)findViewById(R.id.button1));
+            ingredientButtons.add((Button)findViewById(R.id.button2));
+            ingredientButtons.add((Button)findViewById(R.id.button3));
+            ingredientButtons.add((Button)findViewById(R.id.button4));
+            ingredientButtons.add((Button)findViewById(R.id.button5));
+            ingredientButtons.add((Button)findViewById(R.id.button6));
+            ingredientButtons.add((Button)findViewById(R.id.button7));
+            ingredientButtons.add((Button)findViewById(R.id.button8));
+            ingredientButtons.add((Button)findViewById(R.id.button9));
+            ingredientButtons.add((Button)findViewById(R.id.button10));
+            ingredientButtons.add((Button)findViewById(R.id.button11));
 
             undoAllButton = (Button)findViewById(R.id.button12);
             undoButton = (Button) findViewById(R.id.button14);
             dispenseButton = (Button) findViewById(R.id.button13);
             recipeButton = (Button) findViewById(R.id.button19);
 
-            quantity1 = (TextView)findViewById(R.id.quantity1);
-            quantity2 = (TextView)findViewById(R.id.quantity2);
-            quantity3 = (TextView)findViewById(R.id.quantity3);
-            quantity4 = (TextView)findViewById(R.id.quantity4);
-            quantity5 = (TextView)findViewById(R.id.quantity5);
-            quantity6 = (TextView)findViewById(R.id.quantity6);
-            quantity7 = (TextView)findViewById(R.id.quantity7);
-            quantity8 = (TextView)findViewById(R.id.quantity8);
-            quantity9 = (TextView)findViewById(R.id.quantity9);
-            quantity10 = (TextView)findViewById(R.id.quantity10);
-            quantity11 = (TextView)findViewById(R.id.quantity11);
-            quantity12 = (TextView)findViewById(R.id.quantity12);
+            quantityText.add((TextView)findViewById(R.id.quantity1));
+            quantityText.add((TextView)findViewById(R.id.quantity2));
+            quantityText.add((TextView)findViewById(R.id.quantity3));
+            quantityText.add((TextView)findViewById(R.id.quantity4));
+            quantityText.add((TextView)findViewById(R.id.quantity5));
+            quantityText.add((TextView)findViewById(R.id.quantity6));
+            quantityText.add((TextView)findViewById(R.id.quantity7));
+            quantityText.add((TextView)findViewById(R.id.quantity8));
+            quantityText.add((TextView)findViewById(R.id.quantity9));
+            quantityText.add((TextView)findViewById(R.id.quantity10));
+            quantityText.add((TextView)findViewById(R.id.quantity11));
+            quantityText.add((TextView)findViewById(R.id.quantity12));
 
-            quantity1.setVisibility(View.INVISIBLE);
-            quantity2.setVisibility(View.INVISIBLE);
-            quantity3.setVisibility(View.INVISIBLE);
-            quantity4.setVisibility(View.INVISIBLE);
-            quantity5.setVisibility(View.INVISIBLE);
-            quantity6.setVisibility(View.INVISIBLE);
-            quantity7.setVisibility(View.INVISIBLE);
-            quantity8.setVisibility(View.INVISIBLE);
-            quantity9.setVisibility(View.INVISIBLE);
-            quantity10.setVisibility(View.INVISIBLE);
-            quantity11.setVisibility(View.INVISIBLE);
-            quantity12.setVisibility(View.INVISIBLE);
+            for(TextView i : quantityText){
+                i.setVisibility(View.INVISIBLE);
+            }
 
-            buttonText.setTypeface(myTypeface);
-            buttonText1.setTypeface(myTypeface);
-            buttonText2.setTypeface(myTypeface);
-            buttonText3.setTypeface(myTypeface);
-            buttonText4.setTypeface(myTypeface);
-            buttonText5.setTypeface(myTypeface);
-            buttonText6.setTypeface(myTypeface);
-            buttonText7.setTypeface(myTypeface);
-            buttonText8.setTypeface(myTypeface);
-            buttonText9.setTypeface(myTypeface);
-            buttonText10.setTypeface(myTypeface);
-            buttonText11.setTypeface(myTypeface);
+            for(Button i : ingredientButtons){
+                i.setTypeface(myTypeface);
+            }
 
             undoButton.setTypeface(myTypeface);
             undoAllButton.setTypeface(myTypeface);
 
             dispenseButton.setTypeface(myTypeface);
 
-            buttonText.setText(ingList.get(0));
-            buttonText1.setText(ingList.get(1));
-            buttonText2.setText(ingList.get(2));
-            buttonText3.setText(ingList.get(3));
-            buttonText4.setText(ingList.get(4));
-            buttonText5.setText(ingList.get(5));
-            buttonText6.setText(ingList.get(6));
-            buttonText7.setText(ingList.get(7));
-            buttonText8.setText(ingList.get(8));
-            buttonText9.setText(ingList.get(9));
-            buttonText10.setText(ingList.get(10));
-            buttonText11.setText(ingList.get(11));
+            for(int i=0;i<12;i++){
+                ingredientButtons.get(i).setText(ingList.get(i));
+            }
 
             weightText = (TextView) findViewById(R.id.textView2);
             weightText.setTypeface(myTypeface);
@@ -582,31 +280,13 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
     private Runnable undoAll = new Runnable() {
         @Override
         public void run() {
-            quantity1.setVisibility(View.INVISIBLE);
-            quantity2.setVisibility(View.INVISIBLE);
-            quantity3.setVisibility(View.INVISIBLE);
-            quantity4.setVisibility(View.INVISIBLE);
-            quantity5.setVisibility(View.INVISIBLE);
-            quantity6.setVisibility(View.INVISIBLE);
-            quantity7.setVisibility(View.INVISIBLE);
-            quantity8.setVisibility(View.INVISIBLE);
-            quantity9.setVisibility(View.INVISIBLE);
-            quantity10.setVisibility(View.INVISIBLE);
-            quantity11.setVisibility(View.INVISIBLE);
-            quantity12.setVisibility(View.INVISIBLE);
 
-            buttonText.setBackgroundResource(R.drawable.circle);
-            buttonText1.setBackgroundResource(R.drawable.circle);
-            buttonText2.setBackgroundResource(R.drawable.circle);
-            buttonText3.setBackgroundResource(R.drawable.circle);
-            buttonText4.setBackgroundResource(R.drawable.circle);
-            buttonText5.setBackgroundResource(R.drawable.circle);
-            buttonText6.setBackgroundResource(R.drawable.circle);
-            buttonText7.setBackgroundResource(R.drawable.circle);
-            buttonText8.setBackgroundResource(R.drawable.circle);
-            buttonText9.setBackgroundResource(R.drawable.circle);
-            buttonText10.setBackgroundResource(R.drawable.circle);
-            buttonText11.setBackgroundResource(R.drawable.circle);
+            for(TextView i : quantityText){
+                i.setVisibility(View.INVISIBLE);
+            }
+            for(Button i : ingredientButtons){
+                i.setBackgroundResource(R.drawable.circle);
+            }
 
             int[][] newdata = new int[12][3];
             dataToArduino = newdata;
@@ -643,80 +323,9 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                 else{
                     newamount =""+ amount;
                 }
-                switch (i) {
-                    case 0:
-                        quantity1.setVisibility(View.VISIBLE);
-                        quantity1.setText(newamount + meas);
-                        buttonText.setBackgroundResource(R.drawable.circle_selected);
-                        break;
-                    case 1:
-                        quantity2.setVisibility(View.VISIBLE);
-                        quantity2.setText(newamount + meas);
-                        buttonText1.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(2);
-
-                        break;
-                    case 2:
-                        quantity3.setVisibility(View.VISIBLE);
-                        quantity3.setText(newamount + meas);
-                        buttonText2.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(3);
-                        break;
-                    case 3:
-                        quantity4.setVisibility(View.VISIBLE);
-                        quantity4.setText(newamount + meas);
-                        buttonText3.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(4);
-                        break;
-                    case 4:
-                        quantity5.setVisibility(View.VISIBLE);
-                        quantity5.setText(newamount + meas);
-                        buttonText4.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(5);
-                        break;
-                    case 5:
-                        quantity6.setVisibility(View.VISIBLE);
-                        quantity6.setText(newamount + meas);
-                        buttonText5.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(6);
-                        break;
-                    case 6:
-                        quantity7.setVisibility(View.VISIBLE);
-                        quantity7.setText(newamount + meas);
-                        buttonText6.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(7);
-                        break;
-                    case 7:
-                        quantity8.setVisibility(View.VISIBLE);
-                        quantity8.setText(newamount + meas);
-                        buttonText7.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(8);
-                        break;
-                    case 8:
-                        quantity9.setVisibility(View.VISIBLE);
-                        quantity9.setText(newamount + meas);
-                        buttonText8.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(9);
-                        break;
-                    case 9:
-                        quantity10.setVisibility(View.VISIBLE);
-                        quantity10.setText(newamount + meas);
-                        buttonText9.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(10);
-                        break;
-                    case 10:
-                        quantity11.setVisibility(View.VISIBLE);
-                        quantity11.setText(newamount + meas);
-                        buttonText10.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(11);
-                        break;
-                    case 11:
-                        quantity12.setVisibility(View.VISIBLE);
-                        quantity12.setText(newamount + meas);
-                        buttonText11.setBackgroundResource(R.drawable.circle_selected);
-                        ingSelected.add(12);
-                        break;
-                }
+                quantityText.get(i).setVisibility(View.VISIBLE);
+                quantityText.get(i).setText(newamount + meas);
+                ingredientButtons.get(i).setBackgroundResource(R.drawable.circle_selected);
             }
             ingSelected.add(99);
             System.out.println(ingSelected.toString());
@@ -809,125 +418,81 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
      */
     public void onClick(View v){
 
+        Intent intent = new Intent(this, IngredientAmountActivity.class);
+        String ingName = "";
+        int ingIndex = 0;
+        boolean isIngButton = false;
         switch(v.getId()) {
             case R.id.button:
-                Intent intent = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString = buttonText.getText().toString();
-                int thisIsIndex = 1;
-                intent.putExtra("Index", thisIsIndex);
-                intent.putExtra("Title", thisIsString);
-                intent.putExtra("Integers",dataToArduino[0]);
-                this.startActivityForResult(intent, 1);
+                ingIndex = 1;
+                ingName = ingredientButtons.get(0).getText().toString();
+                isIngButton = true;
                 break;
 
             case R.id.button1:
-                Intent intent1 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString1 = buttonText1.getText().toString();
-                int thisIsIndex1 = 2;
-                intent1.putExtra("Index", thisIsIndex1);
-                intent1.putExtra("Title", thisIsString1);
-                intent1.putExtra("Integers",dataToArduino[1]);
-                this.startActivityForResult(intent1,2);
+                ingName = ingredientButtons.get(1).getText().toString();
+                ingIndex = 2;
+                isIngButton = true;
                 break;
 
             case R.id.button2:
-                Intent intent2 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString2 = buttonText2.getText().toString();
-                int thisIsIndex2 = 3;
-                intent2.putExtra("Index", thisIsIndex2);
-                intent2.putExtra("Title", thisIsString2);
-                intent2.putExtra("Integers",dataToArduino[2]);
-                this.startActivityForResult(intent2,3);
+                ingName = ingredientButtons.get(2).getText().toString();
+                ingIndex = 3;
+                isIngButton = true;
                 break;
 
             case R.id.button3:
-                Intent intent3 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString3 = buttonText3.getText().toString();
-                int thisIsIndex3 = 4;
-                intent3.putExtra("Index", thisIsIndex3);
-                intent3.putExtra("Title", thisIsString3);
-                intent3.putExtra("Integers",dataToArduino[3]);
-                this.startActivityForResult(intent3,4);
+                ingName = ingredientButtons.get(3).getText().toString();
+                ingIndex = 4;
+                isIngButton = true;
                 break;
 
             case R.id.button4:
-                Intent intent4 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString4 = buttonText4.getText().toString();
-                int thisIsIndex4 = 5;
-                intent4.putExtra("Index", thisIsIndex4);
-                intent4.putExtra("Title", thisIsString4);
-                intent4.putExtra("Integers",dataToArduino[4]);
-                this.startActivityForResult(intent4,5);
+                ingName = ingredientButtons.get(4).getText().toString();
+                ingIndex = 5;
+                isIngButton = true;
                 break;
 
             case R.id.button5:
-                Intent intent5 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString5 = buttonText5.getText().toString();
-                int thisIsIndex5 = 6;
-                intent5.putExtra("Index", thisIsIndex5);
-                intent5.putExtra("Title", thisIsString5);
-                intent5.putExtra("Integers",dataToArduino[5]);
-                this.startActivityForResult(intent5,6);
+                ingName = ingredientButtons.get(5).getText().toString();
+                ingIndex = 6;
+                isIngButton = true;
                 break;
 
             case R.id.button6:
-                Intent intent6 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString6 = buttonText6.getText().toString();
-                int thisIsIndex6 = 7;
-                intent6.putExtra("Index", thisIsIndex6);
-                intent6.putExtra("Title", thisIsString6);
-                intent6.putExtra("Integers",dataToArduino[6]);
-                this.startActivityForResult(intent6,7);
+                ingName = ingredientButtons.get(6).getText().toString();
+                ingIndex = 7;
+                isIngButton = true;
                 break;
 
             case R.id.button7:
-                Intent intent7 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString7 = buttonText7.getText().toString();
-                int thisIsIndex7 = 8;
-                intent7.putExtra("Index", thisIsIndex7);
-                intent7.putExtra("Title", thisIsString7);
-                intent7.putExtra("Integers",dataToArduino[7]);
-                this.startActivityForResult(intent7,8);
+                ingName = ingredientButtons.get(7).getText().toString();
+                ingIndex = 8;
+                isIngButton = true;
                 break;
 
             case R.id.button8:
-                Intent intent8 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString8 = buttonText8.getText().toString();
-                int thisIsIndex8 = 9;
-                intent8.putExtra("Index", thisIsIndex8);
-                intent8.putExtra("Title", thisIsString8);
-                intent8.putExtra("Integers",dataToArduino[8]);
-                this.startActivityForResult(intent8,9);
+                ingName = ingredientButtons.get(8).getText().toString();
+                ingIndex = 9;
+                isIngButton = true;
                 break;
 
             case R.id.button9:
-                Intent intent9 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString9 = buttonText9.getText().toString();
-                int thisIsIndex9 = 10;
-                intent9.putExtra("Index", thisIsIndex9);
-                intent9.putExtra("Title", thisIsString9);
-                intent9.putExtra("Integers",dataToArduino[9]);
-                this.startActivityForResult(intent9,10);
+                ingName = ingredientButtons.get(9).getText().toString();
+                ingIndex = 10;
+                isIngButton = true;
                 break;
 
             case R.id.button10:
-                Intent intent10 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString10 = buttonText10.getText().toString();
-                int thisIsIndex10 = 11;
-                intent10.putExtra("Index", thisIsIndex10);
-                intent10.putExtra("Title", thisIsString10);
-                intent10.putExtra("Integers",dataToArduino[10]);
-                this.startActivityForResult(intent10,11);
+                ingName = ingredientButtons.get(10).getText().toString();
+                ingIndex = 11;
+                isIngButton = true;
                 break;
 
             case R.id.button11:
-                Intent intent11 = new Intent(this, IngredientAmountActivity.class);
-                String thisIsString11 = buttonText11.getText().toString();
-                int thisIsIndex11 = 12;
-                intent11.putExtra("Index", thisIsIndex11);
-                intent11.putExtra("Title", thisIsString11);
-                intent11.putExtra("Integers",dataToArduino[11]);
-                this.startActivityForResult(intent11,12);
+                ingName = ingredientButtons.get(11).getText().toString();
+                ingIndex = 12;
+                isIngButton = true;
                 break;
 
             case R.id.button12:
@@ -966,6 +531,12 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
                 Intent intent19 = new Intent(this, RecipeListActivity.class);
                 this.startActivityForResult(intent19,19);
                 break;
+        }
+        if(isIngButton){
+            intent.putExtra("Index", ingIndex);
+            intent.putExtra("Title", ingName);
+            intent.putExtra("Integers",dataToArduino[ingIndex-1]);
+            this.startActivityForResult(intent,ingIndex);
         }
     }
     public String dispense(int[][] array){
@@ -1049,82 +620,13 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
         System.out.println(ingSelected.toString());
         System.out.println(ingSelected.size());
         int[] zeroes = {0, 0, 0};
-        switch(caseNumber){
-            case 1:
-                quantity1.setVisibility(View.INVISIBLE);
-                buttonText.setBackgroundResource(R.drawable.circle);
-                //ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[0] = zeroes;
-                break;
-            case 2:
-                quantity2.setVisibility(View.INVISIBLE);
-                buttonText1.setBackgroundResource(R.drawable.circle);
-               // ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[1] = zeroes;
-                break;
-            case 3:
-                quantity3.setVisibility(View.INVISIBLE);
-                buttonText2.setBackgroundResource(R.drawable.circle);
-               // ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[2] = zeroes;
-                break;
-            case 4:
-                quantity4.setVisibility(View.INVISIBLE);
-                buttonText3.setBackgroundResource(R.drawable.circle);
-               // ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[3] = zeroes;
-                break;
-            case 5:
-                quantity5.setVisibility(View.INVISIBLE);
-                buttonText4.setBackgroundResource(R.drawable.circle);
-               // ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[4] = zeroes;
-                break;
-            case 6:
-                quantity6.setVisibility(View.INVISIBLE);
-                buttonText5.setBackgroundResource(R.drawable.circle);
-               // ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[5] = zeroes;
-                break;
-            case 7:
-                quantity7.setVisibility(View.INVISIBLE);
-                buttonText6.setBackgroundResource(R.drawable.circle);
-               // ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[6] = zeroes;
-                break;
-            case 8:
-                quantity8.setVisibility(View.INVISIBLE);
-                buttonText7.setBackgroundResource(R.drawable.circle);
-               // ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[7] = zeroes;
-                break;
-            case 9:
-                quantity9.setVisibility(View.INVISIBLE);
-                buttonText8.setBackgroundResource(R.drawable.circle);
-              //  ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[8] = zeroes;
-                break;
-            case 10:
-                quantity10.setVisibility(View.INVISIBLE);
-                buttonText9.setBackgroundResource(R.drawable.circle);
-              //  ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[9] = zeroes;
-                break;
-            case 11:
-                quantity11.setVisibility(View.INVISIBLE);
-                buttonText10.setBackgroundResource(R.drawable.circle);
-               // ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[10] = zeroes;
-                break;
-            case 12:
-                quantity12.setVisibility(View.INVISIBLE);
-                buttonText11.setBackgroundResource(R.drawable.circle);
-               // ingSelected.remove(ingSelected.size() - 1);
-                dataToArduino[11]=zeroes;
-                break;
-            case 99:
-                runOnUiThread(undoAll);
-                break;
+        if(caseNumber==99){
+            runOnUiThread(undoAll);
+        }
+        else{
+            quantityText.get(caseNumber-1).setVisibility(View.INVISIBLE);
+            ingredientButtons.get(caseNumber-1).setBackgroundResource(R.drawable.circle);
+            dataToArduino[caseNumber-1] = zeroes;
         }
     }
 
