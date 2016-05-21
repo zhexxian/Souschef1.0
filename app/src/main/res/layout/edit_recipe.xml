@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2c3e50">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cancel"
+            android:id="@+id/button18"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_red"
+            android:textColor="#ffffff"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Editing Recipe"
+            android:id="@+id/textView11"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:textAlignment="center"
+            android:textSize="35dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="save"
+            android:id="@+id/button17"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_green"
+            android:textColor="#ffffff"
+            android:layout_gravity="left"
+            android:layout_margin="10dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Name"
+        android:id="@+id/textView12"
+        android:layout_margin="10dp"
+        android:textColor="#fff"
+        android:textAlignment="center" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText2"
+        android:layout_gravity="center_horizontal"
+        android:text="Enter recipe name"
+        android:background="#fff"
+        android:padding="10dp"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Steps"
+        android:id="@+id/textView13"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:textColor="#fff" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_margin="10dp" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:text="Step description"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:password="false"
+        android:background="#fff" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:weightSum="1">
+
+        <AutoCompleteTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredient"
+            android:id="@+id/autoCompleteTextView"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#fff"
+            android:padding="10dp" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/numberPicker"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:layout_marginRight="10dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tea Spoon"
+            android:id="@+id/radioButton"
+            android:checked="false"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#fff"
+            android:padding="10dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Table Spoon"
+            android:id="@+id/radioButton2"
+            android:checked="false"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#fff"
+            android:padding="10dp" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imageButton5"
+            android:background="@drawable/ic_close_24dp"
+            android:layout_weight="1"
+            android:backgroundTint="#ff0000" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:weightSum="1">
+
+        <AutoCompleteTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredient"
+            android:id="@+id/autoCompleteTextView2"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#fff"
+            android:padding="10dp" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/numberPicker2"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:layout_marginRight="10dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tea Spoon"
+            android:id="@+id/radioButton3"
+            android:checked="false"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#fff"
+            android:padding="10dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Table Spoon"
+            android:id="@+id/radioButton4"
+            android:checked="false"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#fff"
+            android:padding="10dp" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imageButton6"
+            android:background="@drawable/ic_close_24dp"
+            android:layout_weight="1"
+            android:backgroundTint="#ff0000" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add ingredient"
+            android:id="@+id/button25"
+            android:background="@drawable/rectangle_grey"
+            android:textColor="#fff"
+            android:layout_margin="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Move step up"
+            android:id="@+id/button26"
+            android:background="@drawable/rectangle_grey"
+            android:textColor="#fff"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Move step down"
+            android:id="@+id/button27"
+            android:background="@drawable/rectangle_grey"
+            android:textColor="#fff"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove step"
+            android:id="@+id/button28"
+            android:background="@drawable/rectangle_red"
+            android:textColor="#fff"
+            android:layout_margin="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_margin="10dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Add New Step"
+            android:id="@+id/button24"
+            android:background="@drawable/rectangle_grey"
+            android:textColor="#fff"
+            android:layout_margin="10dp" />
+    </LinearLayout>
+
+</LinearLayout>
