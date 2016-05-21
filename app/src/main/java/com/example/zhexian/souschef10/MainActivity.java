@@ -7,7 +7,6 @@ import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,27 +30,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
-/*************************** TODO LIST **********************************
+/***************************TODO LIST**********************************
  * Main page:
- - DONE [UI] tare button for weight
  -[Function] after pressing tare button, weight displayed will be actual weight data received minus the weight of container
- - DONE [UI] make weight and tare button fixed in position (dont allow the position of tare depend on the weight variable as this will move tare button when weight changes)
 
  * Ingredient amount page:
- - DONE [UI] change 'select amount' to 'quantity'
  - [Function] autocomplete for ingredient name
 
  * Recipe page:
 
  * RecipeList page:
- - DONE [UI] add a button to add new recipes
- - [Function] add function for above button
+ - [Function] add function for add a button to add new recipes
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     ArrayList<String> ingList;
@@ -59,6 +53,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<Button> ingredientButtons = new ArrayList<Button>();
     ArrayList<TextView> quantityText = new ArrayList<TextView>();
 
+    // The outer array [12] corresponds to 12 ingredients
+    // The inner array [3] ([a,b,c]) corresponds to:
+    //a) boolean whether the ingredient is selected or not, made up of 0/1
+    //b) teaspoon quantity, but have to be multiplied by 0.5 as it increments in 0.5 quantity
+    //c) table spoo  quantity
     int[][] dataToArduino = new int[12][3];
 
     public Button undoAllButton;
@@ -67,38 +66,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button recipeButton;
     public TextView weightText;
     public TextView weightValue;
-/***
-     * BLUETOOTH PORTION
-     *
-     */
-public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
+/****Bluetooth Preparation****/
+    // MY_UUID is the app's UUID string, also used by the client code
+    public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    // A good convention is to declare a TAG constant in your class and
+    // use that in subsequent calls to the 'Log' methods
     public static final String TAG = "Main Activity";
+    // Class initiation
     BluetoothAdapter btAdapter;
     Set<BluetoothDevice> devicesArray;
     ArrayList<String> pairedDevices;
-    ConnectThread connect;
-    ConnectedThread connected;
+    InitiateBtConnectionThread connect;
+    BtCommunicationThread connected;
     BufferedReader mBufferedReader;
-
+    Handler mmHandler;
+    // Constants declaration
     public static final int REQUEST_ENABLE_BT = 1;
     static final int SUCCESS_CONNECT = 2;
     static final int DISPENSE = 3;
     static final int MESSAGE_READ = 4;
+/****End of Bluetooth Preparation****/
 
-    Handler mmHandler;
-
-    /***
-     * END BLUETOOTH PORTION
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Save a list of ingredients as text file
         String fileName = "Ingredients.txt";
 
         ingList = getIngredientsList(fileName);
 
-        //ingList.toString();
         if(ingList.size()<1){
             setIngredientList();
             ingList = getIngredientsList(fileName);
@@ -115,20 +113,42 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
         recipeButton.setOnClickListener(this);
         dispenseButton.setOnClickListener(this);
 
-        //Get a handle to the default local Bluetooth adapter.
+/****Setting Up Bluetooth****/
+        //Get the BluetoothAdapter
+        //Calling getDefaultAdapter returns the device's own local Bluetooth adapter
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 
+        // If device does not support Bluetooth
         if(btAdapter==null){
             Toast.makeText(this,"Device doesn't support bluetooth. Closing application", Toast.LENGTH_LONG).show();
             finish();
             System.exit(0);
         }
+        // If Bluetooth is not currently enabled
         if(!btAdapter.isEnabled()){
-            turnOnBT();
+            Intent btIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(btIntent, REQUEST_ENABLE_BT);
         }
+
+        /*    private void CheckBt() {
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+            if (!mBluetoothAdapter.isEnabled()) {
+                Toast.makeText(getApplicationContext(), "Bluetooth Disabled !",
+                        Toast.LENGTH_SHORT).show();
+                       *//**//* It tests if the bluetooth is enabled or not, if not the app will show a message. *//**//*
+            }
+
+            if (mBluetoothAdapter == null) {
+                Toast.makeText(getApplicationContext(),
+                        "Bluetooth null !", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }*/
 
         getPairedDevices();
 
+/****End of Setting Up Bluetooth****/
     }
 
 
@@ -355,7 +375,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
         }
         dataToArduino=newData;
         System.out.println(Arrays.deepToString(newData));
-        System.out.println("from recipe: "+Arrays.deepToString(dataToArduino));
+        System.out.println("from recipe: " + Arrays.deepToString(dataToArduino));
     }
 
     /***
@@ -715,53 +735,42 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
 
     }
 
-/*    private void CheckBt() {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            Toast.makeText(getApplicationContext(), "Bluetooth Disabled !",
-                    Toast.LENGTH_SHORT).show();
-                   *//**//* It tests if the bluetooth is enabled or not, if not the app will show a message. *//**//*
-        }
-
-        if (mBluetoothAdapter == null) {
-            Toast.makeText(getApplicationContext(),
-                    "Bluetooth null !", Toast.LENGTH_SHORT)
-                    .show();
-        }
-    }*/
-
-
-    private class ConnectThread extends Thread{
+/****Bluetooth Connection with Arduino****/
+    //Because connect() is a blocking call, this connection procedure should always be
+    // performed in a thread separate from the main activity thread
+    private class InitiateBtConnectionThread extends Thread{
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
 
-        public ConnectThread(BluetoothDevice device){
+        public InitiateBtConnectionThread(BluetoothDevice device){
+            // Use a temporary object that is later assigned to mmSocket,
+            // because mmSocket is final
             BluetoothSocket tmp = null;
             mmDevice = device;
 
+            // Get a BluetoothSocket to connect with the given BluetoothDevice
             try{
+                // MY_UUID is the app's UUID string, also used by the server code
                 tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
             }catch(Exception e){
                 e.printStackTrace();
                 Log.e(TAG, e.getMessage().toString());
-
             }
             mmSocket = tmp;
-
         }
 
         public void run(){
-
-
             try{
+                // Connect the device through the socket. This will block
+                // until it succeeds or throws an exception
                 mmSocket.connect();
-                connected = new ConnectedThread(mmSocket);
+                connected = new BtCommunicationThread(mmSocket);
                 connected.start();
                 Log.e(TAG, "Connected");
                 mmHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
 
-            }catch (IOException connectException){
+            } catch (IOException connectException){
+                // Unable to connect; close the socket and get out
                 Log.e(TAG, "cannot connect");
                 Log.e(TAG, connectException.getMessage());
                 try{
@@ -778,6 +787,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
 
         }
 
+        // Will cancel an in-progress connection, and close the socket
         public void cancel() {
             try {
                 mmSocket.close();
@@ -786,6 +796,10 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             }
         }
     }
+
+/****End of Bluetooth Connection with Arduino****/
+
+
     public Runnable toasterSuccess = new Runnable() {
         @Override
         public void run() {
@@ -809,12 +823,14 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             alertDialog.show();
         }
     };
-    private class ConnectedThread extends Thread {
+
+/****Managing Bluetooth Connection and Exchange Data****/
+    private class BtCommunicationThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
 
-        public ConnectedThread(BluetoothSocket socket) {
+        public BtCommunicationThread(BluetoothSocket socket) {
             mmSocket = socket;
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
@@ -834,15 +850,15 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             Log.e(TAG, "inside connected run");
             runOnUiThread(toasterSuccess);
             String inpdata = null;
+            // Keep listening to the InputStream until an exception occurs
             while (true) {
                 try {
+                    // Read from the InputStream
                     inpdata = mBufferedReader.readLine();
                     Log.e(TAG, inpdata);
+                    // Send the obtained bytes to the UI activity
                     mmHandler.obtainMessage(MESSAGE_READ, 1, 1,
                             inpdata).sendToTarget();
-
-
-
                 } catch (IOException e) {
                     Log.e(TAG, e.getMessage());
                     Log.e(TAG, "run exception in connected thread");
@@ -851,6 +867,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             }
         }
 
+        // Call this from the main activity to send data to the remote device
         public void write(String data) {
             try {
                 PrintStream printStream = new PrintStream(mmOutStream);
@@ -859,6 +876,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             }
         }
 
+        // Call this from the main activity to shutdown the connection
         public void cancel() {
             try {
                 mmSocket.close();
@@ -866,15 +884,18 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             }
         }
     }
-    private void turnOnBT(){
-        Intent btIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(btIntent, REQUEST_ENABLE_BT);
-    }
 
+/****End of Managing Bluetooth Connection and Exchange Data****/
+
+
+/****Finding Other Bluetooth Devices (include the Arduino) To Connect With****/
     private void getPairedDevices(){
-        devicesArray = btAdapter.getBondedDevices(); //gets the devices paired to local device
+        // Get the devices paired to local device
+        devicesArray = btAdapter.getBondedDevices();
+        // If there are paired devices
         BluetoothDevice x = null;
         if(devicesArray.size()>0){
+            // Loop through paired devices
             for(BluetoothDevice device: devicesArray){
                 Log.e(TAG, device.getName());
                 if(device.getName().equals("HC-05")) {
@@ -883,13 +904,16 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             }
         }
         if(x!=null){
-            connect = new ConnectThread(x);
+            connect = new InitiateBtConnectionThread(x);
             connect.start();
         }
         else{
             Toast.makeText(this,"Unable to connect to Souschef device",Toast.LENGTH_SHORT).show();
         }
     }
+
+/****End of Finding Other Bluetooth Devices (include the Arduino) To Connect With****/
+
     {
         mmHandler = new Handler() {
             @Override
@@ -927,7 +951,7 @@ public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-0080
             }
         };
     }
-    private void send_message(ConnectedThread thread, String data){
+    private void send_message(BtCommunicationThread thread, String data){
         thread.write(data);
     }
 }
